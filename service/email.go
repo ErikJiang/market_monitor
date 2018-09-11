@@ -26,7 +26,7 @@ func SendEmail(subject string, recvEmail string, emailContent string) error {
 
 	JsonParse := utils.NewJsonStruct()
 	emailConf := EmailConf{}
-	JsonParse.Load("E:\\GOPRO\\src\\github.com\\JiangInk\\market_monitor\\config\\email.json", &emailConf)
+	JsonParse.Load("config/email.json", &emailConf)
 
 	auth := smtp.PlainAuth(
 		"",
