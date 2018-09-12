@@ -25,7 +25,7 @@ type Email struct {
 var EmailSetting = &Email{}
 
 type Database struct {
-	Type string
+	DBType string
 	User string
 	Password string
 	Host string
