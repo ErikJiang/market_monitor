@@ -2,9 +2,10 @@ package service
 
 import (
 	"log"
-	"strconv"
 	"net/smtp"
-	"github.com/JiangInk/market_monitor/setting"
+	"strconv"
+
+	"github.com/JiangInk/market_monitor/config"
 )
 
 func SendEmail(subject string, recvEmail string, emailContent string) error {
@@ -12,22 +13,22 @@ func SendEmail(subject string, recvEmail string, emailContent string) error {
 
 	auth := smtp.PlainAuth(
 		"",
-		setting.EmailSetting.UserName,
-		setting.EmailSetting.Password,
-		setting.EmailSetting.Host,
+		config.EmailSetting.UserName,
+		config.EmailSetting.Password,
+		config.EmailSetting.Host,
 	)
 
 	msg := []byte(
 		"To: " + recvEmail + "\r\n" +
-		"From: " + setting.EmailSetting.ServName + "<" + setting.EmailSetting.UserName + ">\r\n" +
-		"Subject: " + subject + "\r\n" + "MIME-version: 1.0;\nContent-Type: " + 
-		setting.EmailSetting.ContentTypeHTML + ";charset=\"UTF-8\";\t\n\r\n" + emailContent,
+			"From: " + config.EmailSetting.ServName + "<" + config.EmailSetting.UserName + ">\r\n" +
+			"Subject: " + subject + "\r\n" + "MIME-version: 1.0;\nContent-Type: " +
+			config.EmailSetting.ContentTypeHTML + ";charset=\"UTF-8\";\t\n\r\n" + emailContent,
 	)
 
 	err := smtp.SendMail(
-		setting.EmailSetting.Host + ":" + strconv.Itoa(setting.EmailSetting.Port),
+		config.EmailSetting.Host+":"+strconv.Itoa(config.EmailSetting.Port),
 		auth,
-		setting.EmailSetting.UserName,
+		config.EmailSetting.UserName,
 		[]string{recvEmail},
 		msg,
 	)

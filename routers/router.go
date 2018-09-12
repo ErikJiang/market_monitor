@@ -1,8 +1,8 @@
 package routers
 
 import (
+	"github.com/JiangInk/market_monitor/config"
 	"github.com/JiangInk/market_monitor/routers/api/v1"
-	"github.com/JiangInk/market_monitor/setting"
 	"github.com/gin-gonic/gin"
 )
 
@@ -10,7 +10,7 @@ func InitRouter() *gin.Engine {
 	r := gin.New()
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
-	gin.SetMode(setting.ServerSetting.RunMode)
+	gin.SetMode(config.ServerSetting.RunMode)
 	apiV1 := r.Group("api/v1")
 	{
 		apiV1.GET("/users", v1.GetUsers)

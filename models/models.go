@@ -1,11 +1,13 @@
 package models
 
 import (
+	"fmt"
 	"log"
 	"strconv"
-	"fmt"
-	"github.com/JiangInk/market_monitor/setting"
+
+	"github.com/JiangInk/market_monitor/config"
 	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
 
 var db *gorm.DB
@@ -13,12 +15,12 @@ var db *gorm.DB
 func Setup() {
 	var err error
 	db, err = gorm.Open(
-		setting.DBSetting.DBType,
+		config.DBSetting.DBType,
 		fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&loc=Local",
-			setting.DBSetting.User,
-			setting.DBSetting.Password,
-			setting.DBSetting.Host + strconv.Itoa(setting.DBSetting.Port),
-			setting.DBSetting.DBName,
+			config.DBSetting.User,
+			config.DBSetting.Password,
+			config.DBSetting.Host+":"+strconv.Itoa(config.DBSetting.Port),
+			config.DBSetting.DBName,
 		),
 	)
 	if err != nil {
@@ -26,7 +28,7 @@ func Setup() {
 	}
 
 	gorm.DefaultTableNameHandler = func(db *gorm.DB, defaultTableName string) string {
-		return setting.DBSetting.TablePrefix + defaultTableName
+		return config.DBSetting.TablePrefix + defaultTableName
 	}
 
 	db.SingularTable(true)

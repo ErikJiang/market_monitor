@@ -3,13 +3,13 @@
 	"ignore": "test",
 	"package": [
 		{
-			"checksumSHA1": "2IsALKksTZFcjs3sU8nYvB9L6OE=",
+			"checksumSHA1": "HbOJxa+FsQ1TTsF+BkHAvzqqZv4=",
 			"path": "github.com/fatih/color",
 			"revision": "2d684516a8861da43017284349b7e303e809ac21",
 			"revisionTime": "2018-05-16T10:03:07Z"
 		},
 		{
-			"checksumSHA1": "SonoRXHraX3KMAr9B+feSteRyhU=",
+			"checksumSHA1": "90S9sFqcIo/uuwQzz1t/wYs7GEs=",
 			"path": "github.com/gin-gonic/gin",
 			"revision": "b869fe1415e4b9eb52f247441830d502aece2d4d",
 			"revisionTime": "2018-08-14T08:58:52Z",
@@ -17,31 +17,31 @@
 			"versionExact": "v1.3.0"
 		},
 		{
-			"checksumSHA1": "K4bjPSnNj2dYAyQs3dlHbGKXFd8=",
+			"checksumSHA1": "199mbv5rSBhFjcRyujh8jQqGbgI=",
 			"path": "github.com/go-ini/ini",
 			"revision": "fa25069db393aecc09b71267d0489b357781c860",
 			"revisionTime": "2018-09-10T19:25:51Z"
 		},
 		{
-			"checksumSHA1": "SQfyUO6hnQh7/KEoa0yz4v/4QAI=",
+			"checksumSHA1": "WDpDbiRNtez+uaR3w0WlglNe1cg=",
 			"path": "github.com/jinzhu/gorm",
 			"revision": "123d4f50ef8a8209ee8434daa41c6045a9111864",
 			"revisionTime": "2018-09-09T23:11:00Z"
 		},
 		{
-			"checksumSHA1": "mfb/EusMwfajCPq0lwLWM/pvqI4=",
+			"checksumSHA1": "4eelJOSLZoDzLuaJvgilOBVNovU=",
 			"path": "github.com/jinzhu/inflection",
 			"revision": "04140366298a54a039076d798123ffa108fff46c",
 			"revisionTime": "2018-03-08T03:36:59Z"
 		},
 		{
-			"checksumSHA1": "AtXpiR7Gtq5cF+6eUAH+LzupMts=",
+			"checksumSHA1": "SEnjvwVyfuU2xBaOfXfwPD5MZqk=",
 			"path": "github.com/mattn/go-colorable",
 			"revision": "efa589957cd060542a26d2dd7832fd6a6c6c3ade",
 			"revisionTime": "2018-03-10T13:32:14Z"
 		},
 		{
-			"checksumSHA1": "Co8o4cw9gGZpVUjZwNqmjJYXcqU=",
+			"checksumSHA1": "xGlhb4NZjBVCNSbb7GIMvhn6mQg=",
 			"path": "github.com/robfig/cron",
 			"revision": "b41be1df696709bb6395fe435af20370037c0b4c",
 			"revisionTime": "2018-05-05T20:34:41Z"
