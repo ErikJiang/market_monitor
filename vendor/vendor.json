@@ -17,6 +17,24 @@
 			"versionExact": "v1.3.0"
 		},
 		{
+			"checksumSHA1": "K4bjPSnNj2dYAyQs3dlHbGKXFd8=",
+			"path": "github.com/go-ini/ini",
+			"revision": "fa25069db393aecc09b71267d0489b357781c860",
+			"revisionTime": "2018-09-10T19:25:51Z"
+		},
+		{
+			"checksumSHA1": "SQfyUO6hnQh7/KEoa0yz4v/4QAI=",
+			"path": "github.com/jinzhu/gorm",
+			"revision": "123d4f50ef8a8209ee8434daa41c6045a9111864",
+			"revisionTime": "2018-09-09T23:11:00Z"
+		},
+		{
+			"checksumSHA1": "mfb/EusMwfajCPq0lwLWM/pvqI4=",
+			"path": "github.com/jinzhu/inflection",
+			"revision": "04140366298a54a039076d798123ffa108fff46c",
+			"revisionTime": "2018-03-08T03:36:59Z"
+		},
+		{
 			"checksumSHA1": "AtXpiR7Gtq5cF+6eUAH+LzupMts=",
 			"path": "github.com/mattn/go-colorable",
 			"revision": "efa589957cd060542a26d2dd7832fd6a6c6c3ade",

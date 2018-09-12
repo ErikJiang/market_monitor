@@ -4,52 +4,33 @@ import (
 	"log"
 	"strconv"
 	"net/smtp"
-	"github.com/JiangInk/market_monitor/utils"
+	"github.com/JiangInk/market_monitor/setting"
 )
-
-type ContentTypeConf struct {
-	HTML string
-	Plain string
-}
-
-type EmailConf struct {
-	ServiceName string
-	UserName string
-	Password string
-	Host string
-	Port int
-	ContentType ContentTypeConf
-}
 
 func SendEmail(subject string, recvEmail string, emailContent string) error {
 	log.Println("enter sendEmail.")
 
-	JsonParse := utils.NewJsonStruct()
-	emailConf := EmailConf{}
-	JsonParse.Load("config/email.json", &emailConf)
-
 	auth := smtp.PlainAuth(
 		"",
-		emailConf.UserName,
-		emailConf.Password,
-		emailConf.Host,
+		setting.EmailSetting.UserName,
+		setting.EmailSetting.Password,
+		setting.EmailSetting.Host,
 	)
 
 	msg := []byte(
 		"To: " + recvEmail + "\r\n" +
-		"From: " + emailConf.ServiceName + "<" + emailConf.UserName + ">\r\n" +
-		"Subject: " + subject + "\r\n" +
-		emailConf.ContentType.HTML + "\r\n" + emailContent,
+		"From: " + setting.EmailSetting.ServName + "<" + setting.EmailSetting.UserName + ">\r\n" +
+		"Subject: " + subject + "\r\n" + "MIME-version: 1.0;\nContent-Type: " + 
+		setting.EmailSetting.ContentTypeHTML + ";charset=\"UTF-8\";\t\n\r\n" + emailContent,
 	)
 
 	err := smtp.SendMail(
-		emailConf.Host + ":" + strconv.Itoa(emailConf.Port),
+		setting.EmailSetting.Host + ":" + strconv.Itoa(setting.EmailSetting.Port),
 		auth,
-		emailConf.UserName,
+		setting.EmailSetting.UserName,
 		[]string{recvEmail},
 		msg,
 	)
-	log.Println(err)
 	if err != nil {
 		return err
 	}
