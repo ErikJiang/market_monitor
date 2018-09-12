@@ -6,7 +6,7 @@ $ go get -u -v github.com/kardianos/govendor
 
 ```
 
-#### 2. 同步项目依赖
+#### 2. 同步项目依赖
 ``` shell
 $ cd market_monitor
 $ govendor sync
