@@ -23,6 +23,24 @@
 			"revisionTime": "2018-09-10T19:25:51Z"
 		},
 		{
+			"checksumSHA1": "NsLphrlxGA/Ao+hIbk8qsZtXhT4=",
+			"path": "github.com/go-playground/locales",
+			"revision": "f63010822830b6fe52288ee52d5a1151088ce039",
+			"revisionTime": "2018-03-23T16:04:04Z"
+		},
+		{
+			"checksumSHA1": "6xgFcEYVu7ZWVUeK7Q3gPLJ8h4s=",
+			"path": "github.com/go-playground/locales/currency",
+			"revision": "f63010822830b6fe52288ee52d5a1151088ce039",
+			"revisionTime": "2018-03-23T16:04:04Z"
+		},
+		{
+			"checksumSHA1": "hplgY2pZFLa3jQpcSs9wTfjkk88=",
+			"path": "github.com/go-playground/universal-translator",
+			"revision": "71201497bace774495daed26a3874fd339e0b538",
+			"revisionTime": "2017-03-27T19:17:03Z"
+		},
+		{
 			"checksumSHA1": "WDpDbiRNtez+uaR3w0WlglNe1cg=",
 			"path": "github.com/jinzhu/gorm",
 			"revision": "123d4f50ef8a8209ee8434daa41c6045a9111864",
@@ -45,6 +63,44 @@
 			"path": "github.com/robfig/cron",
 			"revision": "b41be1df696709bb6395fe435af20370037c0b4c",
 			"revisionTime": "2018-05-05T20:34:41Z"
+		},
+		{
+			"checksumSHA1": "yftQqDFQzxL+T9FwYWtHdpKqB6A=",
+			"path": "github.com/rs/zerolog",
+			"revision": "b6f076edc801b110475cbf68da701e2bea52096a",
+			"revisionTime": "2018-08-31T16:46:32Z"
+		},
+		{
+			"checksumSHA1": "eZCcD/xb9cOwTokFOztRZP66Q98=",
+			"path": "github.com/rs/zerolog/internal/cbor",
+			"revision": "b6f076edc801b110475cbf68da701e2bea52096a",
+			"revisionTime": "2018-08-31T16:46:32Z"
+		},
+		{
+			"checksumSHA1": "zijzEk4jVMHaqn29CNK0qB9uyNo=",
+			"path": "github.com/rs/zerolog/internal/json",
+			"revision": "b6f076edc801b110475cbf68da701e2bea52096a",
+			"revisionTime": "2018-08-31T16:46:32Z"
+		},
+		{
+			"checksumSHA1": "aO0jNdlIE8fA+odLRHbGwKLyfz8=",
+			"path": "github.com/rs/zerolog/log",
+			"revision": "b6f076edc801b110475cbf68da701e2bea52096a",
+			"revisionTime": "2018-08-31T16:46:32Z"
+		},
+		{
+			"path": "golang.org/x/crypto/ssh/terminal",
+			"revision": ""
+		},
+		{
+			"path": "golang.org/x/sys/unix",
+			"revision": ""
+		},
+		{
+			"checksumSHA1": "n2zqXQJm5633blJmlEbvzrIx9OY=",
+			"path": "gopkg.in/go-playground/validator.v9",
+			"revision": "e69e9a28bb62b977fdc58d051f1bb477b7cbe486",
+			"revisionTime": "2018-08-13T14:34:31Z"
 		}
 	],
 	"rootPath": "github.com/JiangInk/market_monitor"

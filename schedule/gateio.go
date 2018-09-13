@@ -5,7 +5,7 @@ import (
 	"bytes"
 	"html/template"
 	"github.com/JiangInk/market_monitor/common/api"
-	"github.com/JiangInk/market_monitor/common/utils"
+	"github.com/JiangInk/market_monitor/common/utils/email"
 	_ "github.com/robfig/cron"
 )
 
@@ -55,7 +55,7 @@ func sendEmail(tick api.Ticker) {
 	// 生成邮件模板内容
 	content := genTemplate(tick)
 	// 发送邮件
-	err := utils.SendEmail(subject, recvEmail, content)
+	err := email.SendEmail(subject, recvEmail, content)
 	if err != nil {
 		log.Fatal(err)
 	}
