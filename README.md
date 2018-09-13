@@ -12,7 +12,12 @@ $ cd market_monitor
 $ govendor sync
 ```
 
-#### 3. 运行项目
+#### 3. 创建数据库
+``` sql
+CREATE DATABASE monitor DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
+``` 
+
+#### 4. 运行项目
 ``` shell
 $ go run main.go
 ```
