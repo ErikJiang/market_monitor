@@ -21,3 +21,8 @@ CREATE DATABASE monitor DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_
 ``` shell
 $ go run main.go
 ```
+
+---
+
+> TODO 目录结构待重构
+参考[Golang 在 SmartX 的实践](https://zhuanlan.zhihu.com/p/39326315)
