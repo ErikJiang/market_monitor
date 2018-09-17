@@ -1,11 +1,11 @@
-package task
+package schedule
 
 import (
 	"log"
 	"bytes"
 	"html/template"
 	"github.com/JiangInk/market_monitor/common/api"
-	"github.com/JiangInk/market_monitor/service"
+	"github.com/JiangInk/market_monitor/common/utils/email"
 	_ "github.com/robfig/cron"
 )
 
@@ -55,7 +55,7 @@ func sendEmail(tick api.Ticker) {
 	// 生成邮件模板内容
 	content := genTemplate(tick)
 	// 发送邮件
-	err := service.SendEmail(subject, recvEmail, content)
+	err := email.SendEmail(subject, recvEmail, content)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -64,7 +64,6 @@ func sendEmail(tick api.Ticker) {
 
 // 生成邮件模板
 func genTemplate(tick api.Ticker) string {
-
 	tmpl, err := template.ParseFiles("templates/email.html")
 	if err != nil {
 		log.Fatal(err)

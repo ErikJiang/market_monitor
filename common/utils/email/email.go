@@ -1,7 +1,6 @@
-package service
+package email
 
 import (
-	"log"
 	"net/smtp"
 	"strconv"
 
@@ -9,7 +8,6 @@ import (
 )
 
 func SendEmail(subject string, recvEmail string, emailContent string) error {
-	log.Println("enter sendEmail.")
 
 	auth := smtp.PlainAuth(
 		"",

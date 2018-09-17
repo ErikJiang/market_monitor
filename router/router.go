@@ -1,8 +1,8 @@
-package routers
+package router
 
 import (
 	"github.com/JiangInk/market_monitor/config"
-	"github.com/JiangInk/market_monitor/routers/api/v1"
+	"github.com/JiangInk/market_monitor/controller/v1"
 	"github.com/gin-gonic/gin"
 )
 

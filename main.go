@@ -4,17 +4,17 @@ import (
 	"strconv"
 
 	"github.com/JiangInk/market_monitor/config"
-	// "github.com/JiangInk/market_monitor/models"
-	"github.com/JiangInk/market_monitor/routers"
-	"github.com/JiangInk/market_monitor/task"
+	"github.com/JiangInk/market_monitor/models"
+	"github.com/JiangInk/market_monitor/router"
+	// "github.com/JiangInk/market_monitor/schedule"
 )
 
 func main() {
 	config.Setup()
-	// models.Setup()
-	task.GateioCronMain()
+	models.Setup()
+	// schedule.GateioCronMain()
 
-	r := routers.InitRouter()
+	r := router.InitRouter()
 	// Listen and Server in 0.0.0.0:8080
 	r.Run(":" + strconv.Itoa(config.ServerSetting.HttpPort))
 }
