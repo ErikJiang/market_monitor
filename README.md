@@ -9,7 +9,7 @@ $ go get -u -v github.com/kardianos/govendor
 #### 2. 同步项目依赖
 ``` shell
 $ cd market_monitor
-$ govendor sync
+$ go mod download
 ```
 
 #### 3. 创建数据库
@@ -24,5 +24,3 @@ $ go run main.go
 
 ---
 
-> TODO 目录结构待重构
-参考[Golang 在 SmartX 的实践](https://zhuanlan.zhihu.com/p/39326315)
