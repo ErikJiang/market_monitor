@@ -44,3 +44,14 @@ require (
 	gopkg.in/ini.v1 v1.39.0 // indirect
 	gopkg.in/yaml.v2 v2.2.1 // indirect
 )
+
+replace (
+	cloud.google.com/go v0.31.0 => github.com/GoogleCloudPlatform/google-cloud-go v0.31.0
+	golang.org/x/crypto v0.0.0-20181025213731-e84da0312774 => github.com/golang/crypto v0.0.0-20181025213731-e84da0312774
+	golang.org/x/net v0.0.0-20180724234803-3673e40ba225 => github.com/golang/net v0.0.0-20180724234803-3673e40ba225
+	golang.org/x/net v0.0.0-20181023162649-9b4f9f5ad519 => github.com/golang/net v0.0.0-20181023162649-9b4f9f5ad519
+	golang.org/x/sync v0.0.0-20180314180146-1d60e4601c6f => github.com/golang/sync v0.0.0-20180314180146-1d60e4601c6f
+	golang.org/x/sys v0.0.0-20181026203630-95b1ffbd15a5 => github.com/golang/sys v0.0.0-20181026203630-95b1ffbd15a5
+	golang.org/x/text v0.3.0 => github.com/golang/text v0.3.0
+	google.golang.org/appengine v1.2.0 => github.com/golang/appengine v1.2.0
+)
