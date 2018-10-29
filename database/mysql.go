@@ -1,8 +1,7 @@
-package models
+package database
 
 import (
 	"fmt"
-	"log"
 	"strconv"
 
 	"github.com/JiangInk/market_monitor/config"
@@ -24,7 +23,11 @@ func Setup() {
 		),
 	)
 	if err != nil {
-		log.Fatalln(err)
+		fmt.Printf("mysql connect error %v", err)
+	}
+
+	if db.Error != nil {
+		fmt.Printf("database error %v", db.Error)
 	}
 
 	gorm.DefaultTableNameHandler = func(db *gorm.DB, defaultTableName string) string {

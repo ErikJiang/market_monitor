@@ -1,8 +1,7 @@
-module market_monitor
+module github.com/JiangInk/market_monitor
 
 require (
 	cloud.google.com/go v0.31.0 // indirect
-	github.com/JiangInk/market_monitor v0.0.0-20180917150252-79c784380cec
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/denisenkom/go-mssqldb v0.0.0-20181014144952-4e0d7dc8888f // indirect
 	github.com/erikstmartin/go-testdb v0.0.0-20160219214506-8d10e4a1bae5 // indirect

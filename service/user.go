@@ -1,35 +1,36 @@
 package service
 
 import (
-	"github.com/JiangInk/market_monitor/models"
-	"gopkg.in/go-playground/validator.v9"
-
+	model "github.com/JiangInk/market_monitor/models"
+	helper "github.com/JiangInk/market_monitor/helpers"
     "github.com/rs/zerolog/log"
 )
 
-type User struct {
-	UserName	string	`validator:"required"`
-	Password	string	`validator:"required"`
-	Email		string	`validator:"required,email"`
-}
+type UserSerivce struct{}
+
 
 var validate *validator.Validate
 
-// 创建用户
-func createUser(userInfo User) error {
+// 添加用户
+func (us UserSerivce) addUser(email string, pass: string) (err error) {
 	log.Info().Msg("enter signup service.")
-	validate = validator.New()
-	err := validate.Struct(userInfo)
-	if err != nil {
-		log.Error().Msgf("%v", err)
-		return err
-	}
 
-	return models.AddUser(userInfo.UserName, userInfo.Password, userInfo.Email)
+	user := &model.User{
+		Email:	email,
+		UserName: email,
+		Password: pass,
+		Status: true,
+	}
+	if len(user.Email) == 0 || len(user.Password) == 0 {
+		err = errors.New("email or password cannot be nil.")
+	} else {
+		user.Password = helper.Md5(user.Email+user.Password)
+		err = user.Insert()
+	}
 }
 
 // 移除用户
-func removeUser(userId int) error {
+func (us UserSerivce) removeUser(userId int) error {
 	log.Info().Msg("enter removeUser service.")
 	validate = validator.New()
 	err := validate.Var(userId, "required")
@@ -43,7 +44,7 @@ func removeUser(userId int) error {
 }
 
 // 修改用户密码
-func alterPasswd(userId int, passwd string) error {
+func (us UserSerivce) alterPasswd(userId int, passwd string) error {
 	log.Info().Msg("enter alterPasswd service.")
 
 	validate = validator.New()
@@ -62,7 +63,7 @@ func alterPasswd(userId int, passwd string) error {
 }
 
 // 修改用户邮箱
-func alterEmail(userId int, email string) error {
+func (us UserSerivce) alterEmail(userId int, email string) error {
 	log.Info().Msg("enter alterEmail service.")
 
 	validate = validator.New()
@@ -81,7 +82,7 @@ func alterEmail(userId int, email string) error {
 }
 
 // 查询用户详情
-func getDetail(userId int) (user models.User, err error) {
+func (us UserSerivce) getDetail(userId int) (user models.User, err error) {
 	log.Info().Msg("enter getDetail service.")
 
 	validate = validator.New()

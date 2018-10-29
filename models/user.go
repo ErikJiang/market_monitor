@@ -1,69 +1,72 @@
 package models
 
 import (
+	orm "github.com/JiangInk/market_monitor/database"
 	"github.com/jinzhu/gorm"
 )
-
-
 
 type User struct {
 	gorm.Model
 	UserName string `json:"name"`
 	Password string `json:"password"`
-	Email string `json:"email"`
-	Status bool `json:"status"`
+	Email    string `json:"email"`
+	Status   bool   `json:"status"`
 }
 
-// 新增用户表
-func AddUser(username string, password string, email string) error {
-	user := User {
-		UserName: username,
-		Password: password,
-		Email: email,
-		Status: true,
+// 新增用户
+func (user *User) Insert() (id int64, err error) {
+	result := orm.db.Create(&user)
+	id = user.ID
+	if result.Error != nil {
+		err = result.Error
 	}
-
-	if err := db.Create(&user).Error; err != nil {
-		return err
-	}
-	return nil
-}
-
-// 删除用户表
-func DelUser(userId int) error {
-	if err := db.Where("id = ?", userId).Delete(&User{}).Error; err!=nil {
-		return err
-	}
-	return nil
-}
-
-// 更新用户表
-func UpdUser(userId int, data interface{}) error {
-	if err := db.Where("id = ?", userId).Update(data).Error; err!=nil {
-		return err
-	}
-	return nil
+	return
 }
 
 // 查询用户详情
-func GetUser(userId int) (user User, err error) {
-	err = db.Select("id", "name", "email").Where("id = ?", userId).First(&user).Error
-	if err != nil && err != gorm.ErrRecordNotFound {
-		return User{}, err
+func (user *User) FindOne(userId int64) (user User, err error) {
+	if err = orm.db.Select("id", "name", "email").Where("id = ?", userId).First(&user).Error; err != nil {
+		return
 	}
-	return user, err
+	return
 }
 
-// 查询用户列表
-func GetUsers(pageNum int, pageSize int, condition interface{}) ([]User, error) {
-	var users []User
+// 获取用户列表
+func (user *User) FindAll(pageNum int, pageSize int, condition interface{}) (users []User, err error) {
+
 	if pageNum > 0 && pageSize > 0 {
-		db = db.Offset(pageNum).Limit(pageSize)
+		db = orm.db.Offset(pageNum).Limit(pageSize)
 	}
 	err := db.Select("id", "name", "email").Where(condition).Find(&users).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
-		return nil, err
+		return
 	}
-	return users, err
+	return
 }
 
+// 修改用户
+func (user *User) UpdateOne() (updUser User, err error) {
+	if err = orm.db.Select([]string{"id", "username"}).First(&updUser, id).Error; err != nil {
+		return
+	}
+
+	//参数1:需要修改的源用户
+	//参数2:修改更新的数据
+	if err = orm.db.Model(&updUser).Updates(&user).Error; err != nil {
+		return
+	}
+	return
+}
+
+// 删除用户
+func (user *User) DeleteOne(id int64) (delUser User, err error) {
+	if err = orm.db.Select([]string{"id"}).First(&user, id).Error; err != nil {
+		return
+	}
+
+	if err = orm.db.Delete(&user).Error; err != nil {
+		return
+	}
+	delUser = *user
+	return
+}
