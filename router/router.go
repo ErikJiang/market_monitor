@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// InitRouter 初始化路由
 func InitRouter() *gin.Engine {
 	r := gin.New()
 	r.Use(gin.Logger())
@@ -13,11 +14,15 @@ func InitRouter() *gin.Engine {
 	gin.SetMode(config.ServerSetting.RunMode)
 	apiV1 := r.Group("api/v1")
 	{
-		apiV1.GET("/users", v1.GetUsers)
-		apiV1.POST("/users", v1.AddUser)
-		apiV1.GET("/users/:userId", v1.GetUser)
-		apiV1.PUT("/users/:userId", v1.EditUser)
-		apiV1.DELETE("/users/:userId", v1.RemoveUser)
+		// apiV1.GET("/users", v1.GetUsers)
+		// apiV1.POST("/users", v1.AddUser)
+		// apiV1.GET("/users/:userId", v1.GetUser)
+		// apiV1.PUT("/users/:userId", v1.EditUser)
+		// apiV1.DELETE("/users/:userId", v1.RemoveUser)
+		userController := new(v1.UserController)
+		apiV1.POST("/auth/signup", userController.Signup)
+		apiV1.POST("/auth/signin", userController.Signin)
+		apiV1.POST("/auth/signout", userController.Signout)
 	}
 	return r
 }

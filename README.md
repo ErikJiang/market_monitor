@@ -1,12 +1,11 @@
 # market_monitor
 
-#### 1. 安装`govendor`
+#### 1. 克隆项目
 ``` shell
-$ go get -u -v github.com/kardianos/govendor
-
+$ git clone https://github.com/JiangInk/market_monitor.git
 ```
 
-#### 2. 同步项目依赖
+#### 2. 下载项目依赖
 ``` shell
 $ cd market_monitor
 $ go mod download

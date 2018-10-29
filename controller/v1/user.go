@@ -7,39 +7,55 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-var userService = new(service.UserSerivce)
+// UserController 用户控制器
+type UserController struct{}
+
+var userService = new(service.UserService)
 
 // Signup 账号注册
-func Signup(c *gin.Context) {
+func (sc UserController) Signup(c *gin.Context) {
 	email := c.Request.FormValue("email")
 	accountPass := c.Request.FormValue("accountPass")
 	confirmPass := c.Request.FormValue("confirmPass")
 
 	if len(email) == 0 || len(accountPass) == 0 || len(confirmPass) == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"status": "not found"})
+		c.JSON(http.StatusBadRequest, gin.H{"status": "request param error"})
 	}
-	userService.addUser(email, accountPass)
-	c.JSON(http.StatusOK, gin.H{"status": "ok"})
+	userID, err := userService.StoreUser(email, accountPass)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"status": "user signup fail"})
+	}
+	c.JSON(http.StatusOK, gin.H{"status": "ok", "data": userID})
 }
 
 // Signin 账号登录
-func Signin() {
+func (sc UserController) Signin(c *gin.Context) {
 
 }
 
 // Signout 账号注销
-func Signout() {
+func (sc UserController) Signout(c *gin.Context) {
 
 }
 
 // GetUserInfo 获取用户信息
-func GetUserInfo(c *gin.Context) {
+func (sc UserController) GetUserInfo(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"user": "user", "value": "value"})
 
 }
 
 // EditUserInfo 编辑用户信息
-func EditUserInfo(c *gin.Context) {
+func (sc UserController) EditUserInfo(c *gin.Context) {
+
+}
+
+// 修改用户密码
+func (sc UserController) alterPasswd(c *gin.Context) {
+
+}
+
+// 修改用户邮箱
+func (sc UserController) alterEmail(c *gin.Context) {
 
 }
