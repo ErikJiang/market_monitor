@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/JiangInk/market_monitor/service"
@@ -12,20 +13,31 @@ type UserController struct{}
 
 var userService = new(service.UserService)
 
+// SignupReqBody 注册请求参数
+type SignupReqBody struct {
+	Email       string `json:"email" binding:"required"`
+	AccountPass string `json:"accountPass" binding:"required"`
+	ConfirmPass string `json:"confirmPass" binding:"required"`
+}
+
 // Signup 账号注册
 func (sc UserController) Signup(c *gin.Context) {
-	email := c.Request.FormValue("email")
-	accountPass := c.Request.FormValue("accountPass")
-	confirmPass := c.Request.FormValue("confirmPass")
-
-	if len(email) == 0 || len(accountPass) == 0 || len(confirmPass) == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"status": "request param error"})
+	var reqBody SignupReqBody
+	if err := c.ShouldBindJSON(&reqBody); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
-	userID, err := userService.StoreUser(email, accountPass)
+
+	fmt.Printf("> Email: %s\n", reqBody.Email)
+	fmt.Printf("> ConfirmPass: %s\n", reqBody.ConfirmPass)
+
+	userID, err := userService.StoreUser(reqBody.Email, reqBody.ConfirmPass)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"status": "user signup fail"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
 	}
 	c.JSON(http.StatusOK, gin.H{"status": "ok", "data": userID})
+	return
 }
 
 // Signin 账号登录

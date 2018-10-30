@@ -6,11 +6,13 @@ import (
 
 	"github.com/JiangInk/market_monitor/config"
 	"github.com/jinzhu/gorm"
-	_"github.com/jinzhu/gorm/dialects/mysql"
+	_ "github.com/jinzhu/gorm/dialects/mysql" // mysql
 )
 
+// DB 当前数据库连接
 var DB *gorm.DB
 
+// Setup MySQL 数据库配置
 func Setup() {
 	var err error
 	DB, err = gorm.Open(
