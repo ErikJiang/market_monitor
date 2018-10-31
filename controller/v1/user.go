@@ -31,12 +31,17 @@ func (sc UserController) Signup(c *gin.Context) {
 	fmt.Printf("> Email: %s\n", reqBody.Email)
 	fmt.Printf("> ConfirmPass: %s\n", reqBody.ConfirmPass)
 
+	if reqBody.AccountPass != reqBody.ConfirmPass {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "user password unmatch!"})
+		return
+	}
+
 	userID, err := userService.StoreUser(reqBody.Email, reqBody.ConfirmPass)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"status": "ok", "data": userID})
+	c.JSON(http.StatusOK, gin.H{"status": "ok", "userId": userID})
 	return
 }
 

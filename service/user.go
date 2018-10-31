@@ -10,7 +10,7 @@ import (
 type UserService struct{}
 
 // StoreUser 添加用户
-func (us UserService) StoreUser(email string, pass string) (userID int64, err error) {
+func (us UserService) StoreUser(email string, pass string) (userID uint, err error) {
 	log.Info().Msg("enter signup service.")
 	user := &models.User{
 		Email:    email,
@@ -24,12 +24,12 @@ func (us UserService) StoreUser(email string, pass string) (userID int64, err er
 }
 
 // UpdateUser 更新用户
-func (us UserService) UpdateUser(userID int64) {
+func (us UserService) UpdateUser(userID uint) {
 	return
 }
 
 // DestroyUser 删除用户
-func (us UserService) DestroyUser(userID int64) error {
+func (us UserService) DestroyUser(userID uint) error {
 	log.Info().Msg("enter removeUser service.")
 	return nil
 }

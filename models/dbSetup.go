@@ -1,4 +1,4 @@
-package database
+package models
 
 import (
 	"fmt"
@@ -39,4 +39,7 @@ func Setup() {
 	DB.SingularTable(true)
 	DB.DB().SetMaxIdleConns(10)
 	DB.DB().SetMaxOpenConns(100)
+	// migrate 迁移
+	DB.Set("grom:table_options", "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin").AutoMigrate(&User{})
+	DB.Model(&User{}).AddUniqueIndex("uk_email", "email")
 }

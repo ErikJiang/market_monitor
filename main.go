@@ -4,14 +4,14 @@ import (
 	"strconv"
 
 	"github.com/JiangInk/market_monitor/config"
-	"github.com/JiangInk/market_monitor/database"
+	"github.com/JiangInk/market_monitor/models"
 	"github.com/JiangInk/market_monitor/router"
 	// "github.com/JiangInk/market_monitor/schedule"
 )
 
 func main() {
 	config.Setup()
-	database.Setup()
+	models.Setup()
 	// schedule.GateioCronMain()
 
 	r := router.InitRouter()
