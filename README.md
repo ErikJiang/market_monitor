@@ -13,7 +13,7 @@ $ go mod download
 
 #### 3. 创建数据库
 ``` sql
-CREATE DATABASE monitor DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
+CREATE DATABASE db_monitor DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
 ``` 
 
 #### 4. 运行项目

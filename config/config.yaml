@@ -1,0 +1,35 @@
+# 服务基本配置
+server:
+  runMode: debug
+  port: 8000
+
+# 邮箱配置
+email:
+  servName: Monitor Service
+  userName: jiangink@126.com
+  password: cncd2000ixx
+  host: smtp.126.com
+  port: 25
+  contentTypeHTML: text/html
+  contentTypePlain: text/plain
+
+# 数据库配置
+database:
+  dbType: mysql
+  user: root
+  password: 123456
+  host: 127.0.0.1
+  port: 3306
+  dbName: db_monitor
+  tablePrefix: tb_
+
+# redis 配置
+redis:
+  host: 127.0.0.1
+  port: 6379
+  password: ~
+  db: 0
+
+# 日志 配置
+logger:
+  level: DEBUG

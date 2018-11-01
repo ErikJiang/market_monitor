@@ -11,6 +11,7 @@ import (
 
 func main() {
 	config.Setup()
+	config.Setup1()
 	models.Setup()
 	// schedule.GateioCronMain()
 
