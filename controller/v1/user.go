@@ -24,7 +24,7 @@ type SignupReqBody struct {
 func (sc UserController) Signup(c *gin.Context) {
 	var reqBody SignupReqBody
 	if err := c.ShouldBindJSON(&reqBody); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "request params is error"})
 		return
 	}
 

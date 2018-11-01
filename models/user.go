@@ -7,7 +7,6 @@ import (
 // User 用户表 model 定义
 type User struct {
 	gorm.Model
-	// ID       int64  `json:"id" gorm:"primary_key"`
 	UserName string `gorm:"unique_index;default:null"`
 	Password string `gorm:"default:null"`
 	Email    string `gorm:"unique_index;default:null"`
