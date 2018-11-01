@@ -58,7 +58,9 @@ var RedisConf = &redis{}
 
 // logger 日志配置结构
 type logger struct {
-	Level string `mapstructure:"level"`
+	Level  string `mapstructure:"level"`
+	Pretty bool   `mapstructure:"pretty"`
+	Color  bool   `mapstructure:"color"`
 }
 
 // LoggerConf 日志配置
@@ -80,5 +82,6 @@ func Setup() {
 	viper.UnmarshalKey("database", DBConf)
 	viper.UnmarshalKey("redis", RedisConf)
 	viper.UnmarshalKey("logger", LoggerConf)
-
+	// 日志初始化设置
+	setupLogger()
 }

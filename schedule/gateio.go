@@ -4,8 +4,8 @@ import (
 	"log"
 	"bytes"
 	"html/template"
-	"github.com/JiangInk/market_monitor/common/api"
-	"github.com/JiangInk/market_monitor/common/utils/email"
+	"github.com/JiangInk/market_monitor/extend/api"
+	"github.com/JiangInk/market_monitor/extend/utils/email"
 	_ "github.com/robfig/cron"
 )
 

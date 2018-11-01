@@ -1,11 +1,11 @@
 package v1
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/JiangInk/market_monitor/service"
 	"github.com/gin-gonic/gin"
+	"github.com/rs/zerolog/log"
 )
 
 // UserController 用户控制器
@@ -22,14 +22,15 @@ type SignupReqBody struct {
 
 // Signup 账号注册
 func (sc UserController) Signup(c *gin.Context) {
+	log.Info().Msg("enter signup controller")
 	var reqBody SignupReqBody
 	if err := c.ShouldBindJSON(&reqBody); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "request params is error"})
 		return
 	}
 
-	fmt.Printf("> Email: %s\n", reqBody.Email)
-	fmt.Printf("> ConfirmPass: %s\n", reqBody.ConfirmPass)
+	log.Debug().Msgf("email param: %s", reqBody.Email)
+	log.Debug().Msgf("confirmPass param: %s", reqBody.ConfirmPass)
 
 	if reqBody.AccountPass != reqBody.ConfirmPass {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "user password unmatch!"})
@@ -41,6 +42,7 @@ func (sc UserController) Signup(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
+	log.Info().Msgf("signup controller result userId: %d", userID)
 	c.JSON(http.StatusOK, gin.H{"status": "ok", "userId": userID})
 	return
 }

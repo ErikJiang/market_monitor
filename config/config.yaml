@@ -33,3 +33,5 @@ redis:
 # 日志 配置
 logger:
   level: DEBUG
+  pretty: true
+  color: true
