@@ -11,11 +11,10 @@ import (
 
 func main() {
 	config.Setup()
-	config.Setup1()
 	models.Setup()
 	// schedule.GateioCronMain()
 
 	r := router.InitRouter()
 	// Listen and Server in 0.0.0.0:8080
-	r.Run(":" + strconv.Itoa(config.ServerSetting.HttpPort))
+	r.Run(":" + strconv.Itoa(config.ServerConf.Port))
 }

@@ -16,12 +16,12 @@ var DB *gorm.DB
 func Setup() {
 	var err error
 	DB, err = gorm.Open(
-		config.DBSetting.DBType,
+		config.DBConf.DBType,
 		fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&loc=Local",
-			config.DBSetting.User,
-			config.DBSetting.Password,
-			config.DBSetting.Host+":"+strconv.Itoa(config.DBSetting.Port),
-			config.DBSetting.DBName,
+			config.DBConf.User,
+			config.DBConf.Password,
+			config.DBConf.Host+":"+strconv.Itoa(config.DBConf.Port),
+			config.DBConf.DBName,
 		),
 	)
 	if err != nil {
@@ -33,7 +33,7 @@ func Setup() {
 	}
 
 	gorm.DefaultTableNameHandler = func(db *gorm.DB, defaultTableName string) string {
-		return config.DBSetting.TablePrefix + defaultTableName
+		return config.DBConf.TablePrefix + defaultTableName
 	}
 
 	DB.SingularTable(true)
