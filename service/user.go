@@ -1,7 +1,7 @@
 package service
 
 import (
-	"github.com/JiangInk/market_monitor/helpers"
+	"github.com/JiangInk/market_monitor/extend/utils"
 	"github.com/JiangInk/market_monitor/models"
 	"github.com/rs/zerolog/log"
 )
@@ -19,7 +19,7 @@ func (us UserService) StoreUser(email string, pass string) (userID uint, err err
 		Password: pass,
 		Status:   true,
 	}
-	user.Password = helpers.Md5(user.Email + user.Password)
+	user.Password = utils.Md5(user.Email + user.Password)
 	log.Debug().Msgf("user password: %s", user.Password)
 	userID, err = user.Insert()
 	return

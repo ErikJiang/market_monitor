@@ -4,6 +4,8 @@ import (
 	"net/http"
 
 	"github.com/JiangInk/market_monitor/service"
+	"github.com/JiangInk/market_monitor/extend/utils"
+	"github.com/JiangInk/market_monitor/extend/utils/code"
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog/log"
 )
@@ -25,7 +27,7 @@ func (sc UserController) Signup(c *gin.Context) {
 	log.Info().Msg("enter signup controller")
 	var reqBody SignupReqBody
 	if err := c.ShouldBindJSON(&reqBody); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "request params is error"})
+		utils.ResponseFormat(c, code.RequestParamError, nil)
 		return
 	}
 
@@ -33,17 +35,19 @@ func (sc UserController) Signup(c *gin.Context) {
 	log.Debug().Msgf("confirmPass param: %s", reqBody.ConfirmPass)
 
 	if reqBody.AccountPass != reqBody.ConfirmPass {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "user password unmatch!"})
+		utils.ResponseFormat(c, code.SignupPassUnmatch, nil)
 		return
 	}
 
 	userID, err := userService.StoreUser(reqBody.Email, reqBody.ConfirmPass)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		log.Error().Msgf("%v", err.Error())
+		utils.ResponseFormat(c, code.ServiceInsideError, nil)
 		return
 	}
 	log.Info().Msgf("signup controller result userId: %d", userID)
-	c.JSON(http.StatusOK, gin.H{"status": "ok", "userId": userID})
+
+	utils.ResponseFormat(c, code.Success, map[string]uint{ "userId": userID })
 	return
 }
 
