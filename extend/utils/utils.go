@@ -9,7 +9,7 @@ import (
 )
 
 // ResponseFormat 返回数据格式化
-func ResponseFormat(c *gin.Context, respStatus *code.CodeData, data interface{}) {
+func ResponseFormat(c *gin.Context, respStatus *code.Code, data interface{}) {
 	if respStatus == nil {
 		log.Error().Msg("response status param not found!")
 		respStatus = code.RequestParamError
