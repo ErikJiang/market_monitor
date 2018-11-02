@@ -6,12 +6,14 @@ import (
 	"github.com/JiangInk/market_monitor/config"
 	"github.com/JiangInk/market_monitor/models"
 	"github.com/JiangInk/market_monitor/router"
+	"github.com/JiangInk/market_monitor/extend/utils/redis"
 	// "github.com/JiangInk/market_monitor/schedule"
 )
 
 func main() {
 	config.Setup()
 	models.Setup()
+	redis.Setup()
 	// schedule.GateioCronMain()
 
 	r := router.InitRouter()

@@ -16,8 +16,8 @@ email:
 # 数据库配置
 database:
   dbType: mysql
-  user: test
-  password: jiangink
+  user: root
+  password: 123456
   host: 127.0.0.1
   port: 3306
   dbName: db_monitor
@@ -28,7 +28,7 @@ redis:
   host: 127.0.0.1
   port: 6379
   password: ~
-  db: 0
+  db: 1
 
 # 日志 配置
 logger:
