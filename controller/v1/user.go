@@ -15,18 +15,16 @@ type UserController struct{}
 
 var userService = new(service.UserService)
 
-// SignupReqBody 注册请求参数
-type SignupReqBody struct {
-	Email       string `json:"email" binding:"required"`
-	AccountPass string `json:"accountPass" binding:"required"`
-	ConfirmPass string `json:"confirmPass" binding:"required"`
-}
-
 // Signup 账号注册
 func (sc UserController) Signup(c *gin.Context) {
 	log.Info().Msg("enter signup controller")
-	var reqBody SignupReqBody
+	reqBody := struct {
+		Email       string `json:"email" binding:"required,email"`
+		AccountPass string `json:"accountPass" binding:"required"`
+		ConfirmPass string `json:"confirmPass" binding:"required"`
+	}{}
 	if err := c.ShouldBindJSON(&reqBody); err != nil {
+		log.Error().Msg(err.Error())
 		utils.ResponseFormat(c, code.RequestParamError, nil)
 		return
 	}
@@ -41,7 +39,7 @@ func (sc UserController) Signup(c *gin.Context) {
 
 	userID, err := userService.StoreUser(reqBody.Email, reqBody.ConfirmPass)
 	if err != nil {
-		log.Error().Msgf("%v", err.Error())
+		log.Error().Msg(err.Error())
 		utils.ResponseFormat(c, code.ServiceInsideError, nil)
 		return
 	}
@@ -53,7 +51,30 @@ func (sc UserController) Signup(c *gin.Context) {
 
 // Signin 账号登录
 func (sc UserController) Signin(c *gin.Context) {
+	log.Info().Msg("enter Signin controller")
+	reqBody := struct {
+		Email string `json:"email" binding:"required,email"`
+		Password string `json:"password" binding:"required"`
+	}{}
+	err := c.ShouldBindJSON(&reqBody)
+	if err != nil {
+		log.Error().Msg(err.Error())
+		utils.ResponseFormat(c, code.ServiceInsideError, nil)
+		return
+	}
+	// find user info
+	user, err := userService.QueryUser()
+	if err != nil {
+		log.Error().Msg(err.Error())
+		utils.ResponseFormat(c, code.ServiceInsideError, nil)
+		return
+	}
+	log.Info().Msgf("find user result: %v", user)
 
+	// user info vs request params todo 
+
+	utils.ResponseFormat(c, code.Success, map[string]interface{}{ "user": user })
+	return
 }
 
 // Signout 账号注销

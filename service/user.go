@@ -9,6 +9,11 @@ import (
 // UserService 用户服务层逻辑
 type UserService struct{}
 
+// QueryUser 查询用户
+func (us UserService) QueryUser() (user models.User, err error) {
+	return
+}
+
 // StoreUser 添加用户
 func (us UserService) StoreUser(email string, pass string) (userID uint, err error) {
 	log.Info().Msg("enter storeUser service")
