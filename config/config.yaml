@@ -22,6 +22,7 @@ database:
   port: 3306
   dbName: db_monitor
   tablePrefix: tb_
+  debug: true
 
 # redis 配置
 redis:

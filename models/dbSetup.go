@@ -35,7 +35,8 @@ func Setup() {
 	gorm.DefaultTableNameHandler = func(db *gorm.DB, defaultTableName string) string {
 		return config.DBConf.TablePrefix + defaultTableName
 	}
-
+	
+	DB.LogMode(config.DBConf.Debug)
 	DB.SingularTable(true)
 	DB.DB().SetMaxIdleConns(10)
 	DB.DB().SetMaxOpenConns(100)

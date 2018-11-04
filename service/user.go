@@ -9,8 +9,13 @@ import (
 // UserService 用户服务层逻辑
 type UserService struct{}
 
-// QueryUser 查询用户
-func (us UserService) QueryUser() (user models.User, err error) {
+// QueryUserByEmail 查询用户
+func (us UserService) QueryUserByEmail(email string) (user models.User, err error) {
+	userModel := &models.User{}
+	condition := map[string]interface{}{
+		"email": email,
+	}
+	user, err = userModel.FindOne(condition)
 	return
 }
 
@@ -22,7 +27,7 @@ func (us UserService) StoreUser(email string, pass string) (userID uint, err err
 		Email:    email,
 		UserName: email,
 		Password: pass,
-		Status:   true,
+		Status:   "ENABLE",
 	}
 	user.Password = utils.Md5(user.Email + user.Password)
 	log.Debug().Msgf("user password: %s", user.Password)

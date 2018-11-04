@@ -40,6 +40,7 @@ type database struct {
 	Port        int    `mapstructure:"port"`
 	DBName      string `mapstructure:"dbName"`
 	TablePrefix string `mapstructure:"tablePrefix"`
+	Debug       bool   `mapstructure:"debug"`
 }
 
 // DBConf 数据库配置

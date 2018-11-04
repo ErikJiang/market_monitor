@@ -10,7 +10,7 @@ type User struct {
 	UserName string `gorm:"unique_index;default:null"`
 	Password string `gorm:"default:null"`
 	Email    string `gorm:"unique_index;default:null"`
-	Status   bool   `sql:"type:ENUM('ENABLE', 'DISABLE')"`
+	Status   string `sql:"type:ENUM('ENABLE', 'DISABLE')"`
 }
 
 // Insert 新增用户
@@ -25,11 +25,9 @@ func (user *User) Insert() (userID uint, err error) {
 }
 
 // FindOne 查询用户详情
-func (user *User) FindOne(userID uint) (userInfo User, err error) {
-	err = DB.Select("id", "name", "email").Where("id = ?", userID).First(&userInfo).Error
-	if err != nil {
-		return
-	}
+func (user *User) FindOne(condition map[string]interface{}) (userInfo User, err error) {
+	result := DB.Select("id, user_name, email").Where(condition).First(&userInfo)
+	err = result.Error
 	return
 }
 

@@ -8,6 +8,7 @@ import (
 	"github.com/JiangInk/market_monitor/extend/utils/code"
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog/log"
+	"github.com/jinzhu/gorm"
 )
 
 // UserController 用户控制器
@@ -63,11 +64,14 @@ func (sc UserController) Signin(c *gin.Context) {
 		return
 	}
 	// find user info
-	user, err := userService.QueryUser()
-	if err != nil {
+	user, err := userService.QueryUserByEmail(reqBody.Email)
+	if err != nil && err != gorm.ErrRecordNotFound{
 		log.Error().Msg(err.Error())
 		utils.ResponseFormat(c, code.ServiceInsideError, nil)
 		return
+	}
+	if err == gorm.ErrRecordNotFound {
+		log.Info().Msgf("user info not find, email: %s", reqBody.Email)
 	}
 	log.Info().Msgf("find user result: %v", user)
 
