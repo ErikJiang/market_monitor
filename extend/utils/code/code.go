@@ -18,6 +18,8 @@ var (
 	AccountPassUnmatch = &Code{http.StatusBadRequest, 4000002, "该账号原密码不匹配"}
 	// SignupPassUnmatch 注册两次输入密码不匹配
 	SignupPassUnmatch = &Code{http.StatusBadRequest, 4000003, "注册两次输入密码不匹配"}
+	// SigninInfoError 账户名或密码有误
+	SigninInfoError = &Code{http.StatusUnauthorized, 4010001, "账户名或密码有误"}
 	// ServiceInsideError 服务器内部错误
 	ServiceInsideError = &Code{http.StatusInternalServerError, 5000001, "服务器内部错误"}
 )

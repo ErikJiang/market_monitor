@@ -25,10 +25,16 @@ func (user *User) Insert() (userID uint, err error) {
 }
 
 // FindOne 查询用户详情
-func (user *User) FindOne(condition map[string]interface{}) (userInfo User, err error) {
-	result := DB.Select("id, user_name, email").Where(condition).First(&userInfo)
-	err = result.Error
-	return
+func (user *User) FindOne(condition map[string]interface{}) (*User, error) {
+	var userInfo User
+	result := DB.Select("id, user_name, email, password").Where(condition).First(&userInfo)
+	if result.Error != nil && result.Error != gorm.ErrRecordNotFound {
+		return nil, result.Error
+	}
+	if userInfo.ID > 0 {
+		return &userInfo, nil
+	}
+	return nil, nil
 }
 
 // FindAll 获取用户列表

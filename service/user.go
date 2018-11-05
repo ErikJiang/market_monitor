@@ -10,13 +10,29 @@ import (
 type UserService struct{}
 
 // QueryUserByEmail 查询用户
-func (us UserService) QueryUserByEmail(email string) (user models.User, err error) {
+func (us UserService) QueryUserByEmail(email string) (user *models.User, err error) {
 	userModel := &models.User{}
 	condition := map[string]interface{}{
 		"email": email,
 	}
 	user, err = userModel.FindOne(condition)
 	return
+}
+
+// AuthSignin 验证登录信息
+func (us UserService) AuthSignin(email string, password string) (bool, error) {
+	userModel := &models.User{}
+	condition := map[string]interface{}{
+		"email": email,
+	}
+	user, err := userModel.FindOne(condition)
+	if err != nil {
+		return false, err
+	}
+	if user == nil || user.Password != utils.MakeSha1(email+password) {
+		return false, nil
+	}
+	return true, nil
 }
 
 // StoreUser 添加用户
@@ -29,7 +45,7 @@ func (us UserService) StoreUser(email string, pass string) (userID uint, err err
 		Password: pass,
 		Status:   "ENABLE",
 	}
-	user.Password = utils.Md5(user.Email + user.Password)
+	user.Password = utils.MakeSha1(user.Email + user.Password)
 	log.Debug().Msgf("user password: %s", user.Password)
 	userID, err = user.Insert()
 	return

@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"crypto/md5"
+	"crypto/sha1"
 	"encoding/hex"
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog/log"
@@ -22,9 +22,9 @@ func ResponseFormat(c *gin.Context, respStatus *code.Code, data interface{}) {
 	return
 }
 
-// Md5 计算字符串的md5值
-func Md5(source string) string {
-	md5h := md5.New()
-	md5h.Write([]byte(source))
-	return hex.EncodeToString(md5h.Sum(nil))
+// MakeSha1 计算字符串的 sha1 hash 值
+func MakeSha1(source string) string {
+	sha1Hash := sha1.New()
+	sha1Hash.Write([]byte(source))
+	return hex.EncodeToString(sha1Hash.Sum(nil))
 }

@@ -8,7 +8,6 @@ import (
 	"github.com/JiangInk/market_monitor/extend/utils/code"
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog/log"
-	"github.com/jinzhu/gorm"
 )
 
 // UserController 用户控制器
@@ -55,7 +54,7 @@ func (sc UserController) Signin(c *gin.Context) {
 	log.Info().Msg("enter Signin controller")
 	reqBody := struct {
 		Email string `json:"email" binding:"required,email"`
-		Password string `json:"password" binding:"required"`
+		Password string `json:"password" binding:"required,max=20"`
 	}{}
 	err := c.ShouldBindJSON(&reqBody)
 	if err != nil {
@@ -63,21 +62,21 @@ func (sc UserController) Signin(c *gin.Context) {
 		utils.ResponseFormat(c, code.ServiceInsideError, nil)
 		return
 	}
-	// find user info
-	user, err := userService.QueryUserByEmail(reqBody.Email)
-	if err != nil && err != gorm.ErrRecordNotFound{
+	// 登录验证
+	isAuth, err := userService.AuthSignin(reqBody.Email, reqBody.Password)
+	if err != nil {
 		log.Error().Msg(err.Error())
 		utils.ResponseFormat(c, code.ServiceInsideError, nil)
 		return
 	}
-	if err == gorm.ErrRecordNotFound {
-		log.Info().Msgf("user info not find, email: %s", reqBody.Email)
+	if !isAuth {
+		utils.ResponseFormat(c, code.SigninInfoError, nil)
+		return
 	}
-	log.Info().Msgf("find user result: %v", user)
+	
+	// 生成 Token todo
 
-	// user info vs request params todo 
-
-	utils.ResponseFormat(c, code.Success, map[string]interface{}{ "user": user })
+	utils.ResponseFormat(c, code.Success, map[string]interface{}{ "user": "" })
 	return
 }
 
