@@ -4,6 +4,7 @@ require (
 	cloud.google.com/go v0.31.0 // indirect
 	github.com/BurntSushi/toml v0.3.1 // indirect
 	github.com/denisenkom/go-mssqldb v0.0.0-20181014144952-4e0d7dc8888f // indirect
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/erikstmartin/go-testdb v0.0.0-20160219214506-8d10e4a1bae5 // indirect
 	github.com/fatih/color v1.7.0
 	github.com/gin-contrib/sse v0.0.0-20170109093832-22d885f9ecc7 // indirect

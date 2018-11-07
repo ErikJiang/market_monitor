@@ -13,7 +13,11 @@ import (
 // UserController 用户控制器
 type UserController struct{}
 
+// 用户相关服务
 var userService = new(service.UserService)
+
+// 认证相关服务
+var authService = new(service.AuthService)
 
 // Signup 账号注册
 func (sc UserController) Signup(c *gin.Context) {
@@ -74,9 +78,14 @@ func (sc UserController) Signin(c *gin.Context) {
 		return
 	}
 	
-	// 生成 Token todo
+	// 生成 Token
+	token, err := authService.MakeToken(reqBody.Email)
+	if err != nil {
+		utils.ResponseFormat(c, code.ServiceInsideError, nil)
+		return
+	}
 
-	utils.ResponseFormat(c, code.Success, map[string]interface{}{ "user": "" })
+	utils.ResponseFormat(c, code.Success, map[string]interface{}{ "token": token })
 	return
 }
 

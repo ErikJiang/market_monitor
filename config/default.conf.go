@@ -10,8 +10,9 @@ import (
 
 // server 服务基本配置结构
 type server struct {
-	RunMode string `mapstructure:"runMode"`
-	Port    int    `mapstructure:"port"`
+	RunMode		string	`mapstructure:"runMode"`
+	Port		int		`mapstructure:"port"`
+	JWTSecret	string	`mapstructure:"jwtSecret"`
 }
 
 // ServerConf 服务基本配置
