@@ -3,6 +3,7 @@ server:
   runMode: debug
   port: 8000
   jwtSecret: MARKET.MONITOR.SECRET
+  jwtExpire: 24 # 单位: 小时
 
 # 邮箱配置
 email:

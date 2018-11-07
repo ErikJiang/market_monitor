@@ -20,6 +20,8 @@ var (
 	SignupPassUnmatch = &Code{http.StatusBadRequest, 4000003, "注册两次输入密码不匹配"}
 	// SigninInfoError 账户名或密码有误
 	SigninInfoError = &Code{http.StatusUnauthorized, 4010001, "账户名或密码有误"}
+	// TokenNotFound 请求未携带Token, 无权访问
+	TokenNotFound = &Code{http.StatusUnauthorized, 4010002, "请求未携带Token, 无权访问"}
 	// ServiceInsideError 服务器内部错误
 	ServiceInsideError = &Code{http.StatusInternalServerError, 5000001, "服务器内部错误"}
 )

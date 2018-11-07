@@ -22,7 +22,7 @@ type AuthService struct{}
 // MakeToken 生成 Token
 func (as AuthService) MakeToken(email string) (string, error) {
 	nowTime := time.Now()
-	expireTime := nowTime.Add(24 * time.Hour)
+	expireTime := nowTime.Add(config.ServerConf.JWTExpire * time.Hour)
 
 	userModel := &models.User{}
 	condition := map[string]interface{}{
