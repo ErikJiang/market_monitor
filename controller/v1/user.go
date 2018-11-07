@@ -67,25 +67,30 @@ func (sc UserController) Signin(c *gin.Context) {
 		return
 	}
 	// 登录验证
-	isAuth, err := userService.AuthSignin(reqBody.Email, reqBody.Password)
+	user, err := userService.QueryUserByEmail(reqBody.Email)
 	if err != nil {
 		log.Error().Msg(err.Error())
 		utils.ResponseFormat(c, code.ServiceInsideError, nil)
 		return
 	}
-	if !isAuth {
+	if user == nil || user.Password != utils.MakeSha1(reqBody.Email+reqBody.Password) {
 		utils.ResponseFormat(c, code.SigninInfoError, nil)
 		return
 	}
 	
 	// 生成 Token
-	token, err := authService.MakeToken(reqBody.Email)
+	token, err := authService.GenerateToken(*user)
 	if err != nil {
 		utils.ResponseFormat(c, code.ServiceInsideError, nil)
 		return
 	}
 
-	utils.ResponseFormat(c, code.Success, map[string]interface{}{ "token": token })
+	utils.ResponseFormat(c, code.Success, map[string]interface{}{ 
+		"userId": user.ID,
+		"userName": user.UserName,
+		"email": user.Email,
+		"token": token,
+	})
 	return
 }
 

@@ -2,61 +2,35 @@ package service
 
 import (
 	"time"
-	"github.com/JiangInk/market_monitor/models"
-	"github.com/dgrijalva/jwt-go"
+
 	"github.com/JiangInk/market_monitor/config"
+	"github.com/JiangInk/market_monitor/extend/utils/jwt"
+	"github.com/JiangInk/market_monitor/models"
+	goJWT "github.com/dgrijalva/jwt-go"
 )
-
-var jwtSecret = []byte(config.ServerConf.JWTSecret)
-
-// Claims jwt信息
-type Claims struct {
-	UserName string `json:"username"`
-	Email    string `json:"email"`
-	jwt.StandardClaims
-}
 
 // AuthService 认证相关
 type AuthService struct{}
 
-// MakeToken 生成 Token
-func (as AuthService) MakeToken(email string) (string, error) {
+// GenerateToken 生成 Token
+func (as AuthService) GenerateToken(user models.User) (string, error) {
+	jwtInstance := jwt.NewJWT()
 	nowTime := time.Now()
-	expireTime := nowTime.Add(config.ServerConf.JWTExpire * time.Hour)
-
-	userModel := &models.User{}
-	condition := map[string]interface{}{
-		"email": email,
-	}
-
-	user, err := userModel.FindOne(condition)
-	if err != nil {
-		return "", err
-	}
-	claims := Claims{
+	expireTime := time.Duration(config.ServerConf.JWTExpire)
+	claims := jwt.CustomClaims{
+		user.ID,
 		user.UserName,
 		user.Email,
-		jwt.StandardClaims{
-			ExpiresAt: expireTime.Unix(),
-			Issuer:    "market_monitor",
+		goJWT.StandardClaims{
+			ExpiresAt: nowTime.Add(expireTime * time.Hour).Unix(),
+			Issuer:    "monitor",
 		},
 	}
-
-	tokenClaims := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	token, err := tokenClaims.SignedString(jwtSecret)
-	return token, err
+	return jwtInstance.CreateToken(claims)
+	// todo set redis
 }
 
-// ParseToken 解析 Token
-func (as AuthService) ParseToken(token string) (*Claims, error) {
-	tokenClaims, err := jwt.ParseWithClaims(token, &Claims{}, func(token *jwt.Token) (interface{}, error) {
-		return jwtSecret, nil
-	})
-
-	if tokenClaims != nil {
-		if claims, ok := tokenClaims.Claims.(*Claims); ok && tokenClaims.Valid {
-			return claims, nil
-		}
-	}
-	return nil, err
+// DestroyToken 销毁 Token
+func (as AuthService) DestroyToken(token string) {
+	return
 }
