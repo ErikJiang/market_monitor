@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/JiangInk/market_monitor/extend/utils"
 	"github.com/JiangInk/market_monitor/extend/utils/code"
+	"github.com/JiangInk/market_monitor/extend/utils/jwt"
 )
 
 // JWTAuth Token 认证中间件
@@ -15,18 +16,25 @@ func JWTAuth() gin.HandlerFunc {
 		if token == "" {
 			// 获取不到 Authorization 报：请求未携带Token,无权访问
 			utils.ResponseFormat(c, code.TokenNotFound, nil)
+			c.Abort()
 			return
 		}
 
-		// 3. 获取到 Token, 解析token信息
+		// 获取到 Token, 解析token信息
+		jwtInstance := jwt.NewJWT()
+		claims, err := jwtInstance.ParseToken(token)
+		if err != nil {
+			// 未能正常解析 Token，则报：token认证失败
+			utils.ResponseFormat(c, code.TokenInvalid, nil)
+			c.Abort()
+			return
+		}
 
-		// 4. 未能正常解析 Token，则报：token认证失败
+		// todo 获取缓存中的Token信息
 
-		// 5. 获取缓存中的Token信息
+		// todo 获取不到，则报：用户注销或token失效
 
-		// 6. 获取不到，则报：用户注销或token失效
-
-		// 7.
-
+		c.Set("claims", claims)
+		c.Next()
 	}
 }

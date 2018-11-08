@@ -103,7 +103,7 @@ func (sc UserController) Signout(c *gin.Context) {
 func (sc UserController) GetUserInfo(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"user": "user", "value": "value"})
-
+	return
 }
 
 // EditUserInfo 编辑用户信息
