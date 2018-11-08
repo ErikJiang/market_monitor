@@ -31,8 +31,8 @@ var (
 
 // CustomClaims jwt信息
 type CustomClaims struct {
-	ID       uint `json:"id"`
-	UserName string `json:"user_name"`
+	ID       uint   `json:"userId"`
+	UserName string `json:"userName"`
 	Email    string `json:"email"`
 	jwt.StandardClaims
 }

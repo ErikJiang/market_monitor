@@ -5,7 +5,7 @@ import (
 	"bytes"
 	"html/template"
 	"github.com/JiangInk/market_monitor/extend/api"
-	"github.com/JiangInk/market_monitor/extend/utils/email"
+	"github.com/JiangInk/market_monitor/extend/email"
 	_ "github.com/robfig/cron"
 )
 

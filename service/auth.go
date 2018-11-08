@@ -4,7 +4,7 @@ import (
 	"time"
 
 	"github.com/JiangInk/market_monitor/config"
-	"github.com/JiangInk/market_monitor/extend/utils/jwt"
+	"github.com/JiangInk/market_monitor/extend/jwt"
 	"github.com/JiangInk/market_monitor/models"
 	goJWT "github.com/dgrijalva/jwt-go"
 )
@@ -18,10 +18,10 @@ func (as AuthService) GenerateToken(user models.User) (string, error) {
 	nowTime := time.Now()
 	expireTime := time.Duration(config.ServerConf.JWTExpire)
 	claims := jwt.CustomClaims{
-		user.ID,
-		user.UserName,
-		user.Email,
-		goJWT.StandardClaims{
+		ID: user.ID,
+		UserName: user.UserName,
+		Email: user.Email,
+		StandardClaims: goJWT.StandardClaims {
 			ExpiresAt: nowTime.Add(expireTime * time.Hour).Unix(),
 			Issuer:    "monitor",
 		},

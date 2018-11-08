@@ -5,7 +5,7 @@ import (
 
 	"github.com/JiangInk/market_monitor/service"
 	"github.com/JiangInk/market_monitor/extend/utils"
-	"github.com/JiangInk/market_monitor/extend/utils/code"
+	"github.com/JiangInk/market_monitor/extend/code"
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog/log"
 )

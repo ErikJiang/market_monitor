@@ -3,8 +3,8 @@ package middleware
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/JiangInk/market_monitor/extend/utils"
-	"github.com/JiangInk/market_monitor/extend/utils/code"
-	"github.com/JiangInk/market_monitor/extend/utils/jwt"
+	"github.com/JiangInk/market_monitor/extend/code"
+	"github.com/JiangInk/market_monitor/extend/jwt"
 )
 
 // JWTAuth Token 认证中间件
