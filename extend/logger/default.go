@@ -1,16 +1,17 @@
-package config
+package logger
 
 import (
 	"os"
 	"strings"
 
+	"github.com/JiangInk/market_monitor/config"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 )
 
-// setupLogger 日志初始化设置
-func setupLogger() {
-	switch strings.ToLower(LoggerConf.Level) {
+// Setup 日志初始化设置
+func Setup() {
+	switch strings.ToLower(config.LoggerConf.Level) {
 	case "panic":
 		zerolog.SetGlobalLevel(zerolog.PanicLevel)
 	case "fatal":
@@ -26,7 +27,10 @@ func setupLogger() {
 	default:
 		zerolog.SetGlobalLevel(zerolog.InfoLevel)
 	}
-	if LoggerConf.Pretty {
-		log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr, NoColor: !LoggerConf.Color})
+	if config.LoggerConf.Pretty {
+		log.Logger = log.Output(zerolog.ConsoleWriter{
+			Out:     os.Stderr,
+			NoColor: !config.LoggerConf.Color,
+		})
 	}
 }
