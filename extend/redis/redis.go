@@ -26,11 +26,17 @@ func Setup() error {
 			if err != nil {
 				return nil, err
 			}
+			// 验证密码
 			if config.RedisConf.Password != "" {
 				if _, err := c.Do("AUTH", config.RedisConf.Password); err != nil {
 					c.Close()
 					return nil, err
 				}
+			}
+			// 选择数据库
+			if _, err := c.Do("SELECT", config.RedisConf.DBNum); err != nil {
+				c.Close()
+				return nil, err
 			}
 			return c, err
 		},
@@ -64,6 +70,57 @@ func Set(key string, data interface{}, time int) error {
 	_, err = conn.Do("EXPIRE", key, time)
 	if err != nil {
 		return err
+	}
+	return nil
+}
+
+// Exists 方法
+func Exists(key string) bool {
+	conn := GetRedisConn().Get()
+	defer conn.Close()
+
+	exists, err := redis.Bool(conn.Do("EXISTS", key))
+	if err != nil {
+		return false
+	}
+	return exists
+}
+
+// Get 方法
+func Get(key string) ([]byte, error) {
+	conn := GetRedisConn().Get()
+	defer conn.Close()
+
+	reply, err := redis.Bytes(conn.Do("GET", key))
+	if err != nil {
+		return nil, err
+	}
+	return reply, nil
+}
+
+// Del 方法
+func Del(key string) (bool, error) {
+	conn := GetRedisConn().Get()
+	defer conn.Close()
+
+	return redis.Bool(conn.Do("DEL", key))
+}
+
+// DelLike 方法
+func DelLike(key string) error {
+	conn := GetRedisConn().Get()
+	defer conn.Close()
+
+	keys, err := redis.Strings(conn.Do("KEYS", "*"+key+"*"))
+	if err != nil {
+		return err
+	}
+
+	for _, key := range keys {
+		_, err := Del(key)
+		if err != nil {
+			return err
+		}
 	}
 	return nil
 }
