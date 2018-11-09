@@ -53,7 +53,7 @@ func Setup() error {
 }
 
 // Set 方法
-func Set(key string, data interface{}, time int) error {
+func Set(key string, data interface{}, seconds int) error {
 	conn := GetRedisConn().Get()
 	defer conn.Close()
 
@@ -67,7 +67,7 @@ func Set(key string, data interface{}, time int) error {
 		return err
 	}
 
-	_, err = conn.Do("EXPIRE", key, time)
+	_, err = conn.Do("EXPIRE", key, seconds)
 	if err != nil {
 		return err
 	}

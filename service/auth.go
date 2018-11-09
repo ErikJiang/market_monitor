@@ -5,6 +5,7 @@ import (
 
 	"github.com/JiangInk/market_monitor/config"
 	"github.com/JiangInk/market_monitor/extend/jwt"
+	"github.com/JiangInk/market_monitor/extend/redis"
 	"github.com/JiangInk/market_monitor/models"
 	goJWT "github.com/dgrijalva/jwt-go"
 )
@@ -18,16 +19,24 @@ func (as AuthService) GenerateToken(user models.User) (string, error) {
 	nowTime := time.Now()
 	expireTime := time.Duration(config.ServerConf.JWTExpire)
 	claims := jwt.CustomClaims{
-		ID: user.ID,
+		ID:       user.ID,
 		UserName: user.UserName,
-		Email: user.Email,
-		StandardClaims: goJWT.StandardClaims {
+		Email:    user.Email,
+		StandardClaims: goJWT.StandardClaims{
 			ExpiresAt: nowTime.Add(expireTime * time.Hour).Unix(),
 			Issuer:    "monitor",
 		},
 	}
-	return jwtInstance.CreateToken(claims)
-	// todo set redis
+	// 创建token
+	token, err := jwtInstance.CreateToken(claims)
+	if err != nil {
+		return "", err
+	}
+
+	// 设置redis缓存
+	const hourSecs int = 60 * 60
+	redis.Set("TOKEN:"+user.Email, token, config.ServerConf.JWTExpire*hourSecs)
+	return token, nil
 }
 
 // DestroyToken 销毁 Token
