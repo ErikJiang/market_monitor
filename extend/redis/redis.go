@@ -3,6 +3,7 @@ package redis
 import (
 	"time"
 	"strconv"
+	"encoding/json"
 	"github.com/gomodule/redigo/redis"
 	"github.com/JiangInk/market_monitor/config"
 )
@@ -45,4 +46,25 @@ func Setup() error {
 	return nil
 }
 
+// Set 方法
+func Set(key string, data interface{}, time int) error {
+	conn := GetRedisConn().Get()
+	defer conn.Close()
+
+	value, err := json.Marshal(data)
+	if err != nil {
+		return err
+	}
+
+	_, err = conn.Do("SET", key, value)
+	if err != nil {
+		return err
+	}
+
+	_, err = conn.Do("EXPIRE", key, time)
+	if err != nil {
+		return err
+	}
+	return nil
+}
 
