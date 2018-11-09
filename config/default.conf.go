@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"io/ioutil"
 	"log"
+	"time"
 
 	"github.com/spf13/viper"
 )
@@ -50,10 +51,13 @@ var DBConf = &database{}
 
 // redis 缓存配置结构
 type redis struct {
-	Host     string `mapstructure:"host"`
-	Port     int    `mapstructure:"port"`
-	Password string `mapstructure:"password"`
-	DBNum    int    `mapstructure:"db"`
+	Host		string			`mapstructure:"host"`
+	Port		int				`mapstructure:"port"`
+	Password	string			`mapstructure:"password"`
+	DBNum		int				`mapstructure:"db"`
+	MaxIdle		int				`mapstructure:"maxIdle"`
+	MaxActive	int				`mapstructure:"maxActive"`
+	IdleTimeout	time.Duration	`mapstructure:"idleTimeout"`
 }
 
 // RedisConf 缓存配置
