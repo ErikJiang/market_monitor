@@ -40,6 +40,9 @@ func (as AuthService) GenerateToken(user models.User) (string, error) {
 }
 
 // DestroyToken 销毁 Token
-func (as AuthService) DestroyToken(token string) {
-	return
+func (as AuthService) DestroyToken(email string) (bool, error){
+
+	isOK, err := redis.Del("TOKEN:"+email)
+
+	return isOK, err
 }

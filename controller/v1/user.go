@@ -97,6 +97,13 @@ func (sc UserController) Signin(c *gin.Context) {
 // Signout 账号注销
 func (sc UserController) Signout(c *gin.Context) {
 
+	const email = "test@test.com"
+
+	authService.DestroyToken(email)
+	utils.ResponseFormat(c, code.Success, map[string]interface{}{ 
+		"email": email,
+	})
+	return
 }
 
 // GetUserInfo 获取用户信息
