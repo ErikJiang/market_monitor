@@ -5,6 +5,8 @@ import (
 	"github.com/JiangInk/market_monitor/extend/utils"
 	"github.com/JiangInk/market_monitor/extend/code"
 	"github.com/JiangInk/market_monitor/extend/jwt"
+	"github.com/JiangInk/market_monitor/extend/redis"
+	"github.com/rs/zerolog/log"
 )
 
 // JWTAuth Token 认证中间件
@@ -31,6 +33,15 @@ func JWTAuth() gin.HandlerFunc {
 		}
 
 		// todo 获取缓存中的Token信息
+		values, err := redis.Get(claims.Email)
+		if err != nil {
+			log.Error().Msgf("jwt auth redis get: %v", err.Error())
+			utils.ResponseFormat(c, code.ServiceInsideError, nil)
+			c.Abort()
+			return
+		}
+		log.Debug().Msgf("values: %v", values)
+
 
 		// todo 获取不到，则报：用户注销或token失效
 
