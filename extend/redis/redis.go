@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"github.com/gomodule/redigo/redis"
 	"github.com/JiangInk/market_monitor/config"
+	"github.com/rs/zerolog/log"
 )
 
 var redisConn *redis.Pool
@@ -56,11 +57,12 @@ func Setup() error {
 func Set(key string, data interface{}, seconds int) error {
 	conn := GetRedisConn().Get()
 	defer conn.Close()
-
+	log.Debug().Msgf("data: %v", data)
 	value, err := json.Marshal(data)
 	if err != nil {
 		return err
 	}
+	log.Debug().Msgf("value: %v", value)
 
 	_, err = conn.Do("SET", key, value)
 	if err != nil {
@@ -87,13 +89,16 @@ func Exists(key string) bool {
 }
 
 // Get 方法
-func Get(key string) ([]byte, error) {
+func Get(key string) (string, error) {
 	conn := GetRedisConn().Get()
 	defer conn.Close()
 
-	reply, err := redis.Bytes(conn.Do("GET", key))
-	if err != nil {
-		return nil, err
+	reply, err := redis.String(conn.Do("GET", key))
+	if err != nil && err != redis.ErrNil {
+		return "", err
+	}
+	if err == redis.ErrNil {
+		return "", nil
 	}
 	return reply, nil
 }

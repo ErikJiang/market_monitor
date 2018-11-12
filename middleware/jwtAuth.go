@@ -33,7 +33,7 @@ func JWTAuth() gin.HandlerFunc {
 		}
 
 		// todo 获取缓存中的Token信息
-		values, err := redis.Get(claims.Email)
+		values, err := redis.Get("TOKEN:"+claims.Email)
 		if err != nil {
 			log.Error().Msgf("jwt auth redis get: %v", err.Error())
 			utils.ResponseFormat(c, code.ServiceInsideError, nil)
