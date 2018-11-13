@@ -3,10 +3,8 @@ package redis
 import (
 	"time"
 	"strconv"
-	"encoding/json"
 	"github.com/gomodule/redigo/redis"
 	"github.com/JiangInk/market_monitor/config"
-	"github.com/rs/zerolog/log"
 )
 
 var redisConn *redis.Pool
@@ -54,17 +52,11 @@ func Setup() error {
 }
 
 // Set 方法
-func Set(key string, data interface{}, seconds int) error {
+func Set(key string, data string, seconds int) error {
 	conn := GetRedisConn().Get()
 	defer conn.Close()
-	log.Debug().Msgf("data: %v", data)
-	value, err := json.Marshal(data)
-	if err != nil {
-		return err
-	}
-	log.Debug().Msgf("value: %v", value)
 
-	_, err = conn.Do("SET", key, value)
+	_, err := conn.Do("SET", key, data)
 	if err != nil {
 		return err
 	}

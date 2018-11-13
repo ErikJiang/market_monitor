@@ -32,19 +32,22 @@ func JWTAuth() gin.HandlerFunc {
 			return
 		}
 
-		// todo 获取缓存中的Token信息
-		values, err := redis.Get("TOKEN:"+claims.Email)
+		// 获取缓存中的Token信息
+		tokenCache, err := redis.Get("TOKEN:"+claims.Email)
 		if err != nil {
 			log.Error().Msgf("jwt auth redis get: %v", err.Error())
 			utils.ResponseFormat(c, code.ServiceInsideError, nil)
 			c.Abort()
 			return
 		}
-		log.Debug().Msgf("values: %v", values)
 
-
-		// todo 获取不到，则报：用户注销或token失效
-
+		// 用户注销或token失效
+		if tokenCache != token {
+			log.Error().Msg("user signout or token invalid")
+			utils.ResponseFormat(c, code.TokenInvalid, nil)
+			c.Abort()
+			return
+		}
 		c.Set("claims", claims)
 		c.Next()
 	}
