@@ -1,11 +1,10 @@
 package v1
 
 import (
-	"net/http"
-
 	"github.com/JiangInk/market_monitor/service"
 	"github.com/JiangInk/market_monitor/extend/utils"
 	"github.com/JiangInk/market_monitor/extend/code"
+	"github.com/JiangInk/market_monitor/extend/jwt"
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog/log"
 )
@@ -96,21 +95,29 @@ func (sc UserController) Signin(c *gin.Context) {
 
 // Signout 账号注销
 func (sc UserController) Signout(c *gin.Context) {
-
-	const email = "test@test.com"
-
-	authService.DestroyToken(email)
-	utils.ResponseFormat(c, code.Success, map[string]interface{}{ 
-		"email": email,
-	})
+	log.Info().Msg("enter signout controller")
+	claims := c.MustGet("claims").(*jwt.CustomClaims)
+	log.Debug().Msgf("claims: %v", claims)
+	// 销毁 token
+	isOK, err := authService.DestroyToken(claims.Email)
+	if err != nil || isOK == false {
+		utils.ResponseFormat(c, code.ServiceInsideError, nil)
+		return
+	}
+	utils.ResponseFormat(c, code.Success, map[string]interface{}{})
 	return
 }
 
 // GetUserInfo 获取用户信息
 func (sc UserController) GetUserInfo(c *gin.Context) {
 
-	c.JSON(http.StatusOK, gin.H{"user": "user", "value": "value"})
-	return
+	claims := c.MustGet("claims").(*jwt.CustomClaims)
+	if claims != nil {
+		utils.ResponseFormat(c, code.Success, map[string]interface{}{ 
+			"data": claims,
+		})
+		return
+	}
 }
 
 // EditUserInfo 编辑用户信息
