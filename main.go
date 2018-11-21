@@ -11,7 +11,7 @@ import (
 	// "github.com/JiangInk/market_monitor/schedule"
 )
 
-// @title Market Monitor Swagger API
+// @title Market Monitor API
 // @version 1.0
 // @description Market Monitor 简易API文档
 // @termsOfService http://swagger.io/terms/
@@ -23,7 +23,7 @@ import (
 // @license.name MIT
 // @license.url https://opensource.org/licenses/MIT
 
-// @host http://localhost:8000
+// @host localhost:8000
 // @BasePath /api/v1
 func main() {
 	// 基本配置初始化

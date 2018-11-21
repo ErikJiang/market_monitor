@@ -2,7 +2,7 @@
     "swagger": "2.0",
     "info": {
         "description": "Market Monitor 简易API文档",
-        "title": "Market Monitor Swagger API",
+        "title": "Market Monitor API",
         "termsOfService": "http://swagger.io/terms/",
         "contact": {
             "name": "ink",
@@ -15,12 +15,12 @@
         },
         "version": "1.0"
     },
-    "host": "http://localhost:8000",
+    "host": "localhost:8000",
     "basePath": "/api/v1",
     "paths": {
-        "/auth/signup": {
+        "/auth/signin": {
             "post": {
-                "description": "通过邮箱密码注册账号",
+                "description": "通过邮箱密码登录账号",
                 "consumes": [
                     "application/json"
                 ],
@@ -28,44 +28,19 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Auth"
+                    "auth"
                 ],
-                "summary": "账号注册",
+                "summary": "账号登录",
+                "operationId": "auth.signin",
                 "parameters": [
                     {
-                        "description": "测试",
-                        "name": "test",
+                        "description": "账号登录请求参数",
+                        "name": "body",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "object"
-                        }
-                    },
-                    {
-                        "description": "邮箱账号",
-                        "name": "email",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "object"
-                        }
-                    },
-                    {
-                        "description": "账号密码",
-                        "name": "accountPass",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "object"
-                        }
-                    },
-                    {
-                        "description": "确认密码",
-                        "name": "confirmPass",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "object"
+                            "type": "object",
+                            "$ref": "#/definitions/v1.SigninRequest"
                         }
                     }
                 ],
@@ -77,7 +52,13 @@
                         }
                     },
                     "400": {
-                        "description": "{\"status\":400, \"code\": 4000003, msg:\"注册密码不匹配\"}",
+                        "description": "{\"status\":400, \"code\": 4000001, msg:\"请求参数有误\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "{\"status\":401, \"code\": 4010001, msg:\"账号或密码有误\"}",
                         "schema": {
                             "type": "string"
                         }
@@ -88,6 +69,167 @@
                             "type": "string"
                         }
                     }
+                }
+            }
+        },
+        "/auth/signout": {
+            "post": {
+                "description": "用户账号注销",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "账号注销",
+                "operationId": "auth.signout",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "认证 Token 值",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"status\":200, \"code\": 2000001, msg:\"请求处理成功\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "{\"status\":500, \"code\": 5000001, msg:\"服务器内部错误\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/signup": {
+            "post": {
+                "description": "通过邮箱密码注册账号",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "账号注册",
+                "operationId": "auth.signup",
+                "parameters": [
+                    {
+                        "description": "账号注册请求参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/v1.SignupRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"status\":200, \"code\": 2000001, msg:\"请求处理成功\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "{\"status\":400, \"code\": 4000001, msg:\"请求参数有误\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "{\"status\":500, \"code\": 5000001, msg:\"服务器内部错误\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/user": {
+            "get": {
+                "description": "获取当前登录用户基本信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "获取用户信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "认证 Token 值",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"status\":200, \"code\": 2000001, msg:\"请求处理成功\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "{\"status\":500, \"code\": 5000001, msg:\"服务器内部错误\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "v1.SigninRequest": {
+            "type": "object",
+            "required": [
+                "email",
+                "password"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "v1.SignupRequest": {
+            "type": "object",
+            "required": [
+                "accountPass",
+                "confirmPass",
+                "email"
+            ],
+            "properties": {
+                "accountPass": {
+                    "type": "string"
+                },
+                "confirmPass": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
                 }
             }
         }

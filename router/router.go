@@ -18,20 +18,19 @@ func InitRouter() *gin.Engine {
 	gin.SetMode(config.ServerConf.RunMode)
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	apiV1 := r.Group("api/v1")
-	userController := new(v1.UserController)
+	authController := new(v1.AuthController)
 	{
-		// apiV1.GET("/users", v1.GetUsers)
-		// apiV1.POST("/users", v1.AddUser)
-		// apiV1.GET("/users/:userId", v1.GetUser)
-		// apiV1.PUT("/users/:userId", v1.EditUser)
-		// apiV1.DELETE("/users/:userId", v1.RemoveUser)
-		
-		apiV1.POST("/auth/signup", userController.Signup)
-		apiV1.POST("/auth/signin", userController.Signin)
+		// 账号注册
+		apiV1.POST("/auth/signup", authController.Signup)
+		// 账号登录
+		apiV1.POST("/auth/signin", authController.Signin)
+		userController := new(v1.UserController)
 		apiV1.Use(middleware.JWTAuth())
 		{
+			// 账户注销
+			apiV1.POST("/auth/signout", authController.Signout)
+			// 查看用户信息
 			apiV1.GET("/user", userController.GetUserInfo)
-			apiV1.POST("/auth/signout", userController.Signout)
 		}
 		
 	}
