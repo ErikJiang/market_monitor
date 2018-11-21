@@ -30,7 +30,7 @@ func InitRouter() *gin.Engine {
 			// 账户注销
 			apiV1.POST("/auth/signout", authController.Signout)
 			// 查看用户信息
-			apiV1.GET("/user", userController.GetUserInfo)
+			apiV1.GET("/user", userController.GetInfo)
 		}
 		
 	}

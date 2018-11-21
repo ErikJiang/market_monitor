@@ -20,7 +20,7 @@ type UserController struct{}
 // @Success 200 {string} json "{"status":200, "code": 2000001, msg:"请求处理成功"}"
 // @Failure 500 {string} json "{"status":500, "code": 5000001, msg:"服务器内部错误"}"
 // @Router /user [get]
-func (sc UserController) GetUserInfo(c *gin.Context) {
+func (sc UserController) GetInfo(c *gin.Context) {
 
 	claims := c.MustGet("claims").(*jwt.CustomClaims)
 	if claims != nil {
@@ -31,17 +31,51 @@ func (sc UserController) GetUserInfo(c *gin.Context) {
 	}
 }
 
-// EditUserInfo 编辑用户信息
-func (sc UserController) EditUserInfo(c *gin.Context) {
-
+type EditRequest struct {
+	Name string `json:"name" binding:"required,max=20"`
 }
 
-// 修改用户密码
-func (sc UserController) alterPasswd(c *gin.Context) {
-
+// @Summary 编辑用户信息
+// @Description 修改当前登录用户基本信息(如：账户昵称)
+// @Accept json
+// @Produce json
+// @Tags user
+// @Param Authorization header string true "认证 Token 值"
+// @Param body body v1.EditRequest true "修改用户信息请求参数"
+// @Success 200 {string} json "{"status":200, "code": 2000001, msg:"请求处理成功"}"
+// @Failure 500 {string} json "{"status":500, "code": 5000001, msg:"服务器内部错误"}"
+// @Router /user [put]
+func (sc UserController) EditInfo(c *gin.Context) {
+	claims := c.MustGet("claims").(*jwt.CustomClaims)
+	if claims != nil {
+		utils.ResponseFormat(c, code.Success, map[string]interface{}{
+			"data": claims,
+		})
+		return
+	}
 }
 
-// 修改用户邮箱
-func (sc UserController) alterEmail(c *gin.Context) {
+type PassRequest struct {
+	OldPass string `json:"oldPass" binding:"required,max=50"`
+	NewPass string `json:"newPass" binding:"required,max=50"`
+}
 
+// @Summary 修改用户密码
+// @Description 修改当前登录用户密码
+// @Accept json
+// @Produce json
+// @Tags user
+// @Param Authorization header string true "认证 Token 值"
+// @Param body body v1.PassRequest true "修改用户密码请求参数"
+// @Success 200 {string} json "{"status":200, "code": 2000001, msg:"请求处理成功"}"
+// @Failure 500 {string} json "{"status":500, "code": 5000001, msg:"服务器内部错误"}"
+// @Router /user [patch]
+func (sc UserController) AlterPass(c *gin.Context) {
+	claims := c.MustGet("claims").(*jwt.CustomClaims)
+	if claims != nil {
+		utils.ResponseFormat(c, code.Success, map[string]interface{}{
+			"data": claims,
+		})
+		return
+	}
 }

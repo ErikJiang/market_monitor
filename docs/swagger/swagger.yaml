@@ -1,5 +1,22 @@
 basePath: /api/v1
 definitions:
+  v1.EditRequest:
+    properties:
+      name:
+        type: string
+    required:
+    - name
+    type: object
+  v1.PassRequest:
+    properties:
+      newPass:
+        type: string
+      oldPass:
+        type: string
+    required:
+    - newPass
+    - oldPass
+    type: object
   v1.SigninRequest:
     properties:
       email:
@@ -154,6 +171,68 @@ paths:
           schema:
             type: string
       summary: 获取用户信息
+      tags:
+      - user
+    patch:
+      consumes:
+      - application/json
+      description: 修改当前登录用户密码
+      parameters:
+      - description: 认证 Token 值
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 修改用户密码请求参数
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/v1.PassRequest'
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"status":200, "code": 2000001, msg:"请求处理成功"}'
+          schema:
+            type: string
+        "500":
+          description: '{"status":500, "code": 5000001, msg:"服务器内部错误"}'
+          schema:
+            type: string
+      summary: 修改用户密码
+      tags:
+      - user
+    put:
+      consumes:
+      - application/json
+      description: 修改当前登录用户基本信息(如：账户昵称)
+      parameters:
+      - description: 认证 Token 值
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 修改用户信息请求参数
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/v1.EditRequest'
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"status":200, "code": 2000001, msg:"请求处理成功"}'
+          schema:
+            type: string
+        "500":
+          description: '{"status":500, "code": 5000001, msg:"服务器内部错误"}'
+          schema:
+            type: string
+      summary: 编辑用户信息
       tags:
       - user
 swagger: "2.0"
