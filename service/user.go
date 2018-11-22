@@ -9,11 +9,21 @@ import (
 // UserService 用户服务层逻辑
 type UserService struct{}
 
-// QueryUserByEmail 查询用户
+// QueryUserByEmail 通过邮箱查询用户信息
 func (us UserService) QueryUserByEmail(email string) (user *models.User, err error) {
 	userModel := &models.User{}
 	condition := map[string]interface{}{
 		"email": email,
+	}
+	user, err = userModel.FindOne(condition)
+	return
+}
+
+// QueryUserByName 通过名称查询用户信息
+func (us UserService) QueryUserByName(name string) (user *models.User, err error) {
+	userModel := &models.User{}
+	condition := map[string]interface{}{
+		"user_name": name,
 	}
 	user, err = userModel.FindOne(condition)
 	return

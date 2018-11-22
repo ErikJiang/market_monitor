@@ -53,6 +53,19 @@ func (sc UserController) EditInfo(c *gin.Context) {
 		})
 		return
 	}
+	//log.Debug().Msg("enter edit info controller")
+	//reqBody := EditRequest{}
+
+	// 获取待修改的用户名称
+	//if err := c.ShouldBindJSON(&reqBody); err != nil {
+	//	utils.ResponseFormat(c, code.RequestParamError, nil)
+	//	return
+	//}
+
+	// 检测用户名称是否被使用
+
+
+	// 更新用户名称
 }
 
 type PassRequest struct {

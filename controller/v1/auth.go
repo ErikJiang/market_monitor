@@ -83,10 +83,7 @@ type SigninRequest struct {
 // @Router /auth/signin [post]
 func (ac AuthController) Signin(c *gin.Context) {
 	log.Info().Msg("enter Signin controller")
-	reqBody := struct {
-		Email string `json:"email" binding:"required,email"`
-		Password string `json:"password" binding:"required,max=20"`
-	}{}
+	reqBody := SigninRequest{}
 	err := c.ShouldBindJSON(&reqBody)
 	if err != nil {
 		log.Error().Msg(err.Error())
