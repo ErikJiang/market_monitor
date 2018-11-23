@@ -67,8 +67,15 @@ func (us *UserService) StoreUser(email string, pass string) (userID uint, err er
 }
 
 // UpdateUser 更新用户
-func (us *UserService) UpdateUser(userID uint) {
-	return
+func (us *UserService) UpdateUser(userID uint) (*models.User, error){
+	user := &models.User{ UserName: us.Name }
+	result, err := user.UpdateOne(userID)
+	if err != nil {
+		log.Error().Msg(err.Error())
+		return nil, err
+	}
+	log.Debug().Msgf("result: %v", result)
+	return result, nil
 }
 
 // DestroyUser 删除用户

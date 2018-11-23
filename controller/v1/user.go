@@ -47,14 +47,14 @@ type EditRequest struct {
 // @Failure 500 {string} json "{"status":500, "code": 5000001, msg:"服务器内部错误"}"
 // @Router /user [put]
 func (sc UserController) EditInfo(c *gin.Context) {
+	log.Info().Msg("enter edit info controller")
+
 	claims := c.MustGet("claims").(*jwt.CustomClaims)
-	if claims != nil {
-		utils.ResponseFormat(c, code.Success, map[string]interface{}{
-			"data": claims,
-		})
+	if claims == nil {
+		utils.ResponseFormat(c, code.TokenInvalid, nil)
 		return
 	}
-	log.Debug().Msg("enter edit info controller")
+
 	reqBody := EditRequest{}
 
 	// 获取待修改的用户名称
@@ -79,7 +79,16 @@ func (sc UserController) EditInfo(c *gin.Context) {
 	}
 
 	// 更新用户名称
-	// todo
+	updateUser, err := userService.UpdateUser(claims.ID)
+	if err != nil {
+		log.Error().Msg(err.Error())
+		utils.ResponseFormat(c, code.ServiceInsideError, nil)
+		return
+	}
+	log.Debug().Msgf("update user result: %v", updateUser)
+	utils.ResponseFormat(c, code.Success, map[string]interface{}{
+		"updateUser": updateUser,
+	})
 }
 
 type PassRequest struct {
