@@ -1,22 +1,16 @@
 package v1
 
 import (
-"github.com/JiangInk/market_monitor/service"
-"github.com/JiangInk/market_monitor/extend/utils"
-"github.com/JiangInk/market_monitor/extend/code"
-"github.com/JiangInk/market_monitor/extend/jwt"
-"github.com/gin-gonic/gin"
-"github.com/rs/zerolog/log"
+	"github.com/JiangInk/market_monitor/service"
+	"github.com/JiangInk/market_monitor/extend/utils"
+	"github.com/JiangInk/market_monitor/extend/code"
+	"github.com/JiangInk/market_monitor/extend/jwt"
+	"github.com/gin-gonic/gin"
+	"github.com/rs/zerolog/log"
 )
 
 // AuthController 用户控制器
 type AuthController struct{}
-
-// 用户相关服务
-var userService = new(service.UserService)
-
-// 认证相关服务
-var authService = new(service.AuthService)
 
 type SignupRequest struct {
 	Email       string `json:"email" binding:"required,email"`
@@ -52,6 +46,10 @@ func (ac AuthController) Signup(c *gin.Context) {
 		return
 	}
 
+	userService := service.UserService{
+		Email: reqBody.Email,
+		Password: reqBody.ConfirmPass,
+	}
 	userID, err := userService.StoreUser(reqBody.Email, reqBody.ConfirmPass)
 	if err != nil {
 		log.Error().Msg(err.Error())
@@ -91,6 +89,9 @@ func (ac AuthController) Signin(c *gin.Context) {
 		return
 	}
 	// 登录验证
+	userService := service.UserService{
+		Email: reqBody.Email,
+	}
 	user, err := userService.QueryUserByEmail(reqBody.Email)
 	if err != nil {
 		log.Error().Msg(err.Error())
@@ -103,6 +104,9 @@ func (ac AuthController) Signin(c *gin.Context) {
 	}
 
 	// 生成 Token
+	authService := service.AuthService{
+		User: user,
+	}
 	token, err := authService.GenerateToken(*user)
 	if err != nil {
 		utils.ResponseFormat(c, code.ServiceInsideError, nil)
@@ -133,6 +137,7 @@ func (ac AuthController) Signout(c *gin.Context) {
 	claims := c.MustGet("claims").(*jwt.CustomClaims)
 	log.Debug().Msgf("claims: %v", claims)
 	// 销毁 token
+	authService := service.AuthService{}
 	isOK, err := authService.DestroyToken(claims.Email)
 	if err != nil || isOK == false {
 		utils.ResponseFormat(c, code.ServiceInsideError, nil)

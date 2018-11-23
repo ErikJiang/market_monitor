@@ -8,6 +8,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
+	"github.com/gin-contrib/cors"
+	"time"
 )
 
 // InitRouter 初始化路由
@@ -16,6 +18,15 @@ func InitRouter() *gin.Engine {
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
 	gin.SetMode(config.ServerConf.RunMode)
+	r.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"*"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "PATCH"},
+		AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		AllowOriginFunc: func(origin string) bool { return true },
+		MaxAge: 12 * time.Hour,
+	}))
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	apiV1 := r.Group("api/v1")
 	authController := new(v1.AuthController)

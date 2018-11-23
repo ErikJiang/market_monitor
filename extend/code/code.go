@@ -18,6 +18,8 @@ var (
 	AccountPassUnmatch = &Code{http.StatusBadRequest, 4000002, "该账号原密码不匹配"}
 	// SignupPassUnmatch 注册两次输入密码不匹配
 	SignupPassUnmatch = &Code{http.StatusBadRequest, 4000003, "注册两次输入密码不匹配"}
+	// AccountNameExist 账号昵称重复，请更换为其他昵称
+	AccountNameExist = &Code{http.StatusBadRequest, 4000004, "账号昵称已被使用"}
 	// SigninInfoError 账户名或密码有误
 	SigninInfoError = &Code{http.StatusUnauthorized, 4010001, "账户名或密码有误"}
 	// TokenNotFound 请求未携带Token, 无权访问

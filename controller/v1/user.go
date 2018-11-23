@@ -4,12 +4,13 @@ import (
 	"github.com/JiangInk/market_monitor/extend/code"
 	"github.com/JiangInk/market_monitor/extend/jwt"
 	"github.com/JiangInk/market_monitor/extend/utils"
+	"github.com/JiangInk/market_monitor/service"
 	"github.com/gin-gonic/gin"
+	"github.com/rs/zerolog/log"
 )
 
 // UserController 用户控制器
 type UserController struct{}
-
 
 // @Summary 获取用户信息
 // @Description 获取当前登录用户基本信息
@@ -53,19 +54,32 @@ func (sc UserController) EditInfo(c *gin.Context) {
 		})
 		return
 	}
-	//log.Debug().Msg("enter edit info controller")
-	//reqBody := EditRequest{}
+	log.Debug().Msg("enter edit info controller")
+	reqBody := EditRequest{}
 
 	// 获取待修改的用户名称
-	//if err := c.ShouldBindJSON(&reqBody); err != nil {
-	//	utils.ResponseFormat(c, code.RequestParamError, nil)
-	//	return
-	//}
+	if err := c.ShouldBindJSON(&reqBody); err != nil {
+		utils.ResponseFormat(c, code.RequestParamError, nil)
+		return
+	}
 
 	// 检测用户名称是否被使用
-
+	userService := service.UserService{
+		Name: reqBody.Name,
+	}
+	user, err := userService.QueryUserByName(reqBody.Name)
+	if err != nil {
+		log.Error().Msg(err.Error())
+		utils.ResponseFormat(c, code.ServiceInsideError, nil)
+		return
+	}
+	if user != nil {
+		utils.ResponseFormat(c, code.AccountNameExist, nil)
+		return
+	}
 
 	// 更新用户名称
+	// todo
 }
 
 type PassRequest struct {

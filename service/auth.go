@@ -11,10 +11,12 @@ import (
 )
 
 // AuthService 认证相关
-type AuthService struct{}
+type AuthService struct{
+	User *models.User
+}
 
 // GenerateToken 生成 Token
-func (as AuthService) GenerateToken(user models.User) (string, error) {
+func (as *AuthService) GenerateToken(user models.User) (string, error) {
 	jwtInstance := jwt.NewJWT()
 	nowTime := time.Now()
 	expireTime := time.Duration(config.ServerConf.JWTExpire)
@@ -40,6 +42,6 @@ func (as AuthService) GenerateToken(user models.User) (string, error) {
 }
 
 // DestroyToken 销毁 Token
-func (as AuthService) DestroyToken(email string) (bool, error){
+func (as *AuthService) DestroyToken(email string) (bool, error){
 	return redis.Del("TOKEN:"+email)
 }

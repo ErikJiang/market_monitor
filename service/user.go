@@ -7,10 +7,15 @@ import (
 )
 
 // UserService 用户服务层逻辑
-type UserService struct{}
+type UserService struct{
+	UserID		uint
+	Email		string
+	Name		string
+	Password	string
+}
 
 // QueryUserByEmail 通过邮箱查询用户信息
-func (us UserService) QueryUserByEmail(email string) (user *models.User, err error) {
+func (us *UserService) QueryUserByEmail(email string) (user *models.User, err error) {
 	userModel := &models.User{}
 	condition := map[string]interface{}{
 		"email": email,
@@ -20,7 +25,7 @@ func (us UserService) QueryUserByEmail(email string) (user *models.User, err err
 }
 
 // QueryUserByName 通过名称查询用户信息
-func (us UserService) QueryUserByName(name string) (user *models.User, err error) {
+func (us *UserService) QueryUserByName(name string) (user *models.User, err error) {
 	userModel := &models.User{}
 	condition := map[string]interface{}{
 		"user_name": name,
@@ -30,7 +35,7 @@ func (us UserService) QueryUserByName(name string) (user *models.User, err error
 }
 
 // AuthSignin 验证登录信息
-func (us UserService) AuthSignin(email string, password string) (bool, error) {
+func (us *UserService) AuthSignin(email string, password string) (bool, error) {
 	userModel := &models.User{}
 	condition := map[string]interface{}{
 		"email": email,
@@ -46,7 +51,7 @@ func (us UserService) AuthSignin(email string, password string) (bool, error) {
 }
 
 // StoreUser 添加用户
-func (us UserService) StoreUser(email string, pass string) (userID uint, err error) {
+func (us *UserService) StoreUser(email string, pass string) (userID uint, err error) {
 	log.Info().Msg("enter storeUser service")
 
 	user := &models.User{
@@ -62,12 +67,12 @@ func (us UserService) StoreUser(email string, pass string) (userID uint, err err
 }
 
 // UpdateUser 更新用户
-func (us UserService) UpdateUser(userID uint) {
+func (us *UserService) UpdateUser(userID uint) {
 	return
 }
 
 // DestroyUser 删除用户
-func (us UserService) DestroyUser(userID uint) error {
+func (us *UserService) DestroyUser(userID uint) error {
 	// log.Info().Msg("enter removeUser service.")
 	return nil
 }
