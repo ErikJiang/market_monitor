@@ -45,49 +45,33 @@ type EditRequest struct {
 // @Param body body v1.EditRequest true "修改用户信息请求参数"
 // @Success 200 {string} json "{"status":200, "code": 2000001, msg:"请求处理成功"}"
 // @Failure 500 {string} json "{"status":500, "code": 5000001, msg:"服务器内部错误"}"
-// @Router /user [put]
+// @Router /user/name [patch]
 func (sc UserController) EditInfo(c *gin.Context) {
 	log.Info().Msg("enter edit info controller")
-
+	// 获取 Token 用户信息
 	claims := c.MustGet("claims").(*jwt.CustomClaims)
 	if claims == nil {
 		utils.ResponseFormat(c, code.TokenInvalid, nil)
 		return
 	}
-
+	// 获取请求参数
 	reqBody := EditRequest{}
-
-	// 获取待修改的用户名称
 	if err := c.ShouldBindJSON(&reqBody); err != nil {
 		utils.ResponseFormat(c, code.RequestParamError, nil)
 		return
 	}
-
-	// 检测用户名称是否被使用
-	userService := service.UserService{
-		Name: reqBody.Name,
-	}
-	user, err := userService.QueryUserByName(reqBody.Name)
-	if err != nil {
-		log.Error().Msg(err.Error())
-		utils.ResponseFormat(c, code.ServiceInsideError, nil)
-		return
-	}
-	if user != nil {
-		utils.ResponseFormat(c, code.AccountNameExist, nil)
-		return
-	}
-
-	// 更新用户名称
-	updateUser, err := userService.UpdateUser(claims.ID)
-	if err != nil {
-		log.Error().Msg(err.Error())
-		utils.ResponseFormat(c, code.ServiceInsideError, nil)
+	// 修改用户名称
+	userService := service.UserService{ UserID: claims.ID }
+	updateUser, msgCode := userService.UpdateUserName(reqBody.Name)
+	if msgCode != nil {
+		utils.ResponseFormat(c, msgCode, nil)
 		return
 	}
 	log.Debug().Msgf("update user result: %v", updateUser)
 	utils.ResponseFormat(c, code.Success, map[string]interface{}{
-		"updateUser": updateUser,
+		"userId": updateUser.ID,
+		"userName": updateUser.UserName,
+		"email": updateUser.Email,
 	})
 }
 
@@ -105,13 +89,31 @@ type PassRequest struct {
 // @Param body body v1.PassRequest true "修改用户密码请求参数"
 // @Success 200 {string} json "{"status":200, "code": 2000001, msg:"请求处理成功"}"
 // @Failure 500 {string} json "{"status":500, "code": 5000001, msg:"服务器内部错误"}"
-// @Router /user [patch]
+// @Router /user/pass [patch]
 func (sc UserController) AlterPass(c *gin.Context) {
+	log.Info().Msg("enter change pass controller")
+	// 获取token信息
 	claims := c.MustGet("claims").(*jwt.CustomClaims)
-	if claims != nil {
-		utils.ResponseFormat(c, code.Success, map[string]interface{}{
-			"data": claims,
-		})
+	if claims == nil {
+		utils.ResponseFormat(c, code.TokenInvalid, nil)
 		return
 	}
+	// 获取请求参数
+	reqBody := PassRequest{}
+	if err := c.ShouldBindJSON(&reqBody); err != nil {
+		utils.ResponseFormat(c, code.RequestParamError, nil)
+		return
+	}
+	// 更新用户密码
+	userService := service.UserService{ Email:claims.Email }
+	updateUser, msgCode := userService.UpdateUserPass(reqBody.OldPass, reqBody.NewPass)
+	if msgCode != nil {
+		utils.ResponseFormat(c, msgCode, nil)
+		return
+	}
+	utils.ResponseFormat(c, code.Success, map[string]interface{}{
+		"userId": updateUser.ID,
+		"userName": updateUser.UserName,
+		"email": updateUser.Email,
+	})
 }

@@ -195,8 +195,10 @@
                         }
                     }
                 }
-            },
-            "put": {
+            }
+        },
+        "/user/name": {
+            "patch": {
                 "description": "修改当前登录用户基本信息(如：账户昵称)",
                 "consumes": [
                     "application/json"
@@ -241,7 +243,9 @@
                         }
                     }
                 }
-            },
+            }
+        },
+        "/user/pass": {
             "patch": {
                 "description": "修改当前登录用户密码",
                 "consumes": [

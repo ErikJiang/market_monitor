@@ -49,20 +49,17 @@ func (user *User) FindAll(pageNum int, pageSize int, condition interface{}) (use
 }
 
 // UpdateOne 修改用户
-func (user *User) UpdateOne(userID uint) (updUser *User, err error) {
-	//if err = DB.Select([]string{"id", "username"}).First(&updUser, userID).Error; err != nil {
-	//	return
-	//}
-	//
-	////参数1:需要修改的源用户
-	////参数2:修改更新的数据
-	//if err = DB.Model(&updUser).Updates(&user).Error; err != nil {
-	//	return
-	//}
-	//return
-
-	err = DB.Model(updUser).Where("id = ?", userID).Update(user).Error
-	return
+func (user *User) UpdateOne(userID uint, data map[string]interface{}) (*User, error) {
+	err := DB.Model(&User{}).Where("id = ?", userID).Updates(data).Error
+	if err != nil {
+		return nil, err
+	}
+	var updUser User
+	err = DB.Select([]string{"id", "user_name", "email"}).First(&updUser, userID).Error
+	if err != nil {
+		return nil, err
+	}
+	return &updUser, nil
 }
 
 // DeleteOne 删除用户
