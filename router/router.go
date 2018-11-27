@@ -20,12 +20,11 @@ func InitRouter() *gin.Engine {
 	gin.SetMode(config.ServerConf.RunMode)
 	// 跨域资源共享 CORS 配置
 	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"*"},
-		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "PATCH"},
-		AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type"},
+		AllowAllOrigins:	true,
+		AllowMethods:     []string{"GET", "HEAD", "POST", "PUT", "DELETE", "CONNECT", "OPTIONS", "TRACE", "PATCH"},
+		AllowHeaders:     []string{"Origin", "Accept", "Content-Type", "Authorization"},
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
-		AllowOriginFunc: func(origin string) bool { return true },
 		MaxAge: 12 * time.Hour,
 	}))
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
