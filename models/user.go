@@ -7,10 +7,11 @@ import (
 // User 用户表 model 定义
 type User struct {
 	gorm.Model
-	UserName string `gorm:"unique_index;default:null"`
-	Password string `gorm:"default:null"`
-	Email    string `gorm:"unique_index;default:null"`
-	Status   string `sql:"type:ENUM('ENABLE', 'DISABLE')"`
+	UserName	string	`gorm:"unique_index;default:null"`
+	Password	string	`gorm:"default:null"`
+	Email		string	`gorm:"unique_index;default:null"`
+	Avatar		string	`gorm:"default:null"`
+	Status		string	`sql:"type:ENUM('ENABLE', 'DISABLE')"`
 }
 
 // Insert 新增用户

@@ -118,6 +118,20 @@ func (us *UserService) UpdateUserPass(oldPass, newPass string) (*models.User, *c
 	return updateUser, nil
 }
 
+// UpdateUserAvatar 修改用户头像
+func (us *UserService) UpdateUserAvatar(avatar string) (*models.User, *code.Code) {
+	// 3. 校验通过，则更新用户密码
+	userModel := &models.User{}
+	updateUser, err := userModel.UpdateOne(us.UserID, map[string]interface{}{
+		"avatar": avatar,
+	})
+	if err != nil {
+		log.Error().Msg(err.Error())
+		return nil, code.ServiceInsideError
+	}
+	return updateUser, nil
+}
+
 
 // DestroyUser 删除用户
 func (us *UserService) DestroyUser(userID uint) error {

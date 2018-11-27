@@ -118,10 +118,6 @@ func (sc UserController) AlterPass(c *gin.Context) {
 	})
 }
 
-type AvatarRequest struct {
-	Avatar string `json:"avatar"`
-}
-
 // @Summary 修改用户头像
 // @Description 修改当前登录用户头像
 // @Accept multipart/form-data
@@ -140,14 +136,55 @@ func (sc UserController) AlterAvatar(c *gin.Context) {
 		utils.ResponseFormat(c, code.TokenInvalid, nil)
 		return
 	}
-	// 获取请求参数
-	reqBody := AvatarRequest{}
-	if err := c.ShouldBindJSON(&reqBody); err != nil {
+	// 获取上传文件内容
+	file, image, err := c.Request.FormFile("avatar")
+	if err != nil {
+		log.Error().Msg(err.Error())
+		utils.ResponseFormat(c, code.ServiceInsideError, nil)
+		return
+	}
+	if image == nil {
 		utils.ResponseFormat(c, code.RequestParamError, nil)
 		return
 	}
-	// 更新用户密码
-	// todo ...
+	// 获取头像名称
+	uploadService := service.UploadService{}
+	avatarName := uploadService.GetImgName(image.Filename)
+	fullPath := uploadService.GetImgFullPath()
+	// 上传图片格式检测
+	if !uploadService.CheckImgExt(avatarName) {
+		utils.ResponseFormat(c, code.UploadSuffixError, nil)
+		return
+	}
+	// 上传图片大小检测
+	if !uploadService.CheckImgSize(file) {
+		utils.ResponseFormat(c, code.UploadSizeLimit, nil)
+		return
+	}
+	err = uploadService.CheckImgPath(fullPath)
+	if err != nil {
+		log.Error().Msg(err.Error())
+		utils.ResponseFormat(c, code.ServiceInsideError, nil)
+		return
+	}
+	err = c.SaveUploadedFile(image, fullPath+avatarName)
+	if err != nil {
+		log.Error().Msg(err.Error())
+		utils.ResponseFormat(c, code.ServiceInsideError, nil)
+		return
+	}
 
-	utils.ResponseFormat(c, code.Success, map[string]interface{}{})
+	// 更新用户头像
+	userService := service.UserService{ UserID: claims.ID }
+	updateUser, msgCode := userService.UpdateUserAvatar(uploadService.GetImgPath()+avatarName)
+	if msgCode != nil {
+		utils.ResponseFormat(c, msgCode, nil)
+		return
+	}
+
+	utils.ResponseFormat(c, code.Success, map[string]interface{}{
+		"userId": updateUser.ID,
+		"avatar": updateUser.Avatar,
+
+	})
 }

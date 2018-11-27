@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog/log"
 	"github.com/JiangInk/market_monitor/extend/code"
+	"os"
 )
 
 // ResponseFormat 返回数据格式化
@@ -28,3 +29,22 @@ func MakeSha1(source string) string {
 	sha1Hash.Write([]byte(source))
 	return hex.EncodeToString(sha1Hash.Sum(nil))
 }
+
+// IsExist 判断文件或路径是否存在
+func IsExist(path string) (bool, error) {
+	_, err := os.Stat(path)
+	if err == nil {
+		return true, nil
+	}
+	if os.IsNotExist(err) {
+		return false, nil
+	}
+	return true, err
+}
+
+// IsPerm 检测文件或路径是否有权限
+func IsPerm(path string) bool {
+	_, err := os.Stat(path)
+	return os.IsPermission(err)
+}
+
