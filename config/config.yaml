@@ -41,3 +41,26 @@ logger:
   level: DEBUG
   pretty: true
   color: true
+
+# CORS 跨域资源共享
+cors:
+  allowAllOrigins: true
+  allowMethods:
+    - GET
+    - HEAD
+    - POST
+    - PUT
+    - DELETE
+    - CONNECT
+    - OPTIONS
+    - TRACE
+    - PATCH
+  allowHeaders:
+    - Origin
+    - Accept
+    - Content-Type
+    - Authorization
+  exposeHeaders:
+    - Content-Length
+  allowCredentials: true
+  maxAge: 12  # 单位: 小时

@@ -36,17 +36,17 @@ type EditRequest struct {
 	Name string `json:"name" binding:"required,max=20"`
 }
 
-// @Summary 编辑用户信息
-// @Description 修改当前登录用户基本信息(如：账户昵称)
+// @Summary 编辑用户昵称
+// @Description 修改当前登录用户昵称
 // @Accept json
 // @Produce json
 // @Tags user
 // @Param Authorization header string true "认证 Token 值"
-// @Param body body v1.EditRequest true "修改用户信息请求参数"
+// @Param body body v1.EditRequest true "修改用户名称请求参数"
 // @Success 200 {string} json "{"status":200, "code": 2000001, msg:"请求处理成功"}"
 // @Failure 500 {string} json "{"status":500, "code": 5000001, msg:"服务器内部错误"}"
 // @Router /user/name [patch]
-func (sc UserController) EditInfo(c *gin.Context) {
+func (sc UserController) AlterName(c *gin.Context) {
 	log.Info().Msg("enter edit info controller")
 	// 获取 Token 用户信息
 	claims := c.MustGet("claims").(*jwt.CustomClaims)
@@ -116,4 +116,38 @@ func (sc UserController) AlterPass(c *gin.Context) {
 		"userName": updateUser.UserName,
 		"email": updateUser.Email,
 	})
+}
+
+type AvatarRequest struct {
+	Avatar string `json:"avatar"`
+}
+
+// @Summary 修改用户头像
+// @Description 修改当前登录用户头像
+// @Accept multipart/form-data
+// @Produce json
+// @Tags user
+// @Param Authorization header string true "认证 Token 值"
+// @Param avatar formData file true "用户头像请求参数"
+// @Success 200 {string} json "{"status":200, "code": 2000001, msg:"请求处理成功"}"
+// @Failure 500 {string} json "{"status":500, "code": 5000001, msg:"服务器内部错误"}"
+// @Router /user/avatar [patch]
+func (sc UserController) AlterAvatar(c *gin.Context) {
+	log.Info().Msg("enter change pass controller")
+	// 获取token信息
+	claims := c.MustGet("claims").(*jwt.CustomClaims)
+	if claims == nil {
+		utils.ResponseFormat(c, code.TokenInvalid, nil)
+		return
+	}
+	// 获取请求参数
+	reqBody := AvatarRequest{}
+	if err := c.ShouldBindJSON(&reqBody); err != nil {
+		utils.ResponseFormat(c, code.RequestParamError, nil)
+		return
+	}
+	// 更新用户密码
+	// todo ...
+
+	utils.ResponseFormat(c, code.Success, map[string]interface{}{})
 }

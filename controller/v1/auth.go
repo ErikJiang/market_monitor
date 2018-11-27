@@ -146,15 +146,3 @@ func (ac AuthController) Signout(c *gin.Context) {
 	utils.ResponseFormat(c, code.Success, map[string]interface{}{})
 	return
 }
-
-// GetUserInfo 获取用户信息
-func (ac AuthController) GetUserInfo(c *gin.Context) {
-
-	claims := c.MustGet("claims").(*jwt.CustomClaims)
-	if claims != nil {
-		utils.ResponseFormat(c, code.Success, map[string]interface{}{
-			"data": claims,
-		})
-		return
-	}
-}

@@ -20,12 +20,12 @@ func InitRouter() *gin.Engine {
 	gin.SetMode(config.ServerConf.RunMode)
 	// 跨域资源共享 CORS 配置
 	r.Use(cors.New(cors.Config{
-		AllowAllOrigins:	true,
-		AllowMethods:     []string{"GET", "HEAD", "POST", "PUT", "DELETE", "CONNECT", "OPTIONS", "TRACE", "PATCH"},
-		AllowHeaders:     []string{"Origin", "Accept", "Content-Type", "Authorization"},
-		ExposeHeaders:    []string{"Content-Length"},
-		AllowCredentials: true,
-		MaxAge: 12 * time.Hour,
+		AllowAllOrigins:	config.CORSConf.AllowAllOrigins,
+		AllowMethods:		config.CORSConf.AllowMethods,
+		AllowHeaders:		config.CORSConf.AllowHeaders,
+		ExposeHeaders:		config.CORSConf.ExposeHeaders,
+		AllowCredentials:	config.CORSConf.AllowCredentials,
+		MaxAge:				config.CORSConf.MaxAge * time.Hour,
 	}))
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	apiV1 := r.Group("api/v1")
@@ -43,9 +43,11 @@ func InitRouter() *gin.Engine {
 			// 查看用户信息
 			apiV1.GET("/user", userController.GetInfo)
 			// 修改用户名称
-			apiV1.PATCH("/user/name", userController.EditInfo)
+			apiV1.PATCH("/user/name", userController.AlterName)
 			// 修改用户密码
 			apiV1.PATCH("/user/pass", userController.AlterPass)
+			// 修改用户头像
+			apiV1.PATCH("/user/avatar", userController.AlterAvatar)
 		}
 		
 	}

@@ -197,11 +197,11 @@
                 }
             }
         },
-        "/user/name": {
+        "/user/avatar": {
             "patch": {
-                "description": "修改当前登录用户基本信息(如：账户昵称)",
+                "description": "修改当前登录用户头像",
                 "consumes": [
-                    "application/json"
+                    "multipart/form-data"
                 ],
                 "produces": [
                     "application/json"
@@ -209,7 +209,7 @@
                 "tags": [
                     "user"
                 ],
-                "summary": "编辑用户信息",
+                "summary": "修改用户头像",
                 "parameters": [
                     {
                         "type": "string",
@@ -219,7 +219,52 @@
                         "required": true
                     },
                     {
-                        "description": "修改用户信息请求参数",
+                        "type": "file",
+                        "description": "用户头像请求参数",
+                        "name": "avatar",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"status\":200, \"code\": 2000001, msg:\"请求处理成功\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "{\"status\":500, \"code\": 5000001, msg:\"服务器内部错误\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/name": {
+            "patch": {
+                "description": "修改当前登录用户昵称",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "编辑用户昵称",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "认证 Token 值",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "修改用户名称请求参数",
                         "name": "body",
                         "in": "body",
                         "required": true,

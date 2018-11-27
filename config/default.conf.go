@@ -73,6 +73,19 @@ type logger struct {
 // LoggerConf 日志配置
 var LoggerConf = &logger{}
 
+// cors 跨域资源共享配置结构
+type cors struct {
+	AllowAllOrigins		bool			`mapstructure:"allowAllOrigins"`
+	AllowMethods		[]string		`mapstructure:"allowMethods"`
+	AllowHeaders		[]string		`mapstructure:"allowHeaders"`
+	ExposeHeaders		[]string		`mapstructure:"exposeHeaders"`
+	AllowCredentials	bool			`mapstructure:"allowCredentials"`
+	MaxAge				time.Duration	`mapstructure:"maxAge"`
+}
+
+// CORSConf 跨域资源共享配置
+var CORSConf = &cors{}
+
 // Setup 生成服务配置
 func Setup() {
 	viper.SetConfigType("YAML")
@@ -89,4 +102,5 @@ func Setup() {
 	viper.UnmarshalKey("database", DBConf)
 	viper.UnmarshalKey("redis", RedisConf)
 	viper.UnmarshalKey("logger", LoggerConf)
+	viper.UnmarshalKey("cors", CORSConf)
 }
