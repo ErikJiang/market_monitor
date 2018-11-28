@@ -6,10 +6,10 @@ import (
 	_ "github.com/JiangInk/market_monitor/docs"
 	"github.com/JiangInk/market_monitor/middleware"
 	"github.com/JiangInk/market_monitor/service"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
-	"github.com/gin-contrib/cors"
 	"net/http"
 	"time"
 )
@@ -22,12 +22,12 @@ func InitRouter() *gin.Engine {
 	gin.SetMode(config.ServerConf.RunMode)
 	// 跨域资源共享 CORS 配置
 	r.Use(cors.New(cors.Config{
-		AllowAllOrigins:	config.CORSConf.AllowAllOrigins,
-		AllowMethods:		config.CORSConf.AllowMethods,
-		AllowHeaders:		config.CORSConf.AllowHeaders,
-		ExposeHeaders:		config.CORSConf.ExposeHeaders,
-		AllowCredentials:	config.CORSConf.AllowCredentials,
-		MaxAge:				config.CORSConf.MaxAge * time.Hour,
+		AllowAllOrigins:  config.CORSConf.AllowAllOrigins,
+		AllowMethods:     config.CORSConf.AllowMethods,
+		AllowHeaders:     config.CORSConf.AllowHeaders,
+		ExposeHeaders:    config.CORSConf.ExposeHeaders,
+		AllowCredentials: config.CORSConf.AllowCredentials,
+		MaxAge:           config.CORSConf.MaxAge * time.Hour,
 	}))
 	uploadService := service.UploadService{}
 	r.StaticFS("upload/img", http.Dir(uploadService.GetImgFullPath()))
@@ -53,7 +53,7 @@ func InitRouter() *gin.Engine {
 			// 修改用户头像
 			apiV1.PATCH("/user/avatar", userController.AlterAvatar)
 		}
-		
+
 	}
 	return r
 }
