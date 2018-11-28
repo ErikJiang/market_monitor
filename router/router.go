@@ -5,10 +5,12 @@ import (
 	"github.com/JiangInk/market_monitor/controller/v1"
 	_ "github.com/JiangInk/market_monitor/docs"
 	"github.com/JiangInk/market_monitor/middleware"
+	"github.com/JiangInk/market_monitor/service"
 	"github.com/gin-gonic/gin"
 	"github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
 	"github.com/gin-contrib/cors"
+	"net/http"
 	"time"
 )
 
@@ -27,6 +29,8 @@ func InitRouter() *gin.Engine {
 		AllowCredentials:	config.CORSConf.AllowCredentials,
 		MaxAge:				config.CORSConf.MaxAge * time.Hour,
 	}))
+	uploadService := service.UploadService{}
+	r.StaticFS("upload/img", http.Dir(uploadService.GetImgFullPath()))
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	apiV1 := r.Group("api/v1")
 	authController := new(v1.AuthController)

@@ -19,3 +19,6 @@ vendor/*
 !vendor/vendor.json
 
 .idea/
+
+# ignore upload image
+public/upload/img/*

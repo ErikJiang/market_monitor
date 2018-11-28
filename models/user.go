@@ -28,7 +28,7 @@ func (user *User) Insert() (userID uint, err error) {
 // FindOne 查询用户详情
 func (user *User) FindOne(condition map[string]interface{}) (*User, error) {
 	var userInfo User
-	result := DB.Select("id, user_name, email, password").Where(condition).First(&userInfo)
+	result := DB.Select("id, user_name, email, avatar, password").Where(condition).First(&userInfo)
 	if result.Error != nil && result.Error != gorm.ErrRecordNotFound {
 		return nil, result.Error
 	}
@@ -56,7 +56,7 @@ func (user *User) UpdateOne(userID uint, data map[string]interface{}) (*User, er
 		return nil, err
 	}
 	var updUser User
-	err = DB.Select([]string{"id", "user_name", "email"}).First(&updUser, userID).Error
+	err = DB.Select([]string{"id", "user_name", "email", "avatar"}).First(&updUser, userID).Error
 	if err != nil {
 		return nil, err
 	}

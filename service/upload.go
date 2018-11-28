@@ -20,7 +20,7 @@ func (us *UploadService) GetImgPath() string {
 
 // GetImgFullPath 获取图片完整目录
 func (us *UploadService) GetImgFullPath() string {
-	return "public/"+"upload/img"
+	return "public/"+"upload/img/"
 }
 
 // GetImgName 获取图片名称
@@ -54,9 +54,11 @@ func (us *UploadService) CheckImgSize(f multipart.File) bool {
 		log.Error().Msg(err.Error())
 		return false
 	}
-	// 文件大小不得超出5M todo 单位转换
-	log.Debug().Msgf("upload file size: %d", len(content))
-	return len(content) <= 5
+	// 单位转换 bytes to Megabyte
+	var converRatio float64 = 1024 * 1024
+	fileSize := float64(len(content)) / converRatio
+	// 文件大小不得超出5M
+	return fileSize <= float64(5)
 }
 
 // CheckImgPath 检测图片路径是否创建及权限是否满足
