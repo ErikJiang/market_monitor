@@ -5,21 +5,21 @@
 $ git clone https://github.com/JiangInk/market_monitor.git
 ```
 
-#### 2. 下载项目依赖
-``` shell
-$ cd market_monitor
-$ go mod download
-```
-
-#### 3. 创建数据库
+#### 2. 创建数据库
 ``` sql
 CREATE DATABASE db_monitor DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
 ``` 
 
-#### 4. 运行项目
+#### 3. 运行项目
 ``` shell
+$ cd market_monitor/
 $ go run main.go
 ```
+运行过程若出现下载 module 失败，或 build 缓慢，可尝试设置`GOPROXY`环境变量：
+``` shell
+$ export GOPROXY=https://goproxy.io
+```
+
 
 ---
 
