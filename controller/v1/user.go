@@ -185,6 +185,5 @@ func (sc UserController) AlterAvatar(c *gin.Context) {
 	utils.ResponseFormat(c, code.Success, map[string]interface{}{
 		"userId": updateUser.ID,
 		"avatar": updateUser.Avatar,
-
 	})
 }

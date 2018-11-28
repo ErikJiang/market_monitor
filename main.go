@@ -1,14 +1,14 @@
 package main
 
 import (
+	"github.com/JiangInk/market_monitor/schedule"
 	"strconv"
 
 	"github.com/JiangInk/market_monitor/config"
+	"github.com/JiangInk/market_monitor/extend/logger"
+	"github.com/JiangInk/market_monitor/extend/redis"
 	"github.com/JiangInk/market_monitor/models"
 	"github.com/JiangInk/market_monitor/router"
-	"github.com/JiangInk/market_monitor/extend/redis"
-	"github.com/JiangInk/market_monitor/extend/logger"
-	// "github.com/JiangInk/market_monitor/schedule"
 )
 
 // @title Market Monitor API
@@ -34,8 +34,8 @@ func main() {
 	models.Setup()
 	// 缓存初始化
 	redis.Setup()
-	
-	// schedule.GateioCronMain()
+	// 调度任务初始化
+	schedule.Setup()
 
 	r := router.InitRouter()
 	// 服务监听
