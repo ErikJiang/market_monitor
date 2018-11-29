@@ -29,7 +29,7 @@ func (us *UserService) QueryUserByEmail(email string) (user *models.User, err er
 func (us *UserService) QueryUserByName(name string) (user *models.User, err error) {
 	userModel := &models.User{}
 	condition := map[string]interface{}{
-		"user_name": name,
+		"name": name,
 	}
 	user, err = userModel.FindOne(condition)
 	return
@@ -71,7 +71,7 @@ func (us *UserService) StoreUser(email string, pass string) (userID uint, err er
 func (us *UserService) UpdateUserName(userName string) (*models.User, *code.Code) {
 	userModel := &models.User{}
 	// 查询用户名是否已被使用
-	user, err := userModel.FindOne(map[string]interface{}{"user_name": userName})
+	user, err := userModel.FindOne(map[string]interface{}{"name": userName})
 	if err != nil {
 		log.Error().Msg(err.Error())
 		return nil, code.ServiceInsideError
@@ -83,7 +83,7 @@ func (us *UserService) UpdateUserName(userName string) (*models.User, *code.Code
 
 	// 更新用户名称
 	updateUser, err := userModel.UpdateOne(us.UserID, map[string]interface{}{
-		"user_name": userName,
+		"name": userName,
 	})
 	if err != nil {
 		log.Error().Msg(err.Error())

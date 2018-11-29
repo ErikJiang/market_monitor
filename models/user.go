@@ -7,10 +7,10 @@ import (
 // User 用户表 model 定义
 type User struct {
 	gorm.Model
-	UserName	string	`gorm:"unique_index;default:null"`
-	Password	string	`gorm:"default:null"`
-	Email		string	`gorm:"unique_index;default:null"`
-	Avatar		string	`gorm:"default:null"`
+	UserName	string	`gorm:"column:name;type:varchar(100);unique_index;default:null"`
+	Password	string	`gorm:"column:password;type:varchar(100);default:null"`
+	Email		string	`gorm:"column:email;type:varchar(100);unique_index;default:null"`
+	Avatar		string	`gorm:"column:avatar;type:varchar(100);default:null"`
 	Status		string	`sql:"type:ENUM('ENABLE', 'DISABLE')"`
 }
 
@@ -28,7 +28,7 @@ func (user *User) Insert() (userID uint, err error) {
 // FindOne 查询用户详情
 func (user *User) FindOne(condition map[string]interface{}) (*User, error) {
 	var userInfo User
-	result := DB.Select("id, user_name, email, avatar, password").Where(condition).First(&userInfo)
+	result := DB.Select("id, name, email, avatar, password").Where(condition).First(&userInfo)
 	if result.Error != nil && result.Error != gorm.ErrRecordNotFound {
 		return nil, result.Error
 	}
@@ -56,7 +56,7 @@ func (user *User) UpdateOne(userID uint, data map[string]interface{}) (*User, er
 		return nil, err
 	}
 	var updUser User
-	err = DB.Select([]string{"id", "user_name", "email", "avatar"}).First(&updUser, userID).Error
+	err = DB.Select([]string{"id", "name", "email", "avatar"}).First(&updUser, userID).Error
 	if err != nil {
 		return nil, err
 	}
