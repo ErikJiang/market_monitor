@@ -47,7 +47,7 @@ type UserEditRequest struct {
 // @Failure 500 {string} json "{"status":500, "code": 5000001, msg:"服务器内部错误"}"
 // @Router /user/name [patch]
 func (sc UserController) AlterName(c *gin.Context) {
-	log.Info().Msg("enter edit info controller")
+	log.Info().Msg("enter user edit info controller")
 	// 获取 Token 用户信息
 	claims := c.MustGet("claims").(*jwt.CustomClaims)
 	if claims == nil {
@@ -62,7 +62,7 @@ func (sc UserController) AlterName(c *gin.Context) {
 	}
 	// 修改用户名称
 	userService := service.UserService{ UserID: claims.ID }
-	updateUser, msgCode := userService.UpdateUserName(reqBody.Name)
+	updateUser, msgCode := userService.UpdateName(reqBody.Name)
 	if msgCode != nil {
 		utils.ResponseFormat(c, msgCode, nil)
 		return
@@ -91,7 +91,7 @@ type UserPassRequest struct {
 // @Failure 500 {string} json "{"status":500, "code": 5000001, msg:"服务器内部错误"}"
 // @Router /user/pass [patch]
 func (sc UserController) AlterPass(c *gin.Context) {
-	log.Info().Msg("enter change pass controller")
+	log.Info().Msg("enter user change pass controller")
 	// 获取token信息
 	claims := c.MustGet("claims").(*jwt.CustomClaims)
 	if claims == nil {
@@ -106,7 +106,7 @@ func (sc UserController) AlterPass(c *gin.Context) {
 	}
 	// 更新用户密码
 	userService := service.UserService{ Email:claims.Email }
-	updateUser, msgCode := userService.UpdateUserPass(reqBody.OldPass, reqBody.NewPass)
+	updateUser, msgCode := userService.UpdatePass(reqBody.OldPass, reqBody.NewPass)
 	if msgCode != nil {
 		utils.ResponseFormat(c, msgCode, nil)
 		return
@@ -129,7 +129,7 @@ func (sc UserController) AlterPass(c *gin.Context) {
 // @Failure 500 {string} json "{"status":500, "code": 5000001, msg:"服务器内部错误"}"
 // @Router /user/avatar [patch]
 func (sc UserController) AlterAvatar(c *gin.Context) {
-	log.Info().Msg("enter change pass controller")
+	log.Info().Msg("enter user change avatar controller")
 	// 获取token信息
 	claims := c.MustGet("claims").(*jwt.CustomClaims)
 	if claims == nil {
@@ -176,7 +176,7 @@ func (sc UserController) AlterAvatar(c *gin.Context) {
 
 	// 更新用户头像
 	userService := service.UserService{ UserID: claims.ID }
-	updateUser, msgCode := userService.UpdateUserAvatar(uploadService.GetImgPath()+avatarName)
+	updateUser, msgCode := userService.UpdateAvatar(uploadService.GetImgPath()+avatarName)
 	if msgCode != nil {
 		utils.ResponseFormat(c, msgCode, nil)
 		return

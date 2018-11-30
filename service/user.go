@@ -15,8 +15,8 @@ type UserService struct{
 	Password	string
 }
 
-// QueryUserByEmail 通过邮箱查询用户信息
-func (us *UserService) QueryUserByEmail(email string) (user *models.User, err error) {
+// QueryByEmail 通过邮箱查询用户信息
+func (us *UserService) QueryByEmail(email string) (user *models.User, err error) {
 	userModel := &models.User{}
 	condition := map[string]interface{}{
 		"email": email,
@@ -25,8 +25,8 @@ func (us *UserService) QueryUserByEmail(email string) (user *models.User, err er
 	return
 }
 
-// QueryUserByName 通过名称查询用户信息
-func (us *UserService) QueryUserByName(name string) (user *models.User, err error) {
+// QueryByName 通过名称查询用户信息
+func (us *UserService) QueryByName(name string) (user *models.User, err error) {
 	userModel := &models.User{}
 	condition := map[string]interface{}{
 		"name": name,
@@ -67,8 +67,8 @@ func (us *UserService) StoreUser(email string, pass string) (userID uint, err er
 	return
 }
 
-// UpdateUserName 修改用户昵称
-func (us *UserService) UpdateUserName(userName string) (*models.User, *code.Code) {
+// UpdateName 修改用户昵称
+func (us *UserService) UpdateName(userName string) (*models.User, *code.Code) {
 	userModel := &models.User{}
 	// 查询用户名是否已被使用
 	user, err := userModel.FindOne(map[string]interface{}{"name": userName})
@@ -92,8 +92,8 @@ func (us *UserService) UpdateUserName(userName string) (*models.User, *code.Code
 	return updateUser, nil
 }
 
-// UpdateUserPass 修改用户密码
-func (us *UserService) UpdateUserPass(oldPass, newPass string) (*models.User, *code.Code) {
+// UpdatePass 修改用户密码
+func (us *UserService) UpdatePass(oldPass, newPass string) (*models.User, *code.Code) {
 	userModel := &models.User{}
 	// 1. 获取对应用户信息（密码）
 	user, err := userModel.FindOne(map[string]interface{}{"email": us.Email})
@@ -118,9 +118,8 @@ func (us *UserService) UpdateUserPass(oldPass, newPass string) (*models.User, *c
 	return updateUser, nil
 }
 
-// UpdateUserAvatar 修改用户头像
-func (us *UserService) UpdateUserAvatar(avatar string) (*models.User, *code.Code) {
-	// 3. 校验通过，则更新用户密码
+// UpdateAvatar 修改用户头像
+func (us *UserService) UpdateAvatar(avatar string) (*models.User, *code.Code) {
 	userModel := &models.User{}
 	updateUser, err := userModel.UpdateOne(us.UserID, map[string]interface{}{
 		"avatar": avatar,

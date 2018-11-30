@@ -92,7 +92,7 @@ func (ac AuthController) Signin(c *gin.Context) {
 	userService := service.UserService{
 		Email: reqBody.Email,
 	}
-	user, err := userService.QueryUserByEmail(reqBody.Email)
+	user, err := userService.QueryByEmail(reqBody.Email)
 	if err != nil {
 		log.Error().Msg(err.Error())
 		utils.ResponseFormat(c, code.ServiceInsideError, nil)

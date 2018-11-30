@@ -17,7 +17,7 @@ $ git clone https://github.com/JiangInk/market_monitor.git
 #### 2. 创建数据库
 ``` sql
 CREATE DATABASE db_monitor DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
-``` 
+```
 
 #### 3. 运行项目
 ``` shell

@@ -52,6 +52,20 @@ func InitRouter() *gin.Engine {
 			apiV1.PATCH("/user/pass", userController.AlterPass)
 			// 修改用户头像
 			apiV1.PATCH("/user/avatar", userController.AlterAvatar)
+
+			taskController := v1.TaskController{}
+
+			// 获取任务列表
+			apiV1.GET("/task", taskController.List)
+			// 新增任务
+			apiV1.POST("/task", taskController.Create)
+			// 获取任务详情
+			apiV1.GET("/task/:taskId", taskController.Retrieve)
+			// 修改任务参数
+			apiV1.PUT("/task/:taskId", taskController.Update)
+			// 删除任务
+			apiV1.DELETE("/task/:taskId", taskController.Destroy)
+
 		}
 
 	}

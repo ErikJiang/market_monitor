@@ -1,6 +1,15 @@
 package v1
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/JiangInk/market_monitor/extend/code"
+	"github.com/JiangInk/market_monitor/extend/jwt"
+	"github.com/JiangInk/market_monitor/extend/utils"
+	"github.com/JiangInk/market_monitor/service"
+	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/json"
+	"github.com/rs/zerolog/log"
+	"strconv"
+)
 
 // TaskController 用户控制器
 type TaskController struct{}
@@ -17,7 +26,9 @@ type TaskController struct{}
 // @Failure 500 {string} json "{"status":500, "code": 5000001, msg:"服务器内部错误"}"
 // @Router /task [get]
 func (tc *TaskController) List(c *gin.Context) {
-
+	// todo
+	utils.ResponseFormat(c, code.Success, map[string]interface{}{})
+	return
 }
 
 // @Summary 获取任务明细
@@ -31,13 +42,43 @@ func (tc *TaskController) List(c *gin.Context) {
 // @Failure 500 {string} json "{"status":500, "code": 5000001, msg:"服务器内部错误"}"
 // @Router /task/{taskId} [get]
 func (tc *TaskController) Retrieve(c *gin.Context) {
-
+	log.Info().Msg("enter task retrieve controller")
+	// 获取token信息
+	claims := c.MustGet("claims").(*jwt.CustomClaims)
+	if claims == nil {
+		utils.ResponseFormat(c, code.TokenInvalid, nil)
+		return
+	}
+	// 获取请求参数
+	taskId := c.Param("taskId")
+	u64Id, err := strconv.ParseUint(taskId, 10, 64)
+	if err != nil {
+		log.Error().Msg(err.Error())
+		utils.ResponseFormat(c, code.RequestParamError, nil)
+		return
+	}
+	// 通过ID查询任务详情
+	taskService := service.TaskService{TaskID: uint(u64Id)}
+	task, err := taskService.QueryByID()
+	if err != nil {
+		utils.ResponseFormat(c, code.ServiceInsideError, nil)
+		return
+	}
+	utils.ResponseFormat(c, code.Success, map[string]interface{}{
+		"data": task,
+	})
+	return
 }
 
 type TaskCreateRequest struct {
 	TaskType    string  `json:"taskType" binding:"required,oneof= TICKER OTHER"`    // 任务类型
 	Operator    string  `json:"operator" binding:"required,oneof= LT LTE GT GTE"`   // 运算符 LT:"<" LTE:"<=" GT:">" GTE:">="
 	WarnPrice   float64 `json:"warnPrice" binding:"required"`                       // 预警价格
+}
+
+type TaskRuleParam struct {
+	Operator string
+	WarnPrice float64
 }
 
 // @Summary 添加新任务
@@ -52,6 +93,48 @@ type TaskCreateRequest struct {
 // @Failure 500 {string} json "{"status":500, "code": 5000001, msg:"服务器内部错误"}"
 // @Router /task [post]
 func (tc *TaskController) Create(c *gin.Context) {
+	log.Info().Msg("enter task create controller")
+	// 获取token信息
+	claims := c.MustGet("claims").(*jwt.CustomClaims)
+	if claims == nil {
+		utils.ResponseFormat(c, code.TokenInvalid, nil)
+		return
+	}
+	// 获取请求参数
+	reqBody := TaskCreateRequest{}
+	if err := c.ShouldBindJSON(&reqBody); err != nil {
+		utils.ResponseFormat(c, code.RequestParamError, nil)
+		return
+	}
+
+	// 整理数据，userId、type、rule ...
+	rule := &TaskRuleParam{
+	reqBody.Operator,
+	reqBody.WarnPrice,
+	}
+	ruleJson, err := json.Marshal(rule)
+	if err != nil {
+		utils.ResponseFormat(c, code.ServiceInsideError, nil)
+		return
+	}
+
+	// 创建任务
+	taskService := service.TaskService{
+		UserID: int(claims.ID),
+		Type: reqBody.TaskType,
+		Rules: string(ruleJson),
+	}
+	taskID, err := taskService.StoreTask()
+	if err != nil {
+		log.Error().Msg(err.Error())
+		utils.ResponseFormat(c, code.ServiceInsideError, nil)
+		return
+	}
+
+	log.Debug().Msgf("create task success, taskId: %d", taskID)
+	utils.ResponseFormat(c, code.Success, map[string]interface{}{
+		"taskId": taskID,
+	})
 
 }
 
@@ -68,6 +151,52 @@ func (tc *TaskController) Create(c *gin.Context) {
 // @Failure 500 {string} json "{"status":500, "code": 5000001, msg:"服务器内部错误"}"
 // @Router /task/{taskId} [put]
 func (tc *TaskController) Update(c *gin.Context) {
+	log.Info().Msg("enter task update controller")
+	// 获取token信息
+	claims := c.MustGet("claims").(*jwt.CustomClaims)
+	if claims == nil {
+		utils.ResponseFormat(c, code.TokenInvalid, nil)
+		return
+	}
+	// 获取请求参数
+	taskId := c.Param("taskId")
+	u64Id, err := strconv.ParseUint(taskId, 10, 64)
+	if err != nil {
+		log.Error().Msg(err.Error())
+		utils.ResponseFormat(c, code.RequestParamError, nil)
+		return
+	}
+
+	// 获取请求参数
+	reqBody := TaskCreateRequest{}
+	if err := c.ShouldBindJSON(&reqBody); err != nil {
+		utils.ResponseFormat(c, code.RequestParamError, nil)
+		return
+	}
+	rule := &TaskRuleParam {
+		reqBody.Operator,
+		reqBody.WarnPrice,
+	}
+	ruleJson, err := json.Marshal(rule)
+	if err != nil {
+		utils.ResponseFormat(c, code.ServiceInsideError, nil)
+		return
+	}
+
+	taskService := service.TaskService{
+		UserID: int(claims.ID),
+		Type: reqBody.TaskType,
+		Rules: string(ruleJson),
+	}
+
+	task, msgCode := taskService.UpdateInfo(uint(u64Id))
+	if msgCode != nil {
+		utils.ResponseFormat(c, msgCode, nil)
+		return
+	}
+
+	utils.ResponseFormat(c, code.Success, map[string]interface{}{"data": task})
+	return
 
 }
 
@@ -82,5 +211,7 @@ func (tc *TaskController) Update(c *gin.Context) {
 // @Failure 500 {string} json "{"status":500, "code": 5000001, msg:"服务器内部错误"}"
 // @Router /task/{taskId} [delete]
 func (tc *TaskController) Destroy(c *gin.Context) {
-
+	// todo
+	utils.ResponseFormat(c, code.Success, map[string]interface{}{})
+	return
 }
