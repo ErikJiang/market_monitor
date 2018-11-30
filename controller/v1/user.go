@@ -21,7 +21,7 @@ type UserController struct{}
 // @Success 200 {string} json "{"status":200, "code": 2000001, msg:"请求处理成功"}"
 // @Failure 500 {string} json "{"status":500, "code": 5000001, msg:"服务器内部错误"}"
 // @Router /user [get]
-func (sc UserController) GetInfo(c *gin.Context) {
+func (sc UserController) Retrieve(c *gin.Context) {
 
 	claims := c.MustGet("claims").(*jwt.CustomClaims)
 	if claims != nil {
@@ -32,7 +32,7 @@ func (sc UserController) GetInfo(c *gin.Context) {
 	}
 }
 
-type EditRequest struct {
+type UserEditRequest struct {
 	Name string `json:"name" binding:"required,max=20"`
 }
 
@@ -42,7 +42,7 @@ type EditRequest struct {
 // @Produce json
 // @Tags user
 // @Param Authorization header string true "认证 Token 值"
-// @Param body body v1.EditRequest true "修改用户名称请求参数"
+// @Param body body v1.UserEditRequest true "修改用户名称请求参数"
 // @Success 200 {string} json "{"status":200, "code": 2000001, msg:"请求处理成功"}"
 // @Failure 500 {string} json "{"status":500, "code": 5000001, msg:"服务器内部错误"}"
 // @Router /user/name [patch]
@@ -55,7 +55,7 @@ func (sc UserController) AlterName(c *gin.Context) {
 		return
 	}
 	// 获取请求参数
-	reqBody := EditRequest{}
+	reqBody := UserEditRequest{}
 	if err := c.ShouldBindJSON(&reqBody); err != nil {
 		utils.ResponseFormat(c, code.RequestParamError, nil)
 		return
@@ -75,7 +75,7 @@ func (sc UserController) AlterName(c *gin.Context) {
 	})
 }
 
-type PassRequest struct {
+type UserPassRequest struct {
 	OldPass string `json:"oldPass" binding:"required,max=50"`
 	NewPass string `json:"newPass" binding:"required,max=50"`
 }
@@ -86,7 +86,7 @@ type PassRequest struct {
 // @Produce json
 // @Tags user
 // @Param Authorization header string true "认证 Token 值"
-// @Param body body v1.PassRequest true "修改用户密码请求参数"
+// @Param body body v1.UserPassRequest true "修改用户密码请求参数"
 // @Success 200 {string} json "{"status":200, "code": 2000001, msg:"请求处理成功"}"
 // @Failure 500 {string} json "{"status":500, "code": 5000001, msg:"服务器内部错误"}"
 // @Router /user/pass [patch]
@@ -99,7 +99,7 @@ func (sc UserController) AlterPass(c *gin.Context) {
 		return
 	}
 	// 获取请求参数
-	reqBody := PassRequest{}
+	reqBody := UserPassRequest{}
 	if err := c.ShouldBindJSON(&reqBody); err != nil {
 		utils.ResponseFormat(c, code.RequestParamError, nil)
 		return

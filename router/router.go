@@ -45,7 +45,7 @@ func InitRouter() *gin.Engine {
 			// 账户注销
 			apiV1.POST("/auth/signout", authController.Signout)
 			// 查看用户信息
-			apiV1.GET("/user", userController.GetInfo)
+			apiV1.GET("/user", userController.Retrieve)
 			// 修改用户名称
 			apiV1.PATCH("/user/name", userController.AlterName)
 			// 修改用户密码
