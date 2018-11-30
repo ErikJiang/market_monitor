@@ -333,7 +333,7 @@
                         "required": true
                     },
                     {
-                        "description": "创建任务请求参数",
+                        "description": "修改任务请求参数",
                         "name": "body",
                         "in": "body",
                         "required": true,

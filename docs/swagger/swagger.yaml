@@ -303,7 +303,7 @@ paths:
         name: taskId
         required: true
         type: integer
-      - description: 创建任务请求参数
+      - description: 修改任务请求参数
         in: body
         name: body
         required: true

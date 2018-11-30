@@ -62,7 +62,7 @@ func (tc *TaskController) Create(c *gin.Context) {
 // @Tags task
 // @Param Authorization header string true "认证 Token 值"
 // @Param taskId path int true "任务ID"
-// @Param body body v1.TaskCreateRequest true "创建任务请求参数"
+// @Param body body v1.TaskCreateRequest true "修改任务请求参数"
 // @Success 200 {string} json "{"status":200, "code": 2000001, msg:"请求处理成功"}"
 // @Failure 400 {string} json "{"status":400, "code": 4000001, msg:"请求参数有误"}"
 // @Failure 500 {string} json "{"status":500, "code": 5000001, msg:"服务器内部错误"}"
