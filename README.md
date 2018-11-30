@@ -1,5 +1,14 @@
 # market_monitor
 
+* redis: [redigo](github.com/gomodule/redigo)
+* mysql: [gorm](github.com/jinzhu/gorm)
+* logger: [zerolog](github.com/rs/zerolog)
+* scheduler: [cron](github.com/robfig/cron)
+* config: [viper](github.com/spf13/viper)
+* json web token: [jwt-go](github.com/dgrijalva/jwt-go)
+* swagger docs: [swaggo](github.com/swaggo/gin-swagger)
+
+
 #### 1. 克隆项目
 ``` shell
 $ git clone https://github.com/JiangInk/market_monitor.git
