@@ -18,7 +18,7 @@
 vendor/*
 !vendor/vendor.json
 
-.idea/
+.idea/*
 
 # ignore upload image
 public/upload/img/*
