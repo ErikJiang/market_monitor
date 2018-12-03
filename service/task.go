@@ -50,3 +50,12 @@ func (ts *TaskService) UpdateInfo(taskID uint) (*models.Task, *code.Code) {
 	}
 	return updateTask, nil
 }
+
+func (ts *TaskService) RemoveTask(taskID uint) error {
+	taskModel := &models.Task {}
+	err := taskModel.DeleteOne(taskID)
+	if err != nil {
+		return err
+	}
+	return nil
+}

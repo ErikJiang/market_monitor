@@ -211,7 +211,29 @@ func (tc *TaskController) Update(c *gin.Context) {
 // @Failure 500 {string} json "{"status":500, "code": 5000001, msg:"服务器内部错误"}"
 // @Router /task/{taskId} [delete]
 func (tc *TaskController) Destroy(c *gin.Context) {
-	// todo
-	utils.ResponseFormat(c, code.Success, map[string]interface{}{})
+	log.Info().Msg("enter task destroy controller")
+	// 获取token信息
+	claims := c.MustGet("claims").(*jwt.CustomClaims)
+	if claims == nil {
+		utils.ResponseFormat(c, code.TokenInvalid, nil)
+		return
+	}
+	// 获取请求参数
+	taskId := c.Param("taskId")
+	u64Id, err := strconv.ParseUint(taskId, 10, 64)
+	if err != nil {
+		log.Error().Msg(err.Error())
+		utils.ResponseFormat(c, code.RequestParamError, nil)
+		return
+	}
+
+	taskService := service.TaskService{}
+	err = taskService.RemoveTask(uint(u64Id))
+	if err != nil {
+		utils.ResponseFormat(c, code.ServiceInsideError, nil)
+		return
+	}
+
+	utils.ResponseFormat(c, code.Success, map[string]interface{}{"taskId": uint(u64Id)})
 	return
 }

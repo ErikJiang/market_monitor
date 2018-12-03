@@ -11,7 +11,7 @@ import (
 )
 
 // AuthService 认证相关
-type AuthService struct{
+type AuthService struct {
 	User *models.User
 }
 
@@ -37,11 +37,11 @@ func (as *AuthService) GenerateToken(user models.User) (string, error) {
 
 	// 设置redis缓存
 	const hourSecs int = 60 * 60
-	redis.Set("TOKEN:"+user.Email, token, config.ServerConf.JWTExpire*hourSecs)
+	redis.Set("TOKEN:"+user.Email, token, config.ServerConf.JWTExpire * hourSecs)
 	return token, nil
 }
 
 // DestroyToken 销毁 Token
-func (as *AuthService) DestroyToken(email string) (bool, error){
+func (as *AuthService) DestroyToken(email string) (bool, error) {
 	return redis.Del("TOKEN:"+email)
 }

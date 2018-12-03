@@ -15,11 +15,13 @@ type UploadService struct {}
 
 // GetImgPath 获取图片相对目录
 func (us *UploadService) GetImgPath() string {
+	// todo conf
 	return "upload/img/"
 }
 
 // GetImgFullPath 获取图片完整目录
 func (us *UploadService) GetImgFullPath() string {
+	// todo conf
 	return "public/"+"upload/img/"
 }
 
@@ -28,17 +30,19 @@ func (us *UploadService) GetImgName(name string) string {
 	ext := path.Ext(name)
 	fileName := strings.TrimSuffix(name, ext)
 	fileName = utils.MakeSha1(fileName)
-	return fileName+ext
+	return fileName + ext
 }
 
 // GetImgFullUrl 获取图片完整URL
 func (us *UploadService) GetImgFullUrl(name string) string {
+	// todo conf
 	return "http://localhost:8000/"+"upload/img/"+name
 }
 
 // CheckImgExt 检查图片后缀是否满足要求
 func (us *UploadService) CheckImgExt(fileName string) bool {
 	ext := path.Ext(fileName)
+	// todo conf
 	for _, allowExt := range []string{".jpg",".jpeg",".png"} {
 		if strings.ToUpper(allowExt) == strings.ToUpper(ext) {
 			return true
@@ -54,6 +58,7 @@ func (us *UploadService) CheckImgSize(f multipart.File) bool {
 		log.Error().Msg(err.Error())
 		return false
 	}
+	// todo conf
 	// 单位转换 bytes to Megabyte
 	var converRatio float64 = 1024 * 1024
 	fileSize := float64(len(content)) / converRatio

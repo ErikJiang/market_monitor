@@ -39,15 +39,26 @@ func (task *Task) FindOne(condition map[string]interface{}) (*Task, error) {
 }
 
 // UpdateOne 修改任务
-func (task *Task) UpdateOne(TaskID uint, data map[string]interface{}) (*Task, error) {
-	err := DB.Model(&Task{}).Where("id = ?", TaskID).Updates(data).Error
+func (task *Task) UpdateOne(taskID uint, data map[string]interface{}) (*Task, error) {
+	err := DB.Model(&Task{}).Where("id = ?", taskID).Updates(data).Error
 	if err != nil {
 		return nil, err
 	}
 	var updTask Task
-	err = DB.Select([]string{"id", "userId", "type", "status", "rules"}).First(&updTask, TaskID).Error
+	err = DB.Select([]string{"id", "userId", "type", "status", "rules"}).First(&updTask, taskID).Error
 	if err != nil {
 		return nil, err
 	}
 	return &updTask, nil
+}
+
+// DeleteOne 删除任务
+func (task *Task) DeleteOne(taskID uint) error {
+	if err := DB.Select([]string{"id"}).First(&task, taskID).Error; err != nil {
+		return err
+	}
+	if err := DB.Delete(&task).Error; err != nil {
+		return err
+	}
+	return nil
 }
