@@ -2,6 +2,7 @@ package models
 
 import (
 	"github.com/jinzhu/gorm"
+	"github.com/pkg/errors"
 )
 
 // Task 任务表 model 定义
@@ -61,4 +62,18 @@ func (task *Task) DeleteOne(taskID uint) error {
 		return err
 	}
 	return nil
+}
+
+// Search 分页数据查询
+func (task *Task) Search(query interface{}, page int, pageSize int) ([]*Task, error) {
+	var tasks []*Task
+	err := DB.Offset(pageSize * (page - 1)).Limit(pageSize).Where(query).Find(&tasks).Error
+	return tasks, errors.WithStack(err)
+}
+
+// Count 分页总数查询
+func (task *Task) Count(query interface{}) (int, error) {
+	var count int
+	err := DB.Model(&Task{}).Where(query).Count(&count).Error
+	return count, errors.WithStack(err)
 }
