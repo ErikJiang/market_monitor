@@ -59,3 +59,16 @@ func (ts *TaskService) RemoveTask(taskID uint) error {
 	}
 	return nil
 }
+
+func (ts *TaskService) QueryByPage(condition interface{}, page, pageSize int) ([]*models.Task, int, error) {
+	taskModel := &models.Task{}
+	taskList, err := taskModel.Search(condition, page, pageSize)
+	if err != nil {
+		return nil, 0, err
+	}
+	count, err := taskModel.Count(condition)
+	if err != nil {
+		return nil, 0, err
+	}
+	return taskList, count, nil
+}

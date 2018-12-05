@@ -26,8 +26,41 @@ type TaskController struct{}
 // @Failure 500 {string} json "{"status":500, "code": 5000001, msg:"服务器内部错误"}"
 // @Router /task [get]
 func (tc *TaskController) List(c *gin.Context) {
-	// todo
-	utils.ResponseFormat(c, code.Success, map[string]interface{}{})
+	log.Info().Msg("enter task list controller")
+	// 获取token信息
+	claims := c.MustGet("claims").(*jwt.CustomClaims)
+	if claims == nil {
+		utils.ResponseFormat(c, code.TokenInvalid, nil)
+		return
+	}
+
+	pageStr := c.DefaultQuery("page", "1")
+	pageSizeStr := c.DefaultQuery("pageSize", "10")
+	page, err := strconv.ParseInt(pageStr, 10, 64)
+	if err != nil {
+		utils.ResponseFormat(c, code.ServiceInsideError, nil)
+		return
+	}
+	pageSize, err := strconv.ParseInt(pageSizeStr, 10, 64)
+	if err != nil {
+		utils.ResponseFormat(c, code.ServiceInsideError, nil)
+		return
+	}
+
+	condition := map[string]interface{}{
+		"test": "test",
+	}
+	taskService := service.TaskService{}
+	list, count, err := taskService.QueryByPage(condition, int(page), int(pageSize))
+	if err !=nil {
+		utils.ResponseFormat(c, code.ServiceInsideError, nil)
+		return
+	}
+
+	utils.ResponseFormat(c, code.Success, map[string]interface{}{
+		"count": count,
+		"list": list,
+	})
 	return
 }
 
