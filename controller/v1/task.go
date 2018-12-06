@@ -47,9 +47,7 @@ func (tc *TaskController) List(c *gin.Context) {
 		return
 	}
 
-	condition := map[string]interface{}{
-		"test": "test",
-	}
+	condition := map[string]interface{}{}
 	taskService := service.TaskService{}
 	list, count, err := taskService.QueryByPage(condition, int(page), int(pageSize))
 	if err !=nil {

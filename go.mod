@@ -42,7 +42,7 @@ require (
 	golang.org/x/tools v0.0.0-20181106213628-e21233ffa6c3 // indirect
 	google.golang.org/appengine v1.2.0 // indirect
 	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
-	gopkg.in/go-playground/validator.v8 v8.18.2 // indirect
+	gopkg.in/go-playground/validator.v8 v8.18.2
 	gopkg.in/go-playground/validator.v9 v9.23.0
 )
 

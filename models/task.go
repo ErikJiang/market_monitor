@@ -69,7 +69,9 @@ func (task *Task) DeleteOne(taskID uint) error {
 // Search 分页数据查询
 func (task *Task) Search(query interface{}, page int, pageSize int) ([]*Task, error) {
 	var tasks []*Task
-	err := DB.Offset(pageSize * (page - 1)).Limit(pageSize).Where(query).Find(&tasks).Error
+	err := DB.Preload("User", func(db *gorm.DB) *gorm.DB {
+		return db.Select("id,name,email,avatar,status")
+	}).Select("id, userId, type, status, rules").Offset(pageSize * (page - 1)).Limit(pageSize).Where(query).Find(&tasks).Error
 	return tasks, errors.WithStack(err)
 }
 

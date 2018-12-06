@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin/binding"
 	"gopkg.in/go-playground/validator.v9"
 )
-
+// Setup v8 to v9
 func Setup() {
 	binding.Validator = new(defaultValidator)
 }
