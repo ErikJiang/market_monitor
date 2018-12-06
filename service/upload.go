@@ -2,6 +2,7 @@ package service
 
 import (
 	"fmt"
+	"github.com/JiangInk/market_monitor/config"
 	"github.com/JiangInk/market_monitor/extend/utils"
 	"github.com/rs/zerolog/log"
 	"io/ioutil"
@@ -15,14 +16,12 @@ type UploadService struct {}
 
 // GetImgPath 获取图片相对目录
 func (us *UploadService) GetImgPath() string {
-	// todo conf
-	return "upload/img/"
+	return config.ServerConf.StaticRootPath
 }
 
 // GetImgFullPath 获取图片完整目录
 func (us *UploadService) GetImgFullPath() string {
-	// todo conf
-	return "public/"+"upload/img/"
+	return config.ServerConf.StaticRootPath + config.ServerConf.UploadImagePath
 }
 
 // GetImgName 获取图片名称
@@ -35,15 +34,13 @@ func (us *UploadService) GetImgName(name string) string {
 
 // GetImgFullUrl 获取图片完整URL
 func (us *UploadService) GetImgFullUrl(name string) string {
-	// todo conf
-	return "http://localhost:8000/"+"upload/img/"+name
+	return config.ServerConf.PrefixUrl + config.ServerConf.UploadImagePath + name
 }
 
 // CheckImgExt 检查图片后缀是否满足要求
 func (us *UploadService) CheckImgExt(fileName string) bool {
 	ext := path.Ext(fileName)
-	// todo conf
-	for _, allowExt := range []string{".jpg",".jpeg",".png"} {
+	for _, allowExt := range config.ServerConf.ImageFormats {
 		if strings.ToUpper(allowExt) == strings.ToUpper(ext) {
 			return true
 		}
@@ -58,12 +55,11 @@ func (us *UploadService) CheckImgSize(f multipart.File) bool {
 		log.Error().Msg(err.Error())
 		return false
 	}
-	// todo conf
 	// 单位转换 bytes to Megabyte
-	var converRatio float64 = 1024 * 1024
+	const converRatio float64 = 1024 * 1024
 	fileSize := float64(len(content)) / converRatio
-	// 文件大小不得超出5M
-	return fileSize <= float64(5)
+	// 文件大小不得超出上传限制：5M
+	return fileSize <= config.ServerConf.UploadLimit
 }
 
 // CheckImgPath 检测图片路径是否创建及权限是否满足

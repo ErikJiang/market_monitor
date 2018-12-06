@@ -29,7 +29,9 @@ func (task *Task) Insert() (taskID uint, err error) {
 // FindOne 查询任务信息
 func (task *Task) FindOne(condition map[string]interface{}) (*Task, error) {
 	var taskInfo Task
-	result := DB.Select("id, name, email, avatar, password").Where(condition).First(&taskInfo)
+	result := DB.Preload("User", func(db *gorm.DB) *gorm.DB {
+			return db.Select("id,name,email,avatar,status")
+	}).Select("id, userId, type, status, rules").Where(condition).First(&taskInfo)
 	if result.Error != nil && result.Error != gorm.ErrRecordNotFound {
 		return nil, result.Error
 	}

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/JiangInk/market_monitor/extend/validator"
 	"github.com/JiangInk/market_monitor/schedule"
 	"strconv"
 
@@ -34,6 +35,8 @@ func main() {
 	models.Setup()
 	// 缓存初始化
 	redis.Setup()
+	// 验证器初始化
+	validator.Setup()
 	// 调度任务初始化
 	schedule.Setup()
 

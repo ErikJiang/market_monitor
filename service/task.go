@@ -15,12 +15,13 @@ type TaskService struct{
 }
 
 // QueryByID 通过任务ID查询任务信息
-func (ts *TaskService) QueryByID() (*models.Task, error) {
+func (ts *TaskService) QueryByID() (task *models.Task, err error) {
 	taskModel := &models.Task{}
 	condition := map[string]interface{}{
 		"id": ts.TaskID,
 	}
-	return taskModel.FindOne(condition)
+	task, err = taskModel.FindOne(condition)
+	return
 }
 
 // StoreUser 添加用户

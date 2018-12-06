@@ -136,6 +136,7 @@ func (tc *TaskController) Create(c *gin.Context) {
 	// 获取请求参数
 	reqBody := TaskCreateRequest{}
 	if err := c.ShouldBindJSON(&reqBody); err != nil {
+		log.Error().Msg(err.Error())
 		utils.ResponseFormat(c, code.RequestParamError, nil)
 		return
 	}

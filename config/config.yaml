@@ -3,7 +3,15 @@ server:
   runMode: debug
   port: 8000
   jwtSecret: MARKET.MONITOR.SECRET
-  jwtExpire: 24 # 单位: 小时
+  jwtExpire: 24   # 单位: 小时
+  prefixUrl: http://127.0.0.1:8000
+  staticRootPath: public/
+  uploadImagePath: upload/img/
+  imageFormats:
+    - .jpg
+    - .jpeg
+    - .png
+  uploadLimit: 5  # 单位：Megabyte 兆字节
 
 # 邮箱配置
 email:
