@@ -1,6 +1,6 @@
 # :guardsman: market_monitor
 
-<img src="./public/gopher.png" alt="gopher" width="325" height="348"/>
+<img src="./public/gopher.png" alt="gopher" width="260" height="278"/>
 
 * web framework: [gin](https://github.com/gin-gonic/gin)
 * redis: [redigo](https://github.com/gomodule/redigo)
