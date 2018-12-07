@@ -49,7 +49,6 @@ github.com/golang/net v0.0.0-20181023162649-9b4f9f5ad519/go.mod h1:98y8FxUyMjTdJ
 github.com/golang/protobuf v1.2.0 h1:P3YflyNX/ehuJFLhxviNdFxQPkGK5cDcApsge1SqnvM=
 github.com/golang/protobuf v1.2.0/go.mod h1:6lQm79b+lXiMfvg/cZm0SGofjICqVBUtrP5yJMmIC1U=
 github.com/golang/sync v0.0.0-20180314180146-1d60e4601c6f/go.mod h1:YCHYtYb9c8Q7XgYVYjmJBPtFPKx5QvOcPxHZWjldabE=
-github.com/golang/sys v0.0.0-20181026203630-95b1ffbd15a5 h1:ZmOX/WAxPlURnlG64VtIYYdSssSVRJ8SrGzZSoWAags=
 github.com/golang/sys v0.0.0-20181026203630-95b1ffbd15a5/go.mod h1:5JyrLPvD/ZdaYkT7IqKhsP5xt7aLjA99KXRtk4EIYDk=
 github.com/golang/text v0.3.0 h1:uI5zIUA9cg047ctlTptnVc0Ghjfurf2eZMFrod8R7v8=
 github.com/golang/text v0.3.0/go.mod h1:GUiq9pdJKRKKAZXiVgWFEvocYuREvC14NhI4OPgEjeE=

@@ -1,5 +1,7 @@
 # :guardsman: market_monitor
 
+![gopher](./public/gopher.png)
+
 * web framework: [gin](https://github.com/gin-gonic/gin)
 * redis: [redigo](https://github.com/gomodule/redigo)
 * mysql: [gorm](https://github.com/jinzhu/gorm)
