@@ -35,16 +35,5 @@ $ export GOPROXY=https://goproxy.io
 
 ---
 
-#### 开发相关
-##### 1. 生成 swagger 文档：
-需要先安装：
-* github.com/swaggo/swag/cmd/swag
-* github.com/swaggo/gin-swagger
-* github.com/swaggo/gin-swagger/swaggerFiles
-
-`go get`无法下载，可以考虑使用[gopm](https://gopm.io/)进行下载；
-初始化生成文档
-``` bash
-$ swag init
-```
+> 简明教程请见:[WIKI](https://github.com/JiangInk/market_monitor/wiki)
 
