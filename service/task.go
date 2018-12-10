@@ -1,6 +1,7 @@
 package service
 
 import (
+	"encoding/json"
 	"github.com/JiangInk/market_monitor/extend/code"
 	"github.com/JiangInk/market_monitor/models"
 	"github.com/rs/zerolog/log"
@@ -61,15 +62,42 @@ func (ts *TaskService) RemoveTask(taskID uint) error {
 	return nil
 }
 
-func (ts *TaskService) QueryByPage(condition interface{}, page, pageSize int) ([]*models.Task, int, error) {
+type TaskRuleParam struct {
+	Operator string
+	WarnPrice float64
+}
+
+func (ts *TaskService) QueryByPage(condition interface{}, page, pageSize int) ([]map[string]interface{}, int, error) {
 	taskModel := &models.Task{}
 	taskList, err := taskModel.Search(condition, page, pageSize)
 	if err != nil {
 		return nil, 0, err
 	}
+
+	resList := make([]map[string]interface{}, len(taskList))
+	for i, v := range taskList {
+		log.Debug().Msgf("rule: %v, type: %T", v.Rules, v.Rules)
+		rule := TaskRuleParam{}
+		err := json.Unmarshal([]byte(v.Rules), &rule)
+		if err != nil {
+			log.Error().Msg(err.Error())
+			return nil, 0, err
+		}
+
+		resList[i] = map[string]interface{}{
+			"taskId": v.ID,
+			"userId": v.User.ID,
+			"email": v.User.Email,
+			"taskType": v.Type,
+			"status": v.Status,
+			"operator": rule.Operator,
+			"warnPrice": rule.WarnPrice,
+		}
+	}
+
 	count, err := taskModel.Count(condition)
 	if err != nil {
 		return nil, 0, err
 	}
-	return taskList, count, nil
+	return resList, count, nil
 }

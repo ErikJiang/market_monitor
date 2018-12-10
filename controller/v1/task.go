@@ -51,6 +51,7 @@ func (tc *TaskController) List(c *gin.Context) {
 	taskService := service.TaskService{}
 	list, count, err := taskService.QueryByPage(condition, int(page), int(pageSize))
 	if err !=nil {
+		log.Error().Msg(err.Error())
 		utils.ResponseFormat(c, code.ServiceInsideError, nil)
 		return
 	}
@@ -107,11 +108,6 @@ type TaskCreateRequest struct {
 	WarnPrice   float64 `json:"warnPrice" binding:"required"`                       // 预警价格
 }
 
-type TaskRuleParam struct {
-	Operator string
-	WarnPrice float64
-}
-
 // @Summary 添加新任务
 // @Description 当前用户添加新任务
 // @Accept json
@@ -140,9 +136,9 @@ func (tc *TaskController) Create(c *gin.Context) {
 	}
 
 	// 整理数据，userId、type、rule ...
-	rule := &TaskRuleParam{
-	reqBody.Operator,
-	reqBody.WarnPrice,
+	rule := &service.TaskRuleParam {
+		Operator: reqBody.Operator,
+		WarnPrice: reqBody.WarnPrice,
 	}
 	ruleJson, err := json.Marshal(rule)
 	if err != nil {
@@ -205,9 +201,9 @@ func (tc *TaskController) Update(c *gin.Context) {
 		utils.ResponseFormat(c, code.RequestParamError, nil)
 		return
 	}
-	rule := &TaskRuleParam {
-		reqBody.Operator,
-		reqBody.WarnPrice,
+	rule := &service.TaskRuleParam {
+		Operator: reqBody.Operator,
+		WarnPrice: reqBody.WarnPrice,
 	}
 	ruleJson, err := json.Marshal(rule)
 	if err != nil {
