@@ -66,6 +66,15 @@ func (task *Task) DeleteOne(taskID uint) error {
 	return nil
 }
 
+// Query 无分页查询
+func (task *Task) Query(query map[string]interface{}) ([]*Task, error) {
+	var tasks []*Task
+	err := DB.Preload("User", func(db *gorm.DB) *gorm.DB {
+		return db.Select("id,name,email,avatar,status")
+	}).Select("id, userId, type, status, rules").Where(query).Find(&tasks).Error
+	return tasks, errors.WithStack(err)
+}
+
 // Search 分页数据查询
 func (task *Task) Search(query interface{}, page int, pageSize int) ([]*Task, error) {
 	var tasks []*Task

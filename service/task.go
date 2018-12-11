@@ -25,6 +25,51 @@ func (ts *TaskService) QueryByID() (task *models.Task, err error) {
 	return
 }
 
+type TaskItem struct {
+	TaskId      uint
+	UserId      uint
+	Email       string
+	TaskType    string
+	Status      string
+	Operator    string
+	WarnPrice   float64
+}
+
+// QueryByType 通过类型查询相关任务列表
+func (ts *TaskService) QueryByType() ([]TaskItem, error) {
+	taskModel := &models.Task{}
+	condition := map[string]interface{} {
+		"type": ts.Type,
+		"status": "ENABLE",
+	}
+	tasks, err := taskModel.Query(condition)
+	if err != nil {
+		return nil, err
+	}
+
+	resList := make([]TaskItem, len(tasks))
+	for i, v := range tasks {
+		log.Debug().Msgf("rule: %v, type: %T", v.Rules, v.Rules)
+		rule := TaskRuleParam{}
+		err := json.Unmarshal([]byte(v.Rules), &rule)
+		if err != nil {
+			log.Error().Msg(err.Error())
+			return nil, err
+		}
+
+		resList[i] = TaskItem {
+			TaskId: v.ID,
+			UserId: v.User.ID,
+			Email: v.User.Email,
+			TaskType: v.Type,
+			Status: v.Status,
+			Operator: rule.Operator,
+			WarnPrice: rule.WarnPrice,
+		}
+	}
+	return resList, nil
+}
+
 // StoreUser 添加用户
 func (ts *TaskService) StoreTask() (taskID uint, err error) {
 	log.Info().Msg("enter StoreTask service")
@@ -67,14 +112,14 @@ type TaskRuleParam struct {
 	WarnPrice float64
 }
 
-func (ts *TaskService) QueryByPage(condition interface{}, page, pageSize int) ([]map[string]interface{}, int, error) {
+func (ts *TaskService) QueryByPage(condition interface{}, page, pageSize int) ([]TaskItem, int, error) {
 	taskModel := &models.Task{}
 	taskList, err := taskModel.Search(condition, page, pageSize)
 	if err != nil {
 		return nil, 0, err
 	}
 
-	resList := make([]map[string]interface{}, len(taskList))
+	resList := make([]TaskItem, len(taskList))
 	for i, v := range taskList {
 		log.Debug().Msgf("rule: %v, type: %T", v.Rules, v.Rules)
 		rule := TaskRuleParam{}
@@ -84,14 +129,14 @@ func (ts *TaskService) QueryByPage(condition interface{}, page, pageSize int) ([
 			return nil, 0, err
 		}
 
-		resList[i] = map[string]interface{}{
-			"taskId": v.ID,
-			"userId": v.User.ID,
-			"email": v.User.Email,
-			"taskType": v.Type,
-			"status": v.Status,
-			"operator": rule.Operator,
-			"warnPrice": rule.WarnPrice,
+		resList[i] = TaskItem {
+			TaskId: v.ID,
+			UserId: v.User.ID,
+			Email: v.User.Email,
+			TaskType: v.Type,
+			Status: v.Status,
+			Operator: rule.Operator,
+			WarnPrice: rule.WarnPrice,
 		}
 	}
 

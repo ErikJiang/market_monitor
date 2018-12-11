@@ -3,10 +3,10 @@ package schedule
 import (
 
 	"bytes"
+	"github.com/JiangInk/market_monitor/service"
 	"html/template"
 	"github.com/JiangInk/market_monitor/extend/api"
 	"github.com/JiangInk/market_monitor/extend/email"
-	_ "github.com/robfig/cron"
 	"github.com/rs/zerolog/log"
 )
 
@@ -22,25 +22,61 @@ func Task1MarketTicker() {
 	earlyWarnCheck(tick)
 }
 
+type data struct {
+	UserName    string
+	Email       string
+}
+
+type rule struct {
+	Operator    string  `json:"operator"`   // 运算符 LT:"<" LTE:"<=" GT:">" GTE:">="
+	WarnPrice   float64 `json:"warnPrice"`  // 预警价格
+
+}
 // 预警检测
 func earlyWarnCheck(tick api.Ticker) {
 
 	// 1. 获取当前任务类型的任务列表
+	taskService := service.TaskService{
+		Type: "TICKER",
+	}
+	list, err := taskService.QueryByType()
+	if err != nil {
+		log.Error().Msg(err.Error())
+		return
+	}
+	log.Debug().Msgf("list: %v", list)
+	// LT LTE GT GTE // 运算符 LT:"<" LTE:"<=" GT:">" GTE:">="
+	var flag1 bool = false
+	for _, v := range list {
+		//flag1 = false
+		switch v.Operator {
+		case "LT":
+			if tick.Last < v.WarnPrice {
+				flag1 = true
+			}
+		case "LTE":
+			if tick.Last <= v.WarnPrice {
+				flag1 = true
+			}
+		case "GT":
+			if tick.Last > v.WarnPrice {
+				flag1 = true
+			}
+		case "GTE":
+			if tick.Last >= v.WarnPrice {
+				flag1 = true
+			}
+		default:
+			flag1 = false
+		}
+	}
+	log.Print(flag1)
+
 
 	// 2. 在任务列表中筛选符合预警规则的任务
 
 	// 3. 达到预警条件的任务，批量发送邮件
 
-	type data struct {
-		UserName    string
-		Email       string
-	}
-
-	type rule struct {
-		Operator    string  `json:"operator"`   // 运算符 LT:"<" LTE:"<=" GT:">" GTE:">="
-		WarnPrice   float64 `json:"warnPrice"`  // 预警价格
-
-	}
 
 	isOK := sendWarnNotify(tick)
 	if isOK != true {

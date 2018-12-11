@@ -11,12 +11,12 @@ func Setup() {
 	c := cron.New()
 	c.AddFunc("0 */1 * * * *", func() {
 		log.Debug().Msg("Run Task One ...")
-
+		Task1MarketTicker()
 	})
-	c.AddFunc("*/20 * * * * *", func() {
-		log.Debug().Msg("Run Task Two ...")
-
-	})
+	//c.AddFunc("*/20 * * * * *", func() {
+	//	log.Debug().Msg("Run Task Two ...")
+	//
+	//})
 
 	c.Start()
 }

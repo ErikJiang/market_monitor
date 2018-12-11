@@ -11,14 +11,14 @@ import (
 )
 
 type Ticker struct {
-	BaseVolume    string `json:"baseVolume"`    // 交易量
-	Last          string `json:"last"`          // 最新成交价
-	HighestBid    string `json:"highestBid"`    // 买方最高价
-	High24hr      string `json:"high24hr"`      // 24小时最高价
-	LowestAsk     string `json:"lowestAsk"`     // 卖方最低价
-	Low24hr       string `json:"low24hr"`       // 24小时最低价
-	PercentChange string `json:"percentChange"` // 涨跌百分比
-	QuoteVolume   string `json:"quoteVolume"`   // 兑换货币交易量
+	BaseVolume    string    `json:"baseVolume"`    // 交易量
+	Last          float64   `json:"last"`          // 最新成交价
+	HighestBid    string    `json:"highestBid"`    // 买方最高价
+	High24hr      string    `json:"high24hr"`      // 24小时最高价
+	LowestAsk     string    `json:"lowestAsk"`     // 卖方最低价
+	Low24hr       string    `json:"low24hr"`       // 24小时最低价
+	PercentChange string    `json:"percentChange"` // 涨跌百分比
+	QuoteVolume   string    `json:"quoteVolume"`   // 兑换货币交易量
 }
 
 func GetTicker(currency string) (tick Ticker, err error) {
