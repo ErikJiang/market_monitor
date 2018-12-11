@@ -8,6 +8,7 @@ import (
 	"github.com/JiangInk/market_monitor/extend/api"
 	"github.com/JiangInk/market_monitor/extend/email"
 	"github.com/rs/zerolog/log"
+	"strconv"
 )
 
 // 行情提醒
@@ -22,16 +23,6 @@ func Task1MarketTicker() {
 	earlyWarnCheck(tick)
 }
 
-type data struct {
-	UserName    string
-	Email       string
-}
-
-type rule struct {
-	Operator    string  `json:"operator"`   // 运算符 LT:"<" LTE:"<=" GT:">" GTE:">="
-	WarnPrice   float64 `json:"warnPrice"`  // 预警价格
-
-}
 // 预警检测
 func earlyWarnCheck(tick api.Ticker) {
 
@@ -45,60 +36,88 @@ func earlyWarnCheck(tick api.Ticker) {
 		return
 	}
 	log.Debug().Msgf("list: %v", list)
-	// LT LTE GT GTE // 运算符 LT:"<" LTE:"<=" GT:">" GTE:">="
-	var flag1 bool = false
-	for _, v := range list {
-		//flag1 = false
-		switch v.Operator {
-		case "LT":
-			if tick.Last < v.WarnPrice {
-				flag1 = true
-			}
-		case "LTE":
-			if tick.Last <= v.WarnPrice {
-				flag1 = true
-			}
-		case "GT":
-			if tick.Last > v.WarnPrice {
-				flag1 = true
-			}
-		case "GTE":
-			if tick.Last >= v.WarnPrice {
-				flag1 = true
-			}
-		default:
-			flag1 = false
-		}
-	}
-	log.Print(flag1)
-
-
-	// 2. 在任务列表中筛选符合预警规则的任务
-
-	// 3. 达到预警条件的任务，批量发送邮件
-
-
-	isOK := sendWarnNotify(tick)
-	if isOK != true {
-		log.Info().Msg("send email notify fail")
+	// 运算符 LT:"<" LTE:"<=" GT:">" GTE:">="
+	var pendingList []service.TaskItem
+	lastPrice, err := strconv.ParseFloat(tick.Last, 64)
+	if err != nil {
+		log.Error().Msg(err.Error())
 		return
 	}
-	log.Info().Msg("send email notify success")
-	return
+	for _, v := range list {
+		flag := false
+		switch v.Operator {
+		case "LT":
+			if lastPrice < v.WarnPrice {
+				flag = true
+			}
+		case "LTE":
+			if lastPrice <= v.WarnPrice {
+				flag = true
+			}
+		case "GT":
+			if lastPrice > v.WarnPrice {
+				flag = true
+			}
+		case "GTE":
+			if lastPrice >= v.WarnPrice {
+				flag = true
+			}
+		default:
+			flag = false
+		}
+		// 如果满足预警规则条件，则添加到待处理切片中
+		if flag {
+			pendingList = append(pendingList, v)
+		}
+	}
+
+	// 达到预警条件的任务，批量发送邮件
+	for _, item := range pendingList {
+		isok := sendWarnNotify(tick, item)
+		if isok != true {
+			log.Info().Msgf("send email notify fail, username: %s", item.UserName)
+			return
+		}
+		log.Info().Msgf("send email notify success, username: %s", item.UserName)
+	}
 
 }
 
-func sendWarnNotify(tick api.Ticker) bool {
+type EmailNotify struct {
+	Title     string
+	UserName  string
+	Token     string
+	LastPrice string
+	TickData  api.Ticker
+}
 
-	subject := "行情预警通知"
-	recvEmail := "jiangink@foxmail.com"
-	// 生成邮件模板内容
-	content, err := genTemplate(tick)
+// sendWarnNotify 发送预警消息
+func sendWarnNotify(tick api.Ticker, task service.TaskItem) bool {
+	// 获取邮件模板
+	tmpl, err := template.ParseFiles("templates/email.html")
 	if err != nil {
+		log.Error().Msg(err.Error())
 		return false
 	}
-	// 发送邮件
-	err = email.SendEmail(subject, recvEmail, content)
+
+	subject := "行情预警提醒！"
+	data := EmailNotify {
+		Title:     subject,
+		UserName:  task.UserName,
+		Token:     task.Token,
+		LastPrice: tick.Last,
+		TickData:  tick,
+	}
+
+	// 渲染模板内容
+	var buff bytes.Buffer
+	if err := tmpl.Execute(&buff, data); err != nil {
+		log.Error().Msg(err.Error())
+		return false
+	}
+
+	// 发送预警邮箱
+	err = email.SendEmail(subject, task.Email, buff.String())
 	if err != nil {
 		return false
 	}
@@ -106,32 +125,3 @@ func sendWarnNotify(tick api.Ticker) bool {
 }
 
 
-type EmailNotifyData struct {
-	Title     string
-	UserName  string
-	Token     string
-	LastPrice string
-	TickData  api.Ticker
-}
-// 生成邮件模板
-func genTemplate(tick api.Ticker) (string, error) {
-	tmpl, err := template.ParseFiles("templates/email.html")
-	if err != nil {
-		log.Error().Msg(err.Error())
-		return "", err
-	}
-	data := EmailNotifyData {
-		Title:     "行情预警提醒！",
-		UserName:  "Jason Marz",
-		Token:     "EOS",
-		LastPrice: "5.08",
-		TickData:  tick,
-	}
-
-	var buff bytes.Buffer
-	if err := tmpl.Execute(&buff, data); err != nil {
-		log.Error().Msg(err.Error())
-		return "", err
-	}
-	return buff.String(), nil
-}

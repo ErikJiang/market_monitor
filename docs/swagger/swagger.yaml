@@ -29,11 +29,14 @@ definitions:
         type: string
       taskType:
         type: string
+      token:
+        type: string
       warnPrice:
         type: number
     required:
     - operator
     - taskType
+    - token
     - warnPrice
     type: object
   v1.UserEditRequest:

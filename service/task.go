@@ -28,9 +28,11 @@ func (ts *TaskService) QueryByID() (task *models.Task, err error) {
 type TaskItem struct {
 	TaskId      uint
 	UserId      uint
+	UserName    string
 	Email       string
 	TaskType    string
 	Status      string
+	Token       string
 	Operator    string
 	WarnPrice   float64
 }
@@ -60,9 +62,11 @@ func (ts *TaskService) QueryByType() ([]TaskItem, error) {
 		resList[i] = TaskItem {
 			TaskId: v.ID,
 			UserId: v.User.ID,
+			UserName: v.User.UserName,
 			Email: v.User.Email,
 			TaskType: v.Type,
 			Status: v.Status,
+			Token: rule.Token,
 			Operator: rule.Operator,
 			WarnPrice: rule.WarnPrice,
 		}
@@ -108,8 +112,9 @@ func (ts *TaskService) RemoveTask(taskID uint) error {
 }
 
 type TaskRuleParam struct {
-	Operator string
-	WarnPrice float64
+	Token       string
+	Operator    string
+	WarnPrice   float64
 }
 
 func (ts *TaskService) QueryByPage(condition interface{}, page, pageSize int) ([]TaskItem, int, error) {
@@ -132,9 +137,11 @@ func (ts *TaskService) QueryByPage(condition interface{}, page, pageSize int) ([
 		resList[i] = TaskItem {
 			TaskId: v.ID,
 			UserId: v.User.ID,
+			UserName: v.User.UserName,
 			Email: v.User.Email,
 			TaskType: v.Type,
 			Status: v.Status,
+			Token: rule.Token,
 			Operator: rule.Operator,
 			WarnPrice: rule.WarnPrice,
 		}

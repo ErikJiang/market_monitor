@@ -628,6 +628,7 @@
             "required": [
                 "operator",
                 "taskType",
+                "token",
                 "warnPrice"
             ],
             "properties": {
@@ -635,6 +636,9 @@
                     "type": "string"
                 },
                 "taskType": {
+                    "type": "string"
+                },
+                "token": {
                     "type": "string"
                 },
                 "warnPrice": {

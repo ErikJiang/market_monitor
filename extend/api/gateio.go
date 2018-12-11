@@ -12,7 +12,7 @@ import (
 
 type Ticker struct {
 	BaseVolume    string    `json:"baseVolume"`    // 交易量
-	Last          float64   `json:"last"`          // 最新成交价
+	Last          string    `json:"last"`          // 最新成交价
 	HighestBid    string    `json:"highestBid"`    // 买方最高价
 	High24hr      string    `json:"high24hr"`      // 24小时最高价
 	LowestAsk     string    `json:"lowestAsk"`     // 卖方最低价
@@ -23,7 +23,7 @@ type Ticker struct {
 
 func GetTicker(currency string) (tick Ticker, err error) {
 
-	log.Println("currnecy: ", currency)
+	log.Println("currency: ", currency)
 	const url = "https://data.gateio.io/api2/1/ticker/eos_usdt"
 	resp, err := http.Get(url)
 	if err != nil {
@@ -47,7 +47,7 @@ func GetTicker(currency string) (tick Ticker, err error) {
 // 行情信息打印
 func colorPrinter(tick Ticker) {
 	color.Red("【当前市场行情】")
-	color.Magenta("用户名称:\tink")
+	color.Magenta("参照数据:\tgate.io")
 	color.Green("当前币种:\tEOS")
 	color.Blue("当前时间:\t%s", time.Now().Format("2006-01-02 15:04:05"))
 	color.Cyan("交易量:\t\t%s", tick.BaseVolume)
