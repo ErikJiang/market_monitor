@@ -36,5 +36,5 @@ $ export GOPROXY=https://goproxy.io
 
 ---
 
-> 简明教程请见:[WIKI](https://github.com/JiangInk/market_monitor/wiki)
+> 简明教程请见: [WIKI](https://github.com/JiangInk/market_monitor/wiki)
 
