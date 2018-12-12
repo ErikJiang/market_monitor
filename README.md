@@ -31,7 +31,8 @@ $ go run main.go
 ``` shell
 $ export GOPROXY=https://goproxy.io
 ```
-
+接口文档可访问: 
+[`http://localhost:8000/swagger/index.html`](http://localhost:8000/swagger/index.html)
 
 ---
 
