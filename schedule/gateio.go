@@ -13,20 +13,15 @@ import (
 
 // 行情提醒
 func Task1MarketTicker() {
-	tick, err := api.GetTicker("EOS")
-	if err != nil {
-		log.Error().Msg(err.Error())
-		return
-	}
 
 	// 预警检测
-	earlyWarnCheck(tick)
+	earlyWarnCheck()
 }
 
 // 预警检测
-func earlyWarnCheck(tick api.Ticker) {
+func earlyWarnCheck() {
 
-	// 1. 获取当前任务类型的任务列表
+	// 获取当前任务类型的任务列表
 	taskService := service.TaskService{
 		Type: "TICKER",
 	}
@@ -36,15 +31,22 @@ func earlyWarnCheck(tick api.Ticker) {
 		return
 	}
 	log.Debug().Msgf("list: %v", list)
-	// 运算符 LT:"<" LTE:"<=" GT:">" GTE:">="
-	var pendingList []service.TaskItem
-	lastPrice, err := strconv.ParseFloat(tick.Last, 64)
-	if err != nil {
-		log.Error().Msg(err.Error())
-		return
-	}
+
 	for _, v := range list {
 		flag := false
+		// 获取预警条目币种对应的当前市场行情
+		tick, err := api.GetTicker(v.Token)
+		if err != nil {
+			log.Error().Msg(err.Error())
+			return
+		}
+		// 将最新成交价转换为float64类型
+		lastPrice, err := strconv.ParseFloat(tick.Last, 64)
+		if err != nil {
+			log.Error().Msg(err.Error())
+			return
+		}
+		// 进行预警规则比较，运算符 LT:"<" LTE:"<=" GT:">" GTE:">="
 		switch v.Operator {
 		case "LT":
 			if lastPrice < v.WarnPrice {
@@ -65,20 +67,16 @@ func earlyWarnCheck(tick api.Ticker) {
 		default:
 			flag = false
 		}
-		// 如果满足预警规则条件，则添加到待处理切片中
-		if flag {
-			pendingList = append(pendingList, v)
-		}
-	}
 
-	// 达到预警条件的任务，批量发送邮件
-	for _, item := range pendingList {
-		isok := sendWarnNotify(tick, item)
-		if isok != true {
-			log.Info().Msgf("send email notify fail, username: %s", item.UserName)
-			return
+		if flag {
+			// 满足预警规则的任务，发送通知邮件
+			isok := sendWarnNotify(tick, v)
+			if isok != true {
+				log.Info().Msgf("send email notify fail, username: %s", v.UserName)
+				return
+			}
+			log.Info().Msgf("send email notify success, username: %s", v.UserName)
 		}
-		log.Info().Msgf("send email notify success, username: %s", item.UserName)
 	}
 
 }

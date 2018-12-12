@@ -633,16 +633,32 @@
             ],
             "properties": {
                 "operator": {
-                    "type": "string"
+                    "type": "string",
+                    "enum": [
+                        "LT",
+                        "LTE",
+                        "GT",
+                        "GTE"
+                    ]
                 },
                 "taskType": {
-                    "type": "string"
+                    "type": "string",
+                    "enum": [
+                        "TICKER",
+                        "OTHER"
+                    ]
                 },
                 "token": {
-                    "type": "string"
+                    "type": "string",
+                    "enum": [
+                        "BTC",
+                        "ETH",
+                        "EOS"
+                    ]
                 },
                 "warnPrice": {
-                    "type": "number"
+                    "type": "number",
+                    "default": 0
                 }
             }
         },

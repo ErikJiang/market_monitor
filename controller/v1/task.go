@@ -103,10 +103,10 @@ func (tc *TaskController) Retrieve(c *gin.Context) {
 }
 
 type TaskCreateRequest struct {
-	Token       string  `json:"token" binding:"required"`                           // 数字币种类型
-	TaskType    string  `json:"taskType" binding:"required,oneof= TICKER OTHER"`    // 任务类型
-	Operator    string  `json:"operator" binding:"required,oneof= LT LTE GT GTE"`   // 运算符 LT:"<" LTE:"<=" GT:">" GTE:">="
-	WarnPrice   float64 `json:"warnPrice" binding:"required"`                       // 预警价格
+	Token       string  `json:"token" binding:"required,oneof= BTC ETH EOS" enums:"BTC,ETH,EOS"`       // 数字币种类型 目前支持: BTC ETH EOS
+	TaskType    string  `json:"taskType" binding:"required,oneof= TICKER OTHER" enums:"TICKER,OTHER"`    // 任务类型
+	Operator    string  `json:"operator" binding:"required,oneof= LT LTE GT GTE" enums:"LT,LTE,GT,GTE"`   // 运算符 LT:"<" LTE:"<=" GT:">" GTE:">="
+	WarnPrice   float64 `json:"warnPrice" binding:"required" default:"0.00"`                       // 预警价格
 }
 
 // @Summary 添加新任务

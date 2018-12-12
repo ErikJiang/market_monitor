@@ -2,9 +2,10 @@ package api
 
 import (
 	"encoding/json"
+	"github.com/rs/zerolog/log"
 	"io/ioutil"
-	"log"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/fatih/color"
@@ -21,10 +22,9 @@ type Ticker struct {
 	QuoteVolume   string    `json:"quoteVolume"`   // 兑换货币交易量
 }
 
-func GetTicker(currency string) (tick Ticker, err error) {
-
-	log.Println("currency: ", currency)
-	const url = "https://data.gateio.io/api2/1/ticker/eos_usdt"
+func GetTicker(token string) (tick Ticker, err error) {
+	log.Info().Msgf("enter getTicker, token: %s", token)
+	var url = "https://data.gateio.io/api2/1/ticker/"+ strings.ToLower(token) +"_usdt"
 	resp, err := http.Get(url)
 	if err != nil {
 		return tick, err
@@ -39,16 +39,16 @@ func GetTicker(currency string) (tick Ticker, err error) {
 	json.Unmarshal(body, &tick)
 
 	// 展示行情信息
-	colorPrinter(tick)
+	colorPrinter(url, token, tick)
 
 	return tick, nil
 }
 
 // 行情信息打印
-func colorPrinter(tick Ticker) {
+func colorPrinter(url, token string, tick Ticker) {
 	color.Red("【当前市场行情】")
-	color.Magenta("参照数据:\tgate.io")
-	color.Green("当前币种:\tEOS")
+	color.Magenta("数据来源:\t%s", url)
+	color.Green("当前币种:\t%s", token)
 	color.Blue("当前时间:\t%s", time.Now().Format("2006-01-02 15:04:05"))
 	color.Cyan("交易量:\t\t%s", tick.BaseVolume)
 	color.Cyan("最新成交价:\t%s", tick.Last)

@@ -26,12 +26,25 @@ definitions:
   v1.TaskCreateRequest:
     properties:
       operator:
+        enum:
+        - LT
+        - LTE
+        - GT
+        - GTE
         type: string
       taskType:
+        enum:
+        - TICKER
+        - OTHER
         type: string
       token:
+        enum:
+        - BTC
+        - ETH
+        - EOS
         type: string
       warnPrice:
+        default: 0
         type: number
     required:
     - operator
