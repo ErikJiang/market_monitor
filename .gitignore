@@ -18,7 +18,13 @@
 vendor/*
 !vendor/vendor.json
 
+# code editor config
 .idea/*
+.vscode/
 
 # ignore upload image
 public/upload/img/*
+
+# debug
+debug
+

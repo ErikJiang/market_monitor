@@ -32,6 +32,7 @@ func (sc UserController) Retrieve(c *gin.Context) {
 	}
 }
 
+// UserEditRequest 用户编辑请求参数
 type UserEditRequest struct {
 	Name string `json:"name" binding:"required,max=20"`
 }
@@ -75,6 +76,7 @@ func (sc UserController) AlterName(c *gin.Context) {
 	})
 }
 
+// UserPassRequest 修改用户密码请求参数
 type UserPassRequest struct {
 	OldPass string `json:"oldPass" binding:"required,max=50"`
 	NewPass string `json:"newPass" binding:"required,max=50"`

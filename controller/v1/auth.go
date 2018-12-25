@@ -12,6 +12,7 @@ import (
 // AuthController 用户控制器
 type AuthController struct{}
 
+// SignupRequest 账号注册请求参数
 type SignupRequest struct {
 	Email       string `json:"email" binding:"required,email"`
 	AccountPass string `json:"accountPass" binding:"required"`
@@ -62,6 +63,7 @@ func (ac AuthController) Signup(c *gin.Context) {
 	return
 }
 
+// SigninRequest 账号登录请求参数
 type SigninRequest struct {
 	Email string `json:"email" binding:"required,email"`
 	Password string `json:"password" binding:"required,max=20"`

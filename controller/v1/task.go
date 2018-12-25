@@ -82,8 +82,8 @@ func (tc *TaskController) Retrieve(c *gin.Context) {
 		return
 	}
 	// 获取请求参数
-	taskId := c.Param("taskId")
-	u64Id, err := strconv.ParseUint(taskId, 10, 64)
+	taskID := c.Param("taskId")
+	u64Id, err := strconv.ParseUint(taskID, 10, 64)
 	if err != nil {
 		log.Error().Msg(err.Error())
 		utils.ResponseFormat(c, code.RequestParamError, nil)
@@ -102,6 +102,7 @@ func (tc *TaskController) Retrieve(c *gin.Context) {
 	return
 }
 
+// TaskCreateRequest 任务创建请求参数
 type TaskCreateRequest struct {
 	Token       string  `json:"token" binding:"required,oneof= BTC ETH EOS" enums:"BTC,ETH,EOS"`       // 数字币种类型 目前支持: BTC ETH EOS
 	TaskType    string  `json:"taskType" binding:"required,oneof= TICKER OTHER" enums:"TICKER,OTHER"`    // 任务类型
@@ -142,7 +143,7 @@ func (tc *TaskController) Create(c *gin.Context) {
 		Operator: reqBody.Operator,
 		WarnPrice: reqBody.WarnPrice,
 	}
-	ruleJson, err := json.Marshal(rule)
+	ruleJSON, err := json.Marshal(rule)
 	if err != nil {
 		utils.ResponseFormat(c, code.ServiceInsideError, nil)
 		return
@@ -152,7 +153,7 @@ func (tc *TaskController) Create(c *gin.Context) {
 	taskService := service.TaskService{
 		UserID: int(claims.ID),
 		Type: reqBody.TaskType,
-		Rules: string(ruleJson),
+		Rules: string(ruleJSON),
 	}
 	taskID, err := taskService.StoreTask()
 	if err != nil {
@@ -189,8 +190,8 @@ func (tc *TaskController) Update(c *gin.Context) {
 		return
 	}
 	// 获取请求参数
-	taskId := c.Param("taskId")
-	u64Id, err := strconv.ParseUint(taskId, 10, 64)
+	taskID := c.Param("taskId")
+	u64Id, err := strconv.ParseUint(taskID, 10, 64)
 	if err != nil {
 		log.Error().Msg(err.Error())
 		utils.ResponseFormat(c, code.RequestParamError, nil)
@@ -207,7 +208,7 @@ func (tc *TaskController) Update(c *gin.Context) {
 		Operator: reqBody.Operator,
 		WarnPrice: reqBody.WarnPrice,
 	}
-	ruleJson, err := json.Marshal(rule)
+	ruleJSON, err := json.Marshal(rule)
 	if err != nil {
 		utils.ResponseFormat(c, code.ServiceInsideError, nil)
 		return
@@ -216,7 +217,7 @@ func (tc *TaskController) Update(c *gin.Context) {
 	taskService := service.TaskService{
 		UserID: int(claims.ID),
 		Type: reqBody.TaskType,
-		Rules: string(ruleJson),
+		Rules: string(ruleJSON),
 	}
 
 	task, msgCode := taskService.UpdateInfo(uint(u64Id))
@@ -249,8 +250,8 @@ func (tc *TaskController) Destroy(c *gin.Context) {
 		return
 	}
 	// 获取请求参数
-	taskId := c.Param("taskId")
-	u64Id, err := strconv.ParseUint(taskId, 10, 64)
+	taskID := c.Param("taskId")
+	u64Id, err := strconv.ParseUint(taskID, 10, 64)
 	if err != nil {
 		log.Error().Msg(err.Error())
 		utils.ResponseFormat(c, code.RequestParamError, nil)
