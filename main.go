@@ -3,13 +3,18 @@ package main
 import (
 	"github.com/JiangInk/market_monitor/extend/validator"
 	"github.com/JiangInk/market_monitor/schedule"
-	"strconv"
-
+	"net/http"
+	"context"
+	"fmt"
+    "os"
+    "os/signal"
+    "time"
 	"github.com/JiangInk/market_monitor/config"
 	"github.com/JiangInk/market_monitor/extend/logger"
 	"github.com/JiangInk/market_monitor/extend/redis"
 	"github.com/JiangInk/market_monitor/models"
 	"github.com/JiangInk/market_monitor/router"
+	"github.com/rs/zerolog/log"
 )
 
 // @title Market Monitor API
@@ -40,7 +45,31 @@ func main() {
 	// 调度任务初始化
 	schedule.Setup()
 
-	r := router.InitRouter()
-	// 服务监听
-	r.Run(":" + strconv.Itoa(config.ServerConf.Port))
+	router := router.InitRouter()
+
+	serv := &http.Server{
+		Addr:			fmt.Sprintf(":%d", config.ServerConf.Port),
+		Handler:		router,
+		ReadTimeout:	config.ServerConf.ReadTimeout,
+		WriteTimeout:	config.ServerConf.WriteTimeout,
+		MaxHeaderBytes:	1 << 20,
+	}
+
+	go func() {
+		if err := serv.ListenAndServe(); err != nil {
+			log.Error().Msgf("Listen: %s", err)
+		}
+	}()
+
+	quit := make(chan os.Signal)
+	signal.Notify(quit, os.Interrupt)
+	<- quit
+	log.Info().Msg("Shutdown Server ...")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5 * time.Second)
+	defer cancel()
+	if err := serv.Shutdown(ctx); err != nil {
+		log.Error().Msgf("Server Shutdown: %v", err)
+	}
+	log.Info().Msg("Server exiting")
 }

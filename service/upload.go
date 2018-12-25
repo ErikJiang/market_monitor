@@ -34,7 +34,7 @@ func (us *UploadService) GetImgName(name string) string {
 
 // GetImgFullUrl 获取图片完整URL
 func (us *UploadService) GetImgFullUrl(name string) string {
-	return config.ServerConf.PrefixUrl + config.ServerConf.UploadImagePath + name
+	return config.ServerConf.PrefixURL + config.ServerConf.UploadImagePath + name
 }
 
 // CheckImgExt 检查图片后缀是否满足要求
