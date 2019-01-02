@@ -7,10 +7,6 @@ require (
 	github.com/denisenkom/go-mssqldb v0.0.0-20181014144952-4e0d7dc8888f // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/erikstmartin/go-testdb v0.0.0-20160219214506-8d10e4a1bae5 // indirect
-	github.com/facebookgo/clock v0.0.0-20150410010913-600d898af40a // indirect
-	github.com/facebookgo/grace v0.0.0-20180706040059-75cf19382434 // indirect
-	github.com/facebookgo/httpdown v0.0.0-20180706035922-5979d39b15c2 // indirect
-	github.com/facebookgo/stats v0.0.0-20151006221625-1b76add642e4 // indirect
 	github.com/fatih/color v1.7.0
 	github.com/gin-contrib/cors v0.0.0-20181008113111-488de3ec974f
 	github.com/gin-contrib/sse v0.0.0-20170109093832-22d885f9ecc7 // indirect
@@ -56,7 +52,6 @@ replace (
 	golang.org/x/net v0.0.0-20181023162649-9b4f9f5ad519 => github.com/golang/net v0.0.0-20181023162649-9b4f9f5ad519
 	golang.org/x/sync v0.0.0-20180314180146-1d60e4601c6f => github.com/golang/sync v0.0.0-20180314180146-1d60e4601c6f
 	golang.org/x/sys v0.0.0-20181026203630-95b1ffbd15a5 => github.com/golang/sys v0.0.0-20181026203630-95b1ffbd15a5
-	golang.org/x/text v0.3.0 => github.com/golang/text v0.3.0
 	golang.org/x/tools v0.0.0-20181106213628-e21233ffa6c3 => github.com/golang/tools v0.0.0-20181106213628-e21233ffa6c3
 	google.golang.org/appengine v1.2.0 => github.com/golang/appengine v1.2.0
 )
