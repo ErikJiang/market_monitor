@@ -4,7 +4,7 @@ import (
 	"errors"
 	"time"
 
-	"github.com/JiangInk/market_monitor/config"
+	"github.com/JiangInk/market_monitor/extend/conf"
 	"github.com/dgrijalva/jwt-go"
 )
 
@@ -15,7 +15,7 @@ type JWT struct {
 
 // NewJWT 创建 JWT 实例
 func NewJWT() *JWT {
-	return &JWT{[]byte(config.ServerConf.JWTSecret)}
+	return &JWT{[]byte(conf.ServerConf.JWTSecret)}
 }
 
 var (
@@ -82,7 +82,7 @@ func (j *JWT) RefreshToken(token string) (string, error) {
 	}
 	if claims, ok := tokenClaims.Claims.(*CustomClaims); ok && tokenClaims.Valid {
 		jwt.TimeFunc = time.Now
-		expiredTime := time.Duration(config.ServerConf.JWTExpire)
+		expiredTime := time.Duration(conf.ServerConf.JWTExpire)
 		claims.StandardClaims.ExpiresAt = time.Now().Add(expiredTime * time.Hour).Unix()
 		return j.CreateToken(*claims)
 	}

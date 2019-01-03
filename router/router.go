@@ -1,7 +1,7 @@
 package router
 
 import (
-	"github.com/JiangInk/market_monitor/config"
+	"github.com/JiangInk/market_monitor/extend/conf"
 	"github.com/JiangInk/market_monitor/controller/v1"
 	_ "github.com/JiangInk/market_monitor/docs"
 	"github.com/JiangInk/market_monitor/middleware"
@@ -19,15 +19,15 @@ func InitRouter() *gin.Engine {
 	r := gin.New()
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
-	gin.SetMode(config.ServerConf.RunMode)
+	gin.SetMode(conf.ServerConf.RunMode)
 	// 跨域资源共享 CORS 配置
 	r.Use(cors.New(cors.Config{
-		AllowAllOrigins:  config.CORSConf.AllowAllOrigins,
-		AllowMethods:     config.CORSConf.AllowMethods,
-		AllowHeaders:     config.CORSConf.AllowHeaders,
-		ExposeHeaders:    config.CORSConf.ExposeHeaders,
-		AllowCredentials: config.CORSConf.AllowCredentials,
-		MaxAge:           config.CORSConf.MaxAge * time.Hour,
+		AllowAllOrigins:  conf.CORSConf.AllowAllOrigins,
+		AllowMethods:     conf.CORSConf.AllowMethods,
+		AllowHeaders:     conf.CORSConf.AllowHeaders,
+		ExposeHeaders:    conf.CORSConf.ExposeHeaders,
+		AllowCredentials: conf.CORSConf.AllowCredentials,
+		MaxAge:           conf.CORSConf.MaxAge * time.Hour,
 	}))
 	uploadService := service.UploadService{}
 	r.StaticFS("upload/img", http.Dir(uploadService.GetImgFullPath()))

@@ -3,7 +3,7 @@ package service
 import (
 	"time"
 
-	"github.com/JiangInk/market_monitor/config"
+	"github.com/JiangInk/market_monitor/extend/conf"
 	"github.com/JiangInk/market_monitor/extend/jwt"
 	"github.com/JiangInk/market_monitor/extend/redis"
 	"github.com/JiangInk/market_monitor/models"
@@ -19,7 +19,7 @@ type AuthService struct {
 func (as *AuthService) GenerateToken(user models.User) (string, error) {
 	jwtInstance := jwt.NewJWT()
 	nowTime := time.Now()
-	expireTime := time.Duration(config.ServerConf.JWTExpire)
+	expireTime := time.Duration(conf.ServerConf.JWTExpire)
 	claims := jwt.CustomClaims{
 		ID:       user.ID,
 		UserName: user.UserName,
@@ -37,7 +37,7 @@ func (as *AuthService) GenerateToken(user models.User) (string, error) {
 
 	// 设置redis缓存
 	const hourSecs int = 60 * 60
-	redis.Set("TOKEN:"+user.Email, token, config.ServerConf.JWTExpire * hourSecs)
+	redis.Set("TOKEN:"+user.Email, token, conf.ServerConf.JWTExpire * hourSecs)
 	return token, nil
 }
 

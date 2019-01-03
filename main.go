@@ -4,7 +4,7 @@ import (
 	"github.com/JiangInk/market_monitor/extend/validator"
 	"github.com/JiangInk/market_monitor/schedule"
 	"fmt"
-	"github.com/JiangInk/market_monitor/config"
+	"github.com/JiangInk/market_monitor/extend/conf"
 	"github.com/JiangInk/market_monitor/extend/logger"
 	"github.com/JiangInk/market_monitor/extend/redis"
 	"github.com/JiangInk/market_monitor/models"
@@ -27,7 +27,7 @@ import (
 // @BasePath /api/v1
 func main() {
 	// 基本配置初始化
-	config.Setup()
+	conf.Setup()
 	// 日志初始化
 	logger.Setup()
 	// 数据库初始化
@@ -41,5 +41,5 @@ func main() {
 
 	router := router.InitRouter()
 
-	router.Run(fmt.Sprintf(":%d", config.ServerConf.Port))
+	router.Run(fmt.Sprintf(":%d", conf.ServerConf.Port))
 }

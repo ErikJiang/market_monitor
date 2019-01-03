@@ -4,7 +4,7 @@ import (
 	"net/smtp"
 	"strconv"
 
-	"github.com/JiangInk/market_monitor/config"
+	"github.com/JiangInk/market_monitor/extend/conf"
 )
 
 // SendEmail 发送邮件
@@ -12,22 +12,22 @@ func SendEmail(subject string, recvEmail string, emailContent string) error {
 
 	auth := smtp.PlainAuth(
 		"",
-		config.EmailConf.UserName,
-		config.EmailConf.Password,
-		config.EmailConf.Host,
+		conf.EmailConf.UserName,
+		conf.EmailConf.Password,
+		conf.EmailConf.Host,
 	)
 
 	msg := []byte(
 		"To: " + recvEmail + "\r\n" +
-			"From: " + config.EmailConf.ServName + "<" + config.EmailConf.UserName + ">\r\n" +
+			"From: " + conf.EmailConf.ServName + "<" + conf.EmailConf.UserName + ">\r\n" +
 			"Subject: " + subject + "\r\n" + "MIME-version: 1.0;\nContent-Type: " +
-			config.EmailConf.ContentTypeHTML + ";charset=\"UTF-8\";\t\n\r\n" + emailContent,
+			conf.EmailConf.ContentTypeHTML + ";charset=\"UTF-8\";\t\n\r\n" + emailContent,
 	)
 
 	err := smtp.SendMail(
-		config.EmailConf.Host+":"+strconv.Itoa(config.EmailConf.Port),
+		conf.EmailConf.Host+":"+strconv.Itoa(conf.EmailConf.Port),
 		auth,
-		config.EmailConf.UserName,
+		conf.EmailConf.UserName,
 		[]string{recvEmail},
 		msg,
 	)

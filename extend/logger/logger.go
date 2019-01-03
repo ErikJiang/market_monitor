@@ -4,14 +4,14 @@ import (
 	"os"
 	"strings"
 
-	"github.com/JiangInk/market_monitor/config"
+	"github.com/JiangInk/market_monitor/extend/conf"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 )
 
 // Setup 日志初始化设置
 func Setup() {
-	switch strings.ToLower(config.LoggerConf.Level) {
+	switch strings.ToLower(conf.LoggerConf.Level) {
 	case "panic":
 		zerolog.SetGlobalLevel(zerolog.PanicLevel)
 	case "fatal":
@@ -27,10 +27,10 @@ func Setup() {
 	default:
 		zerolog.SetGlobalLevel(zerolog.InfoLevel)
 	}
-	if config.LoggerConf.Pretty {
+	if conf.LoggerConf.Pretty {
 		log.Logger = log.Output(zerolog.ConsoleWriter{
 			Out:     os.Stderr,
-			NoColor: !config.LoggerConf.Color,
+			NoColor: !conf.LoggerConf.Color,
 		})
 	}
 }

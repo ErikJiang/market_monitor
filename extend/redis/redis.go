@@ -4,7 +4,7 @@ import (
 	"time"
 	"strconv"
 	"github.com/gomodule/redigo/redis"
-	"github.com/JiangInk/market_monitor/config"
+	"github.com/JiangInk/market_monitor/extend/conf"
 )
 
 var redisConn *redis.Pool
@@ -17,23 +17,23 @@ func GetRedisConn() *redis.Pool {
 // Setup 创建 Redis 连接
 func Setup() error {
 	redisConn = &redis.Pool{
-		MaxIdle: config.RedisConf.MaxIdle,
-		MaxActive: config.RedisConf.MaxActive,
-		IdleTimeout: config.RedisConf.IdleTimeout,
+		MaxIdle: conf.RedisConf.MaxIdle,
+		MaxActive: conf.RedisConf.MaxActive,
+		IdleTimeout: conf.RedisConf.IdleTimeout,
 		Dial: func() (redis.Conn, error) {
-			c, err := redis.Dial("tcp", config.RedisConf.Host+":"+strconv.Itoa(config.RedisConf.Port))
+			c, err := redis.Dial("tcp", conf.RedisConf.Host+":"+strconv.Itoa(conf.RedisConf.Port))
 			if err != nil {
 				return nil, err
 			}
 			// 验证密码
-			if config.RedisConf.Password != "" {
-				if _, err := c.Do("AUTH", config.RedisConf.Password); err != nil {
+			if conf.RedisConf.Password != "" {
+				if _, err := c.Do("AUTH", conf.RedisConf.Password); err != nil {
 					c.Close()
 					return nil, err
 				}
 			}
 			// 选择数据库
-			if _, err := c.Do("SELECT", config.RedisConf.DBNum); err != nil {
+			if _, err := c.Do("SELECT", conf.RedisConf.DBNum); err != nil {
 				c.Close()
 				return nil, err
 			}

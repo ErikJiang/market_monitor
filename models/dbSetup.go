@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/JiangInk/market_monitor/config"
+	"github.com/JiangInk/market_monitor/extend/conf"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql" // mysql
 )
@@ -16,12 +16,12 @@ var DB *gorm.DB
 func Setup() {
 	var err error
 	DB, err = gorm.Open(
-		config.DBConf.DBType,
+		conf.DBConf.DBType,
 		fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&loc=Local",
-			config.DBConf.User,
-			config.DBConf.Password,
-			config.DBConf.Host+":"+strconv.Itoa(config.DBConf.Port),
-			config.DBConf.DBName,
+			conf.DBConf.User,
+			conf.DBConf.Password,
+			conf.DBConf.Host+":"+strconv.Itoa(conf.DBConf.Port),
+			conf.DBConf.DBName,
 		),
 	)
 	if err != nil {
@@ -33,10 +33,10 @@ func Setup() {
 	}
 
 	gorm.DefaultTableNameHandler = func(db *gorm.DB, defaultTableName string) string {
-		return config.DBConf.TablePrefix + defaultTableName
+		return conf.DBConf.TablePrefix + defaultTableName
 	}
 	
-	DB.LogMode(config.DBConf.Debug)
+	DB.LogMode(conf.DBConf.Debug)
 	DB.SingularTable(true)
 	DB.DB().SetMaxIdleConns(10)
 	DB.DB().SetMaxOpenConns(100)
