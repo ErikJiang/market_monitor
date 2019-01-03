@@ -1,5 +1,5 @@
 ############################
-# STEP 1 build executable binary
+# STEP 1 构建可执行文件
 ############################
 
 # 指定 GO 版本号
@@ -27,10 +27,10 @@ ENV CGO_ENABLED=0 GOOS=linux GOARCH=amd64 GOFLAGS=-mod=vendor
 RUN go build -a -installsuffix cgo -ldflags="-w -s" -o /src/myapp/monitor
 
 ############################
-# STEP 2 build a small image
+# STEP 2 构建镜像
 ############################
 
-# 构建最小镜像
+# 指定最小镜像源
 FROM scratch AS final
 
 # 设置系统语言
