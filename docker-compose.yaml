@@ -1,0 +1,24 @@
+version: "2"
+services:
+  app:
+    build: ./golang
+    ports:
+      - "8000:8000"
+    links:
+      - "datastore"
+      - "cachestore"
+    tty: true
+  datastore:
+    image: mysql:8.0.13
+    ports:
+      - "3306:33070"
+    volumes:
+      - ./mysql/conf:/etc/mysql/conf.d:rw
+      - ./mysql/logs:/logs:rw
+      - ./mysql/data:/var/lib/mysql:rw
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+  cachestore:
+    image: redis:4.0.12
+    ports:
+      - "6379:63790"

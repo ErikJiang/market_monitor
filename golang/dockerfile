@@ -13,7 +13,7 @@ RUN adduser -D -g '' appuser
 
 # 复制源码并指定工作目录
 RUN mkdir -p /src/myapp
-COPY . /src/myapp
+COPY ./src/ /src/myapp
 WORKDIR /src/myapp
 
 # 为 go build 设置环境变量:
