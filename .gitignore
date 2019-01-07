@@ -15,16 +15,15 @@
 .cache
 
 # ignore vendor packages
-vendor/*
-!vendor/vendor.json
+golang/src/vendor/*
 
 # code editor config
 .idea/*
 .vscode/
 
 # ignore upload image
-public/upload/img/*
+golang/src/public/upload/img/*
 
 # debug
-debug
+golang/src/debug
 
