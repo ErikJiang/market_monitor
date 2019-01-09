@@ -35,3 +35,7 @@ mysql/data/*
 mysql/logs/*
 !mysql/logs/README.md
 
+# redis
+redis/data/*
+!redis/data/README.md
+
