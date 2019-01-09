@@ -24,7 +24,7 @@ services:
       - "6379:63790"
     restart: always
   app:
-    build: ./golang
+    build: ./app
     container_name: app
     ports:
       - "8000:8000"
