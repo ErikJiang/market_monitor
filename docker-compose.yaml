@@ -3,8 +3,8 @@ services:
   mysql:
     image: mysql:8.0.13
     container_name: mysql
-    ports:
-      - "3307:33070"
+    # ports:
+    #   - "3306:3306"
     restart: always
     volumes:
       - ./mysql/conf/conf.d:/etc/mysql/conf.d
@@ -20,8 +20,8 @@ services:
   redis:
     image: redis:4.0.12
     container_name: redis
-    ports:
-      - "6379:63790"
+    # ports:
+    #   - "6379:6379"
     restart: always
   app:
     build: ./app

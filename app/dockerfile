@@ -8,6 +8,11 @@ ARG GO_VERSION=1.11.1
 # 指定构建环境
 FROM golang:${GO_VERSION}-alpine AS builder
 
+
+# ca-certificates is required to call HTTPS endpoints.
+# tzdata is required to time zone info.
+RUN apk update && apk upgrade && apk add --no-cache ca-certificates tzdata && update-ca-certificates
+
 # 创建用户 appuser
 RUN adduser -D -g '' appuser
 
@@ -35,6 +40,12 @@ FROM scratch AS final
 
 # 设置系统语言
 ENV LANG en_US.UTF-8
+
+# 从 builder 中导入时区信息
+COPY --from=builder /usr/share/zoneinfo /usr/share/zoneinfo
+
+# 从 builder 中导入证书
+COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 
 # 从 builder 中导入用户及组相关文件
 COPY --from=builder /etc/passwd /etc/passwd
