@@ -11,8 +11,13 @@
 * json web token: [jwt-go](https://github.com/dgrijalva/jwt-go)
 * swagger docs: [swaggo](https://github.com/swaggo/gin-swagger)
 
-## docker compose 改造
-// todo
+#### docker compose build
+``` bash
+$ docker-compose up -d
+```
+
+接口文档可访问: 
+[`http://localhost:8000/swagger/index.html`](http://localhost:8000/swagger/index.html)
 
 ---
 
