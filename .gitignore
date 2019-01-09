@@ -27,3 +27,7 @@ golang/src/public/upload/img/*
 # debug
 golang/src/debug
 
+# mysql
+mysql/data/*
+mysql/logs/*
+

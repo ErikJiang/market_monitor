@@ -1,24 +1,36 @@
-version: "2"
+version: "3"
 services:
+  mysql:
+    image: mysql:8.0.13
+    container_name: mysql
+    ports:
+      - "3307:33070"
+    restart: always
+    volumes:
+      - ./mysql/conf/conf.d:/etc/mysql/conf.d
+      - ./mysql/conf/init.d:/docker-entrypoint-initdb.d
+      - ./mysql/logs:/logs
+      - ./mysql/data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: db_monitor
+      MYSQL_USER: monitor
+      MYSQL_PASSWORD: 123456
+      TZ: Asia/Shanghai
+  redis:
+    image: redis:4.0.12
+    container_name: redis
+    ports:
+      - "6379:63790"
+    restart: always
   app:
     build: ./golang
+    container_name: app
     ports:
       - "8000:8000"
     links:
-      - "datastore"
-      - "cachestore"
+      - "mysql"
+      - "redis"
     tty: true
-  datastore:
-    image: mysql:8.0.13
-    ports:
-      - "3306:33070"
-    volumes:
-      - ./mysql/conf:/etc/mysql/conf.d:rw
-      - ./mysql/logs:/logs:rw
-      - ./mysql/data:/var/lib/mysql:rw
-    environment:
-      MYSQL_ROOT_PASSWORD: 123456
-  cachestore:
-    image: redis:4.0.12
-    ports:
-      - "6379:63790"
+    restart: always
+
