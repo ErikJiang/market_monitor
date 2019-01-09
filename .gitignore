@@ -16,6 +16,7 @@
 
 # ignore vendor packages
 app/src/vendor/*
+!app/src/vendor/modules.txt
 
 # code editor config
 .idea/*
@@ -23,11 +24,14 @@ app/src/vendor/*
 
 # ignore upload image
 app/src/public/upload/img/*
+!app/src/public/upload/img/README.md
 
 # debug
 app/src/debug
 
 # mysql
 mysql/data/*
+!mysql/data/README.md
 mysql/logs/*
+!mysql/logs/README.md
 
