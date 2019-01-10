@@ -16,8 +16,9 @@
 $ git clone https://github.com/JiangInk/market_monitor.git
 ```
 
-#### 运行项目
+#### 单独运行项目
 
+进入应用服务源码目录：
 ``` bash
 $ cd market_monitor/app/src/
 ```
@@ -25,7 +26,7 @@ $ cd market_monitor/app/src/
 目录结构：
 ``` bash
 app/src/:
-    ├─config/       # 配置文件目录
+    ├─config/       # 配置文件目录（运行前需要调整database、redis等参数配置）
     ├─controller/   # 控制器层目录
     ├─docs/         # 接口文档 Swagger 生成目录
     ├─extend/       # 扩展模块目录
@@ -41,6 +42,11 @@ app/src/:
     └─main.go       # 运行入口main文件
 ```
 
+自主创建数据库：
+``` sql
+CREATE DATABASE db_monitor DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
+```
+
 启动服务：
 ``` bash
 $ go run main.go
@@ -51,9 +57,13 @@ $ go run main.go
 $ export GOPROXY=https://goproxy.io
 ```
 
-运行后，可访问：[`http://localhost:8000/swagger/index.html`](http://localhost:8000/swagger/index.html)，查看接口文档；
+运行后访问：[`http://localhost:8000/swagger/index.html`](http://localhost:8000/swagger/index.html)，查看接口文档；
 
 #### Docker 运行构建
+进入项目根目录：
+``` bash
+$ cd market_monitor/
+```
 
 主目录结构：
 ``` bash
@@ -64,18 +74,17 @@ market_monitor/
     │  └─dockerfile         # docker 镜像构建文件
     ├─mysql                 # mysql 数据服务
     │  ├─conf
-    │  │  ├─conf.d/         # 服务自定义配置
-    │  │  └─init.d/         # 初始化SQL脚本及用户权限设置
+    │  │  ├─conf.d/         # 服务自定义配置（字符编码等）
+    │  │  └─init.d/         # 初始化SQL脚本（建库语句）及用户权限设置
     │  ├─data/              # 数据文件挂载目录
     │  └─logs/              # 日志目录
     └─redis                 # redis 缓存服务
-        ├─conf/             # 缓存服务自定义配置
+        ├─conf/             # 缓存服务自定义配置(密码等)
         └─data/             # 数据文件挂载目录
 ```
 
 使用 `docker compose` 以后台启动方式构建容器服务：
 ``` bash
-$ cd market_monitor/
 $ docker-compose up -d
 ```
 
