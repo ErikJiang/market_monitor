@@ -15,16 +15,27 @@
 .cache
 
 # ignore vendor packages
-vendor/*
-!vendor/vendor.json
+app/src/vendor/*
+!app/src/vendor/modules.txt
 
 # code editor config
 .idea/*
 .vscode/
 
 # ignore upload image
-public/upload/img/*
+app/src/public/upload/img/*
+!app/src/public/upload/img/README.md
 
 # debug
-debug
+app/src/debug
+
+# mysql
+mysql/data/*
+!mysql/data/README.md
+mysql/logs/*
+!mysql/logs/README.md
+
+# redis
+redis/data/*
+!redis/data/README.md
 
