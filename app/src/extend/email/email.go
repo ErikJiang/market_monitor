@@ -4,7 +4,7 @@ import (
 	"net/smtp"
 	"strconv"
 
-	"github.com/JiangInk/market_monitor/extend/conf"
+	"github.com/ErikJiang/market_monitor/extend/conf"
 )
 
 // SendEmail 发送邮件

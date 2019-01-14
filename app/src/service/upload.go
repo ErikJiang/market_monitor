@@ -2,8 +2,8 @@ package service
 
 import (
 	"fmt"
-	"github.com/JiangInk/market_monitor/extend/conf"
-	"github.com/JiangInk/market_monitor/extend/utils"
+	"github.com/ErikJiang/market_monitor/extend/conf"
+	"github.com/ErikJiang/market_monitor/extend/utils"
 	"github.com/rs/zerolog/log"
 	"io/ioutil"
 	"mime/multipart"

@@ -4,7 +4,7 @@ import (
 	"time"
 	"strconv"
 	"github.com/gomodule/redigo/redis"
-	"github.com/JiangInk/market_monitor/extend/conf"
+	"github.com/ErikJiang/market_monitor/extend/conf"
 )
 
 var redisConn *redis.Pool

@@ -1,10 +1,10 @@
 package v1
 
 import (
-	"github.com/JiangInk/market_monitor/service"
-	"github.com/JiangInk/market_monitor/extend/utils"
-	"github.com/JiangInk/market_monitor/extend/code"
-	"github.com/JiangInk/market_monitor/extend/jwt"
+	"github.com/ErikJiang/market_monitor/service"
+	"github.com/ErikJiang/market_monitor/extend/utils"
+	"github.com/ErikJiang/market_monitor/extend/code"
+	"github.com/ErikJiang/market_monitor/extend/jwt"
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog/log"
 )

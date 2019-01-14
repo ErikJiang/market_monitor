@@ -1,4 +1,4 @@
-module github.com/JiangInk/market_monitor
+module github.com/ErikJiang/market_monitor
 
 require (
 	cloud.google.com/go v0.31.0 // indirect

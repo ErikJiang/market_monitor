@@ -3,10 +3,10 @@ package service
 import (
 	"time"
 
-	"github.com/JiangInk/market_monitor/extend/conf"
-	"github.com/JiangInk/market_monitor/extend/jwt"
-	"github.com/JiangInk/market_monitor/extend/redis"
-	"github.com/JiangInk/market_monitor/models"
+	"github.com/ErikJiang/market_monitor/extend/conf"
+	"github.com/ErikJiang/market_monitor/extend/jwt"
+	"github.com/ErikJiang/market_monitor/extend/redis"
+	"github.com/ErikJiang/market_monitor/models"
 	goJWT "github.com/dgrijalva/jwt-go"
 )
 

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/JiangInk/market_monitor/extend/conf"
+	"github.com/ErikJiang/market_monitor/extend/conf"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql" // mysql
 )

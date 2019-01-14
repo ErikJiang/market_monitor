@@ -2,6 +2,7 @@ cloud.google.com/go v0.31.0 h1:o9K5MWWt2wk+d9jkGn2DAZ7Q9nUdnFLOpK9eIkDwONQ=
 cloud.google.com/go v0.31.0/go.mod h1:aQUYkXzVsufM+DwF1aE+0xfcU+56JwCaLick0ClmMTw=
 github.com/BurntSushi/toml v0.3.1 h1:WXkYYl6Yr3qBf1K79EBnL4mak0OimBfB0XUf9Vl28OQ=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
+github.com/ErikJiang/market_monitor v0.0.0-20190110072024-0e9962c7326b h1:40NftpiiJGOsXF3O5sH2MetFQRt32CJT0LgBxMdwABk=
 github.com/GoogleCloudPlatform/google-cloud-go v0.31.0/go.mod h1:piKfTDb3Lu/GCTS9S04WJOcDwPlGN91ymFXMrgLoqNo=
 github.com/PuerkitoBio/purell v1.1.0 h1:rmGxhojJlM0tuKtfdvliR84CFHljx9ag64t2xmVkjK4=
 github.com/PuerkitoBio/purell v1.1.0/go.mod h1:c11w/QuzBsJSee3cPx9rAFu61PvFxuPbtSwDGJws/X0=

@@ -4,7 +4,7 @@ import (
 	"errors"
 	"time"
 
-	"github.com/JiangInk/market_monitor/extend/conf"
+	"github.com/ErikJiang/market_monitor/extend/conf"
 	"github.com/dgrijalva/jwt-go"
 )
 

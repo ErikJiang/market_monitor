@@ -13,7 +13,7 @@
 
 #### 克隆项目
 ``` shell
-$ git clone https://github.com/JiangInk/market_monitor.git
+$ git clone https://github.com/ErikJiang/market_monitor.git
 ```
 
 #### 单独运行项目
@@ -90,5 +90,5 @@ $ docker-compose up -d
 
 ---
 
-> 简明教程请见: [WIKI](https://github.com/JiangInk/market_monitor/wiki)
+> 简明教程请见: [WIKI](https://github.com/ErikJiang/market_monitor/wiki)
 

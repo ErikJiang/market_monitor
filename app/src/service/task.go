@@ -2,8 +2,8 @@ package service
 
 import (
 	"encoding/json"
-	"github.com/JiangInk/market_monitor/extend/code"
-	"github.com/JiangInk/market_monitor/models"
+	"github.com/ErikJiang/market_monitor/extend/code"
+	"github.com/ErikJiang/market_monitor/models"
 	"github.com/rs/zerolog/log"
 )
 

@@ -3,10 +3,10 @@ package schedule
 import (
 
 	"bytes"
-	"github.com/JiangInk/market_monitor/service"
+	"github.com/ErikJiang/market_monitor/service"
 	"html/template"
-	"github.com/JiangInk/market_monitor/extend/api"
-	"github.com/JiangInk/market_monitor/extend/email"
+	"github.com/ErikJiang/market_monitor/extend/api"
+	"github.com/ErikJiang/market_monitor/extend/email"
 	"github.com/rs/zerolog/log"
 	"strconv"
 )

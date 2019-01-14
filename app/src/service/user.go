@@ -1,9 +1,9 @@
 package service
 
 import (
-	"github.com/JiangInk/market_monitor/extend/code"
-	"github.com/JiangInk/market_monitor/extend/utils"
-	"github.com/JiangInk/market_monitor/models"
+	"github.com/ErikJiang/market_monitor/extend/code"
+	"github.com/ErikJiang/market_monitor/extend/utils"
+	"github.com/ErikJiang/market_monitor/models"
 	"github.com/rs/zerolog/log"
 )
 

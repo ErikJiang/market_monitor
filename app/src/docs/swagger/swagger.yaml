@@ -73,8 +73,8 @@ host: localhost:8000
 info:
   contact:
     email: jiangink.cn@gmail.com
-    name: ink
-    url: http://jiangink.github.com
+    name: Erik
+    url: http://ErikJiang.github.com
   description: Market Monitor 简易API文档
   license:
     name: MIT

@@ -1,11 +1,11 @@
 package router
 
 import (
-	"github.com/JiangInk/market_monitor/extend/conf"
-	"github.com/JiangInk/market_monitor/controller/v1"
-	_ "github.com/JiangInk/market_monitor/docs"
-	"github.com/JiangInk/market_monitor/middleware"
-	"github.com/JiangInk/market_monitor/service"
+	"github.com/ErikJiang/market_monitor/extend/conf"
+	"github.com/ErikJiang/market_monitor/controller/v1"
+	_ "github.com/ErikJiang/market_monitor/docs"
+	"github.com/ErikJiang/market_monitor/middleware"
+	"github.com/ErikJiang/market_monitor/service"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/swaggo/gin-swagger"

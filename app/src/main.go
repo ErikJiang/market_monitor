@@ -1,14 +1,14 @@
 package main
 
 import (
-	"github.com/JiangInk/market_monitor/extend/validator"
-	"github.com/JiangInk/market_monitor/schedule"
+	"github.com/ErikJiang/market_monitor/extend/validator"
+	"github.com/ErikJiang/market_monitor/schedule"
 	"fmt"
-	"github.com/JiangInk/market_monitor/extend/conf"
-	"github.com/JiangInk/market_monitor/extend/logger"
-	"github.com/JiangInk/market_monitor/extend/redis"
-	"github.com/JiangInk/market_monitor/models"
-	"github.com/JiangInk/market_monitor/router"
+	"github.com/ErikJiang/market_monitor/extend/conf"
+	"github.com/ErikJiang/market_monitor/extend/logger"
+	"github.com/ErikJiang/market_monitor/extend/redis"
+	"github.com/ErikJiang/market_monitor/models"
+	"github.com/ErikJiang/market_monitor/router"
 )
 
 // @title Market Monitor API
@@ -16,8 +16,8 @@ import (
 // @description Market Monitor 简易API文档
 // @termsOfService http://swagger.io/terms/
 
-// @contact.name ink
-// @contact.url http://jiangink.github.com
+// @contact.name Erik
+// @contact.url http://ErikJiang.github.com
 // @contact.email jiangink.cn@gmail.com
 
 // @license.name MIT
