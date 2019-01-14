@@ -83,12 +83,18 @@ market_monitor/
         └─data/             # 数据文件挂载目录
 ```
 
-使用 `docker compose` 以后台启动方式构建容器服务：
+由于 app/ 下的 dockerfile 指定 golang 编译所需依赖从 app/src/vendor/ 目录中读取，故需要提前准备编译所需依赖：
+``` bash
+$ cd app/src/
+$ go mod vendor
+```
+
+最后再回到项目根目录，使用 `docker compose` 以后台启动方式构建容器服务：
 ``` bash
 $ docker-compose up -d
 ```
 
 ---
 
-> 简明教程请见: [WIKI](https://github.com/ErikJiang/market_monitor/wiki)
+> 简明教程请见: [Wiki](https://github.com/ErikJiang/market_monitor/wiki)
 
