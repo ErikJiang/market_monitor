@@ -1,10 +1,12 @@
-version: "3"
+version: "3.3"
 services:
-  mysql:
+  db:
     image: mysql:8.0.13
-    container_name: mysql
-    # ports:
-    #   - "3306:3306"
+    container_name: db
+    ports:
+      - '33070:3306'
+    expose:
+      - '33070'
     restart: always
     volumes:
       - ./mysql/conf/conf.d:/etc/mysql/conf.d
@@ -21,8 +23,10 @@ services:
     image: redis:4.0.12
     container_name: redis
     command: redis-server /usr/local/etc/redis/redis.conf
-    # ports:
-    #   - "6379:6379"
+    ports:
+      - '63790:6379'
+    expose:
+      - '63790'
     volumes:
       - ./redis/data:/data
       - ./redis/conf/redis.conf:/usr/local/etc/redis/redis.conf
@@ -33,8 +37,7 @@ services:
     ports:
       - "8000:8000"
     links:
-      - "mysql"
-      - "redis"
-    tty: true
+      - db:mysql
+      - redis
     restart: always
 

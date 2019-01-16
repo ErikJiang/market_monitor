@@ -6,8 +6,10 @@
 ARG GO_VERSION=1.11.1
 
 # 指定构建环境
-FROM golang:${GO_VERSION}-alpine AS builder
+FROM golang:${GO_VERSION}-alpine3.7 AS builder
 
+# china aliyun mirrors
+RUN echo "http://mirrors.aliyun.com/alpine/v3.7/main/" > /etc/apk/repositories
 
 # ca-certificates is required to call HTTPS endpoints.
 # tzdata is required to time zone info.
