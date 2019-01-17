@@ -2,7 +2,7 @@ version: "3.3"
 services:
   mysql:
     image: mysql:8.0.13
-    container_name: mysql
+    container_name: m_mysql
     ports:
       - '33070:3306'
     expose:
@@ -21,7 +21,7 @@ services:
       TZ: Asia/Shanghai
   redis:
     image: redis:4.0.12
-    container_name: redis
+    container_name: m_redis
     command: redis-server /usr/local/etc/redis/redis.conf
     ports:
       - '63790:6379'
@@ -37,6 +37,9 @@ services:
     ports:
       - "8000:8000"
     links:
+      - mysql
+      - redis
+    depends_on:
       - mysql
       - redis
     restart: always
