@@ -1,8 +1,8 @@
 version: "3.3"
 services:
-  db:
+  mysql:
     image: mysql:8.0.13
-    container_name: db
+    container_name: mysql
     ports:
       - '33070:3306'
     expose:
@@ -37,7 +37,7 @@ services:
     ports:
       - "8000:8000"
     links:
-      - db:mysql
+      - mysql
       - redis
     restart: always
 
