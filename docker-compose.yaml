@@ -33,7 +33,7 @@ services:
     restart: always
   app:
     build: ./app
-    container_name: app
+    container_name: m_app
     ports:
       - "8000:8000"
     links:
