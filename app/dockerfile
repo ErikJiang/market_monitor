@@ -21,7 +21,6 @@ RUN adduser -D -g '' appuser
 # 复制源码并指定工作目录
 RUN mkdir -p /src/myapp
 COPY ./src/ /src/myapp
-COPY ./wait_for_it.sh /src/myapp
 WORKDIR /src/myapp
 
 # 为 go build 设置环境变量:
@@ -55,11 +54,10 @@ COPY --from=builder /etc/passwd /etc/passwd
 
 # 将构建的可执行文件复制到新镜像中
 COPY --from=builder /src/myapp/config /config
-COPY --from=builder /src/myapp/wait_for_it.sh /wait_for_it.sh
 COPY --from=builder /src/myapp/monitor /monitor
 
 # 端口申明
 EXPOSE 8000
 
 # 运行
-ENTRYPOINT [ "./wait_for_it.sh", "mysql:3306", "--", "/monitor" ]
+ENTRYPOINT [ "/monitor" ]
