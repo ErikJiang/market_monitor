@@ -47,7 +47,7 @@ func Setup() {
 	DB.DB().SetMaxOpenConns(100)
 	// migrate 迁移
 	DB.Set(
-		"grom:table_options",
+		"gorm:table_options",
 		"ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci",
 	).AutoMigrate(&User{}, &Task{})
 	DB.Model(&User{}).AddUniqueIndex("uk_email", "email")
