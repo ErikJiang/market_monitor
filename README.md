@@ -1,5 +1,10 @@
 # :guardsman: market_monitor
 
+<p align="left">
+  <img src="https://img.shields.io/badge/Go%20version-1.11-brightgreen.svg" />
+  <img src="https://img.shields.io/badge/License-MIT-blue.svg" />
+</p>
+
 ![gopher](./app/src/public/gopher.png)
 
 * web framework: [gin](https://github.com/gin-gonic/gin)
