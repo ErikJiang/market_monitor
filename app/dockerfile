@@ -34,7 +34,7 @@ ENV CGO_ENABLED=0 GOOS=linux GOARCH=amd64 GOFLAGS=-mod=vendor
 RUN go build -a -installsuffix cgo -ldflags="-w -s" -o /src/myapp/monitor
 
 ############################
-# STEP 2 构建镜像
+# STEP 2 构建最小镜像
 ############################
 
 # 指定最小镜像源
